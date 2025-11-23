@@ -593,6 +593,52 @@
             max-width: 400px;
         }
 
+        .query-suggestions {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 32px;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .suggestion-card {
+            background: var(--surface);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 16px 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+            text-align: left;
+        }
+
+        .suggestion-card:hover {
+            border-color: var(--primary-color);
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-2px);
+        }
+
+        .suggestion-question {
+            font-size: 15px;
+            font-weight: 500;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+
+        .suggestion-document {
+            font-size: 13px;
+            color: var(--text-secondary);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .suggestion-document::before {
+            content: '📄';
+            font-size: 12px;
+        }
+
         .error-message {
             background: #fef2f2;
             color: var(--error-color);
@@ -946,7 +992,7 @@
         <!-- Sidebar - Documents List -->
         <aside class="sidebar">
             <div class="sidebar-header">
-                <h1>📚 Legal Documents</h1>
+                <h1>Legal Documents</h1>
                 <p>Browse available resources</p>
             </div>
             
@@ -972,14 +1018,29 @@
         <!-- Main Chat Area -->
         <main class="chat-container">
             <header class="chat-header">
-                <h2>💬 AI Legal Assistant</h2>
+                <h2>AI based Smart Lawyer</h2>
             </header>
 
             <div class="chat-messages" id="chatMessages">
-                <div class="empty-state">
-                    <div class="empty-state-icon">⚖️</div>
+                <div class="empty-state" id="emptyState">
+                    <div class="empty-state-icon"></div>
                     <h3>Welcome to AI Lawyer</h3>
                     <p>Ask me anything about legal documents, acts, ordinances, or case law. I'm here to help!</p>
+                    
+                    <div class="query-suggestions">
+                        <div class="suggestion-card" data-query="What benefits are provided to employees under the Social Security Ordinance, 1965?">
+                            <div class="suggestion-question">What benefits are provided to employees under the Social Security Ordinance, 1965?</div>
+                            <div class="suggestion-document">Expected: Provincial_Employee_social_security_ordinance_1965</div>
+                        </div>
+                        <div class="suggestion-card" data-query="What are the powers and functions of the Ziarat Valley Development Authority?">
+                            <div class="suggestion-question">What are the powers and functions of the Ziarat Valley Development Authority?</div>
+                            <div class="suggestion-document">Expected: The_Baln_Ziarat_Valley_Development_Authority_Act,_1992</div>
+                        </div>
+                        <div class="suggestion-card" data-query="What are the tax rates on railway fares and freights as per the Balochistan Finance Act 1967?">
+                            <div class="suggestion-question">What are the tax rates on railway fares and freights as per the Balochistan Finance Act 1967?</div>
+                            <div class="suggestion-document">Expected: Baln_Finance_Act,_1967</div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -1065,6 +1126,15 @@
                     closeSourceModal();
                 }
             });
+
+            // Suggestion card click handlers
+            document.querySelectorAll('.suggestion-card').forEach(card => {
+                card.addEventListener('click', () => {
+                    const query = card.getAttribute('data-query');
+                    chatInput.value = query;
+                    sendMessage();
+                });
+            });
         }
 
         // Load Documents from API
@@ -1129,6 +1199,12 @@
             
             if (!message || isLoading) return;
 
+            // Hide empty state on first message
+            const emptyState = document.getElementById('emptyState');
+            if (emptyState) {
+                emptyState.style.display = 'none';
+            }
+
             // Add user message to chat
             addMessage(message, 'user');
             
@@ -1190,7 +1266,7 @@
             
             const avatar = document.createElement('div');
             avatar.className = 'message-avatar';
-            avatar.textContent = sender === 'user' ? 'U' : '🤖';
+            avatar.textContent = sender === 'user' ? 'U' : 'AI';
             
             const content = document.createElement('div');
             content.className = 'message-content';
@@ -1226,7 +1302,7 @@
                 
                 const sourcesTitle = document.createElement('div');
                 sourcesTitle.className = 'sources-title';
-                sourcesTitle.textContent = '📚 Sources:';
+                sourcesTitle.textContent = 'Sources:';
                 sourcesDiv.appendChild(sourcesTitle);
                 
                 sources.forEach(source => {
