@@ -24,7 +24,7 @@ class RAGService {
       const translationResult = await llmService.translateQueryToEnglish(query);
       const queryForEmbedding = translationResult.translatedQuery;
       const originalQuery = translationResult.originalQuery;
-      
+
       if (translationResult.isUrdu) {
         console.log('📝 Detected Urdu query, using translated version for search');
       }
@@ -32,15 +32,15 @@ class RAGService {
       // Step 2: Generate embedding for the translated/English query
       console.log('📊 Generating query embedding...');
       const queryEmbedding = await embeddingService.generateEmbedding(queryForEmbedding);
-      
+
       // Step 3: Search for similar chunks in Qdrant
       // Retrieve a larger set first (50 chunks) to find all potentially relevant ones
       console.log('🔎 Searching for relevant legal documents...');
       const initialChunks = await qdrantService.searchSimilar(queryEmbedding, 50);
-      
+
       // Apply dynamic filtering based on score threshold
       let relevantChunks = this.filterChunksByScore(initialChunks, topK);
-      
+
       if (relevantChunks.length === 0) {
         return {
           answer: 'I apologize, but I could not find relevant legal documents to answer your question. Please try rephrasing your query or ask about a different legal topic.',
@@ -63,6 +63,35 @@ class RAGService {
       const usedSourceIndices = llmResult.usedSources;
 
       console.log(`📚 LLM used ${usedSourceIndices.length} out of ${relevantChunks.length} sources`);
+      console.log(`🔍 Used Source Indices: ${JSON.stringify(usedSourceIndices)}`);
+
+      // Step 4a: Re-map source citations in the answer to match the filtered list
+      // The LLM cites sources using original indices (e.g., [Source 15]), but we only return
+      // the used sources to the frontend, which will display them as [1], [2], etc.
+      // We need to update the text to match these new indices.
+
+      let finalAnswer = answer;
+      const indexMap = new Map();
+
+      // Create mapping from Original Index -> New Index (1-based)
+      usedSourceIndices.forEach((originalIndex, i) => {
+        const newIndex = i + 1;
+        indexMap.set(originalIndex, newIndex);
+      });
+
+      console.log('🗺️ Index Map:', Object.fromEntries(indexMap));
+
+      // Replace citations in the text using a single-pass regex
+      // This handles all occurrences and avoids double-replacement issues
+      finalAnswer = finalAnswer.replace(/\[Source\s*(\d+)\]/g, (match, capturedNum) => {
+        const originalIndex = parseInt(capturedNum, 10);
+        if (indexMap.has(originalIndex)) {
+          return `[Source ${indexMap.get(originalIndex)}]`;
+        }
+        // If the source index is not in our used list (e.g. out of bounds or hallucinated),
+        // we leave it as is.
+        return match;
+      });
 
       // Step 4: Prepare sources for citation - only include sources that were actually used
       const sources = relevantChunks
@@ -73,21 +102,24 @@ class RAGService {
             // Reference Information - keep the original index so it matches citations in the answer
             index: originalIndex,
             relevance_score: parseFloat(chunk.score.toFixed(4)),
-            
+
             // Document Details
+            title: chunk.chunk_title || chunk.title || 'Unknown Source', // Top level title for frontend
+            section: chunk.chunk_type, // Use chunk_type as section/type
+
             document: {
               title: chunk.title,
               type: chunk.document_type,
               year: chunk.year,
             },
-            
+
             // chunk Information
             chunk: {
               title: chunk.chunk_title || 'N/A',
               type: chunk.chunk_type || 'N/A',
               text: chunk.chunk, // Full chunk text for modal
             },
-            
+
             // Source Links
             links: {},
           };
@@ -96,11 +128,11 @@ class RAGService {
           if (chunk.court) {
             source.document.court = chunk.court;
           }
-          
+
           if (chunk.source_url) {
             source.links.document_url = chunk.source_url;
           }
-          
+
           if (chunk.source_page) {
             source.links.source_page = chunk.source_page;
           }
@@ -111,7 +143,7 @@ class RAGService {
       console.log('✅ Response generated successfully');
 
       return {
-        answer,
+        answer: finalAnswer,
         sources,
         query: originalQuery,
         metadata: {
@@ -143,7 +175,7 @@ class RAGService {
     }
 
     const trimmedQuery = query.trim();
-    
+
     if (trimmedQuery.length === 0) {
       return {
         valid: false,
@@ -196,10 +228,10 @@ class RAGService {
     // Calculate thresholds
     const highestScore = chunks[0].score;
     const relativeThreshold = highestScore - 0.1;
-    
+
     // Calculate average score
     const averageScore = chunks.reduce((sum, chunk) => sum + chunk.score, 0) / chunks.length;
-    
+
     const absoluteThreshold = 0.5;
 
     console.log(`📊 Score Analysis:`);

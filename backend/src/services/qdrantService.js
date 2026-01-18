@@ -24,25 +24,73 @@ class QdrantService {
   }
 
   /**
-   * Search for similar vectors in Qdrant
+   * Search for similar vectors in Qdrant with optional filters
    * @param {Array<number>} queryVector - The embedding vector of the user query
    * @param {number} limit - Number of results to return
+   * @param {Object} filters - Optional filters (e.g., { document_type: 'act', year: 2023 })
    * @returns {Promise<Array>} - Array of search results with payload and MongoDB metadata
    */
-  async searchSimilar(queryVector, limit = 5) {
+  async searchSimilar(queryVector, limit = 5, filters = {}) {
     try {
-      const searchResult = await this.client.search(this.collectionName, {
+      // Construct Qdrant filter
+      let qdrantFilter = null;
+
+      if (Object.keys(filters).length > 0) {
+        const mustConditions = [];
+
+        if (filters.document_type) {
+          mustConditions.push({
+            key: 'document_type',
+            match: { value: filters.document_type }
+          });
+        }
+
+        if (filters.year) {
+          mustConditions.push({
+            key: 'year',
+            match: { value: parseInt(filters.year) }
+          });
+        }
+
+        if (filters.court) {
+          mustConditions.push({
+            key: 'court',
+            match: { value: filters.court }
+          });
+        }
+
+        if (filters.source_website) {
+          mustConditions.push({
+            key: 'source_website',
+            match: { value: filters.source_website }
+          });
+        }
+
+        if (mustConditions.length > 0) {
+          qdrantFilter = {
+            must: mustConditions
+          };
+        }
+      }
+
+      const searchParams = {
         vector: queryVector,
         limit: limit,
         with_payload: true,
-      });
+      };
+
+      if (qdrantFilter) {
+        searchParams.filter = qdrantFilter;
+      }
+
+      const searchResult = await this.client.search(this.collectionName, searchParams);
 
       // Extract IDs from Qdrant results
       const resultIds = searchResult.map(result => result.id);
 
       // Fetch full metadata from MongoDB
-      const mongoMetadata = await Embeddings.find({ 
-        id: { $in: resultIds } 
+      const mongoMetadata = await Embeddings.find({
+        id: { $in: resultIds }
       }).lean();
 
       // Create a map for quick lookup
@@ -53,20 +101,20 @@ class QdrantService {
       // Merge Qdrant results with MongoDB metadata
       const results = searchResult.map(result => {
         const mongoDoc = metadataMap.get(result.id);
-        
+
         return {
           // Qdrant data
           id: result.id,
           score: result.score,
           chunk: result.payload.chunk,
-          
+
           // MongoDB metadata (full details)
           title: mongoDoc?.title || result.payload.title,
           year: mongoDoc?.year || result.payload.year,
           court: mongoDoc?.court || result.payload.court,
           document_type: mongoDoc?.document_type || result.payload.document_type,
           download_date: mongoDoc?.download_date || result.payload.download_date,
-          
+
           // Additional metadata from MongoDB
           chunk_index: mongoDoc?.chunk_index,
           chunk_title: mongoDoc?.chunk_title,

@@ -9,6 +9,10 @@ import dotenv from 'dotenv';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import chatRoutes from './routes/chatRoutes.js';
+import authRoutes from './routes/authRoutes.js';
+import judgmentRoutes from './routes/judgmentRoutes.js';
+import contractRoutes from './routes/contractRoutes.js';
+import searchRoutes from './routes/searchRoutes.js';
 import { connectDB } from './config/database.js';
 
 // Load environment variables
@@ -57,8 +61,12 @@ app.get('/health', (req, res) => {
   });
 });
 
-// Chat routes
+// API Routes
+app.use('/api/auth', authRoutes);
 app.use('/api/chat', chatRoutes);
+app.use('/api/judgments', judgmentRoutes);
+app.use('/api/contracts', contractRoutes);
+app.use('/api/search', searchRoutes);
 
 // Root endpoint
 app.get('/', (req, res) => {

@@ -290,8 +290,10 @@ cd AI-Lawyer\preprocessing
 
 ### 4.2. Python Virtual Environment
 ```powershell
-python -m venv .venv
-./.venv/Scripts/Activate.ps1
+# python -m venv .venv
+python -3.11 -m venv venv
+venv\Scripts\Activate.ps1
+python -m pip install --upgrade pip setuptools wheel
 pip install -r requirements.txt
 ```
 

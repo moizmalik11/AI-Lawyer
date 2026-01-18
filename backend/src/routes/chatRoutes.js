@@ -4,32 +4,40 @@
  */
 
 import express from 'express';
-import { askQuestion, healthCheck, getDocuments } from '../controllers/chatController.js';
+import {
+    askQuestion,
+    healthCheck,
+    getDocuments,
+    createChat,
+    getUserChats,
+    getChat,
+    deleteChat
+} from '../controllers/chatController.js';
+import authMiddleware from '../middleware/authMiddleware.js';
 
 const router = express.Router();
 
 /**
  * POST /api/chat/ask
  * Ask a legal question and get AI-generated response
- * 
- * Request body:
- * {
- *   "query": "What are the provisions for employee compensation?",
- *   "topK": 5  // Optional, default is 5
- * }
- * 
- * Response:
- * {
- *   "success": true,
- *   "data": {
- *     "answer": "...",
- *     "sources": [...],
- *     "query": "...",
- *     "metadata": {...}
- *   }
- * }
+ * Optional: Provide chatId to save history (requires auth)
  */
-router.post('/ask', askQuestion);
+// Note: We allow unauthenticated access for quick questions, but authenticated users can save history
+router.post('/ask', (req, res, next) => {
+    // Optional auth check: if token is present, verify it, otherwise proceed as guest
+    const token = req.header('Authorization');
+    if (token) {
+        authMiddleware(req, res, next);
+    } else {
+        next();
+    }
+}, askQuestion);
+
+// Chat Management Routes (Protected)
+router.post('/new', authMiddleware, createChat);
+router.get('/history', authMiddleware, getUserChats);
+router.get('/:id', authMiddleware, getChat);
+router.delete('/:id', authMiddleware, deleteChat);
 
 /**
  * GET /api/chat/health
@@ -40,22 +48,6 @@ router.get('/health', healthCheck);
 /**
  * GET /api/chat/documents
  * Get list of all unique documents in the database
- * 
- * Response:
- * {
- *   "success": true,
- *   "count": 123,
- *   "documents": [
- *     {
- *       "title": "Document Title",
- *       "year": 2021,
- *       "source_page": "https://...",
- *       "document_type": "act",
- *       "source_website": "balochistan-code"
- *     },
- *     ...
- *   ]
- * }
  */
 router.get('/documents', getDocuments);
 
