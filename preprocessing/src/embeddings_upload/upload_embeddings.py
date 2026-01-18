@@ -11,6 +11,7 @@ Configured to:
 
 import os
 import json
+import ssl
 from pathlib import Path
 from dotenv import load_dotenv
 from qdrant_client import QdrantClient
@@ -44,7 +45,13 @@ VECTOR_SIZE = 768  # For sentence-transformers MiniLM/MPNet
 print("🔗 Connecting to Qdrant and MongoDB...")
 
 qdrant = QdrantClient(url=QDRANT_URL, api_key=QDRANT_API_KEY)
-mongo = MongoClient(MONGO_URI)
+
+# Configure MongoDB with SSL certificate verification disabled for Windows
+mongo = MongoClient(
+    MONGO_URI,
+    tls=True,
+    tlsAllowInvalidCertificates=True
+)
 mdb = mongo[MONGO_DB]
 metadata_col = mdb[MONGO_COLLECTION]
 

@@ -28,7 +28,14 @@ COLLECTION_NAME = 'judgments'
 
 def connect_to_db():
     try:
-        client = pymongo.MongoClient(MONGODB_URI)
+        # Fix SSL certificate verification for MongoDB Atlas on Windows
+        try:
+            import certifi
+            client = pymongo.MongoClient(MONGODB_URI, tlsCAFile=certifi.where())
+        except ImportError:
+            # Fallback: disable certificate verification (development only)
+            client = pymongo.MongoClient(MONGODB_URI, tlsAllowInvalidCertificates=True)
+        
         db = client[DB_NAME]
         collection = db[COLLECTION_NAME]
         print(f"Connected to MongoDB: {DB_NAME}.{COLLECTION_NAME}")
