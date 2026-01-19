@@ -53,22 +53,6 @@ npm install
 
 > ⚠️ **IMPORTANT:** Frontend developers are **ONLY** allowed to push changes made to the `frontend/` folder.
 
-#### Setting Up Sparse Checkout (Recommended)
-
-To ensure you only work with frontend files, set up Git sparse checkout:
-
-```bash
-# Clone with sparse checkout enabled
-git clone --filter=blob:none --sparse https://github.com/your-org/AI-Lawyer.git
-cd AI-Lawyer
-
-# Configure sparse checkout to only include frontend folder
-git sparse-checkout set frontend
-
-# You can also add root config files if needed
-git sparse-checkout add package.json README.md .gitignore
-```
-
 #### Commit Guidelines
 
 1. **Never** commit changes to files outside the `frontend/` directory
@@ -141,10 +125,6 @@ cd backend
 
 # Install dependencies
 npm install
-
-# Create environment file
-cp .env.example .env
-# Edit .env with your configuration
 
 # Start development server
 npm run dev
