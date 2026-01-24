@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
 export default function Auth() {
-    const [activeTab, setActiveTab] = useState('login');
+    const [searchParams] = useSearchParams();
+    const initialMode = searchParams.get('mode') || 'login';
+    const [activeTab, setActiveTab] = useState(initialMode);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [username, setUsername] = useState('');

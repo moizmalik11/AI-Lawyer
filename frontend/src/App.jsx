@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import Landing from './pages/Landing';
 import Auth from './pages/Auth';
 import Dashboard from './pages/Dashboard';
 import Chatbot from './pages/Chatbot';
@@ -9,7 +10,7 @@ import Search from './pages/Search';
 
 const PrivateRoute = ({ children }) => {
   const { user } = useAuth();
-  return user ? children : <Navigate to="/" />;
+  return user ? children : <Navigate to="/auth" />;
 };
 
 function App() {
@@ -17,7 +18,8 @@ function App() {
     <Router>
       <AuthProvider>
         <Routes>
-          <Route path="/" element={<Auth />} />
+          <Route path="/" element={<Landing />} />
+          <Route path="/auth" element={<Auth />} />
           <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
           <Route path="/chatbot" element={<PrivateRoute><Chatbot /></PrivateRoute>} />
           <Route path="/judgments" element={<PrivateRoute><Judgments /></PrivateRoute>} />
