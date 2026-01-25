@@ -9,8 +9,11 @@ import {
   ChevronRight,
   Menu,
   X,
-  Shield
+  Shield,
+  Gavel,
+  BookOpen
 } from 'lucide-react';
+import ThemeToggle from '../components/ThemeToggle';
 import '../styles/Landing.css';
 
 const Landing = () => {
@@ -36,7 +39,7 @@ const Landing = () => {
 
   const features = [
     {
-      icon: <Search size={40} />,
+      icon: <Gavel size={40} />,
       title: 'Smart Legal Search',
       description: 'Advanced AI-powered semantic search across Pakistani civil laws and regulations with instant, accurate results.'
     },
@@ -56,7 +59,7 @@ const Landing = () => {
       description: 'Seamless support for both English and Urdu, making legal information accessible to everyone in Pakistan.'
     },
     {
-      icon: <Shield size={40} />,
+      icon: <BookOpen size={40} />,
       title: 'Civil Law Expertise',
       description: 'Specialized in Pakistani civil law including Contract Act, Property Law, Family Law, and more.'
     },
@@ -84,6 +87,7 @@ const Landing = () => {
           </div>
 
           <div className="nav-buttons">
+            <ThemeToggle className="nav-theme-toggle" />
             <button className="btn-secondary" onClick={() => navigate('/auth?mode=login')}>
               Login
             </button>

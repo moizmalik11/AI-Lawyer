@@ -1,15 +1,51 @@
 :root {
-    --primary-color: #0f172a; /* Deep Blue */
-    --secondary-color: #1e293b; /* Darker Blue */
-    --accent-color: #d4af37; /* Gold */
-    --text-color: #f8fafc;
-    --text-muted: #94a3b8;
-    --success-color: #10b981;
-    --error-color: #ef4444;
-    --glass-bg: rgba(30, 41, 59, 0.7);
-    --glass-border: rgba(255, 255, 255, 0.1);
-    --font-main: 'Inter', sans-serif;
-    --font-heading: 'Outfit', sans-serif;
+    /* Lawyer Theme - Dark Mode (Default) */
+    --primary-color: #0a0f1e; /* Deep Navy - Professional Dark */
+    --secondary-color: #1a2332; /* Dark Slate */
+    --accent-color: #d4af37; /* Classic Legal Gold */
+    --accent-hover: #b8941f; /* Darker Gold */
+    --accent-light: #e6c84f; /* Light Gold */
+    --accent-dark: #8b7023; /* Deep Gold */
+    --success-color: #10b981; /* Emerald */
+    --error-color: #dc2626; /* Professional Red */
+    --warning-color: #f59e0b; /* Amber */
+    --text-color: #f8fafc; /* Pure White Text */
+    --text-muted: #94a3b8; /* Slate Gray */
+    --background-primary: #0a0f1e;
+    --background-secondary: #131a29;
+    --glass-bg: rgba(26, 35, 50, 0.7);
+    --glass-border: rgba(212, 175, 55, 0.15);
+    --card-bg: rgba(26, 35, 50, 0.6);
+    --border-color: rgba(212, 175, 55, 0.2);
+    --font-main: 'Inter', 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-heading: 'Playfair Display', 'Georgia', serif;
+    --font-accent: 'Crimson Text', 'Times New Roman', serif;
+    --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.15);
+    --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.25);
+    --shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.35);
+    --shadow-accent: 0 8px 32px rgba(212, 175, 55, 0.25);
+    --shadow-glow: 0 0 30px rgba(212, 175, 55, 0.15);
+}
+
+/* Light Mode Theme */
+[data-theme="light"] {
+    --primary-color: #ffffff;
+    --secondary-color: #f8fafc;
+    --background-primary: #ffffff;
+    --background-secondary: #f1f5f9;
+    --text-color: #1e293b;
+    --text-muted: #64748b;
+    --card-bg: rgba(255, 255, 255, 0.95);
+    --glass-bg: rgba(248, 250, 252, 0.95);
+    --glass-border: rgba(15, 23, 42, 0.1);
+    --border-color: rgba(15, 23, 42, 0.15);
+    --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.08);
+    --shadow-md: 0 4px 16px rgba(15, 23, 42, 0.12);
+    --shadow-lg: 0 10px 40px rgba(15, 23, 42, 0.15);
+    --shadow-accent: 0 8px 32px rgba(212, 175, 55, 0.25);
+    --shadow-glow: 0 0 30px rgba(212, 175, 55, 0.2);
+    --accent-color: #b8941f;
+    --accent-hover: #8b7023;
 }
 
 * {
@@ -20,12 +56,99 @@
 
 body {
     font-family: var(--font-main);
-    background-color: var(--primary-color);
+    background: var(--background-primary);
     color: var(--text-color);
     line-height: 1.6;
     min-height: 100vh;
-    background-image: radial-gradient(circle at top right, rgba(212, 175, 55, 0.1), transparent 40%),
-                      radial-gradient(circle at bottom left, rgba(16, 185, 129, 0.05), transparent 40%);
+    position: relative;
+    overflow-x: hidden;
+    transition: background 0.3s ease, color 0.3s ease;
+}
+
+/* Dark Mode Background Pattern */
+body[data-theme="dark"]::before,
+body:not([data-theme])::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        linear-gradient(135deg, rgba(212, 175, 55, 0.03) 0%, transparent 50%),
+        radial-gradient(circle at 20% 30%, rgba(212, 175, 55, 0.05) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(184, 148, 31, 0.04) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Light Mode Background Pattern */
+body[data-theme="light"]::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        linear-gradient(135deg, rgba(15, 23, 42, 0.02) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(15, 23, 42, 0.03) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+    color: var(--accent-light);
+}
+
+/* Theme Toggle Button Styles - Navbar */
+.theme-toggle-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    background: transparent;
+    border: 2px solid var(--border-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: var(--text-color);
+}
+
+.theme-toggle-btn:hover {
+    background: var(--card-bg);
+    border-color: var(--accent-color);
+    color: var(--accent-color);
+}
+
+.nav-theme-toggle {
+    margin-right: 0.5rem;
+}
+
+.auth-theme-toggle {
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
+}
+
+@media (max-width: 768px) {
+    .nav-theme-toggle {
+        display: none;
+    }
+    
+    .auth-theme-toggle {
+        top: 1rem;
+        right: 1rem;
+    }
+}
+
+/* Utilities */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -41,7 +164,7 @@ a {
 }
 
 a:hover {
-    color: #fff;
+    color: var(--accent-light);
 }
 
 /* Utilities */
