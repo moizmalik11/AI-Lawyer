@@ -9,6 +9,7 @@ import {
   Eye, 
   EyeOff, 
   ArrowRight,
+  ArrowLeft,
   Shield,
   Sparkles,
   Zap,
@@ -81,6 +82,15 @@ export default function Auth() {
 
     return (
         <div className="auth-container">
+            {/* Back Button */}
+            <button 
+                onClick={() => navigate('/')}
+                className="auth-back-btn"
+                aria-label="Back to home"
+            >
+                <ArrowLeft size={20} />
+            </button>
+            
             {/* Left Side - Branding */}
             <div className="auth-brand-section">
                 <div className="auth-logo-section">

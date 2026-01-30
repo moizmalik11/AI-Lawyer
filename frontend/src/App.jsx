@@ -1,5 +1,8 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import { ThemeProvider } from './context/ThemeContext';
+import Sidebar from './components/Sidebar';
+import Navbar from './components/Navbar';
 import Landing from './pages/Landing';
 import Auth from './pages/Auth';
 import Dashboard from './pages/Dashboard';
@@ -13,20 +16,86 @@ const PrivateRoute = ({ children }) => {
   return user ? children : <Navigate to="/auth" />;
 };
 
+const MainLayout = ({ children }) => {
+  const { user } = useAuth();
+  
+  if (!user) {
+    return children;
+  }
+  
+  return (
+    <div className="app-layout">
+      <Sidebar />
+      <div className="main-content">
+        <div className="page-content">
+          {children}
+        </div>
+      </div>
+    </div>
+  );
+};
+
 function App() {
   return (
     <Router>
-      <AuthProvider>
-        <Routes>
-          <Route path="/" element={<Landing />} />
-          <Route path="/auth" element={<Auth />} />
-          <Route path="/dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
-          <Route path="/chatbot" element={<PrivateRoute><Chatbot /></PrivateRoute>} />
-          <Route path="/judgments" element={<PrivateRoute><Judgments /></PrivateRoute>} />
-          <Route path="/contracts" element={<PrivateRoute><Contracts /></PrivateRoute>} />
-          <Route path="/search" element={<PrivateRoute><Search /></PrivateRoute>} />
-        </Routes>
-      </AuthProvider>
+      <ThemeProvider>
+        <AuthProvider>
+          <Routes>
+            <Route path="/" element={<Landing />} />
+            <Route path="/auth" element={<Auth />} />
+            <Route 
+              path="/dashboard" 
+              element={
+                <PrivateRoute>
+                  <MainLayout>
+                    <Dashboard />
+                  </MainLayout>
+                </PrivateRoute>
+              } 
+            />
+            <Route 
+              path="/chatbot" 
+              element={
+                <PrivateRoute>
+                  <MainLayout>
+                    <Chatbot />
+                  </MainLayout>
+                </PrivateRoute>
+              } 
+            />
+            <Route 
+              path="/judgments" 
+              element={
+                <PrivateRoute>
+                  <MainLayout>
+                    <Judgments />
+                  </MainLayout>
+                </PrivateRoute>
+              } 
+            />
+            <Route 
+              path="/contracts" 
+              element={
+                <PrivateRoute>
+                  <MainLayout>
+                    <Contracts />
+                  </MainLayout>
+                </PrivateRoute>
+              } 
+            />
+            <Route 
+              path="/search" 
+              element={
+                <PrivateRoute>
+                  <MainLayout>
+                    <Search />
+                  </MainLayout>
+                </PrivateRoute>
+              } 
+            />
+          </Routes>
+        </AuthProvider>
+      </ThemeProvider>
     </Router>
   );
 }

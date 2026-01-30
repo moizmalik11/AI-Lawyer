@@ -7,6 +7,39 @@
   overflow: hidden;
 }
 
+/* Back Button */
+.auth-back-btn {
+  position: fixed;
+  top: 2rem;
+  left: 2rem;
+  width: 44px;
+  height: 44px;
+  background: var(--glass-bg);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--text-muted);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 1000;
+  box-shadow: var(--shadow-sm);
+}
+
+.auth-back-btn:hover {
+  background: var(--accent-color);
+  border-color: var(--accent-color);
+  color: var(--primary-color);
+  transform: translateX(-4px);
+  box-shadow: var(--shadow-md);
+}
+
+.auth-back-btn:active {
+  transform: translateX(-2px) scale(0.95);
+}
+
 /* Left Side - Branding */
 .auth-brand-section {
   flex: 1;
@@ -490,6 +523,13 @@
 }
 
 @media (max-width: 768px) {
+  .auth-back-btn {
+    top: 1rem;
+    left: 1rem;
+    width: 40px;
+    height: 40px;
+  }
+  
   .auth-brand-section {
     padding: 2rem 1.5rem;
   }
