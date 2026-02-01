@@ -1,4 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
+import { ArrowLeft } from 'lucide-react';
 import { marked } from 'marked';
 import { fetchWithAuth } from '../utils/api';
 import { useTheme } from '../context/ThemeContext';
@@ -132,6 +134,7 @@ export default function Chatbot() {
                 setMessages(prev => [...prev, { role: 'assistant', content: 'Sorry, I encountered an error: ' + data.error }]);
             }
         } catch (error) {
+            console.error('Error sending message:', error);
             setMessages(prev => [...prev, { role: 'assistant', content: 'Sorry, something went wrong. Please try again.' }]);
         } finally {
             setLoading(false);
@@ -142,6 +145,10 @@ export default function Chatbot() {
         <>
         <aside className="chat-sidebar">
             <div className="chat-sidebar-header">
+                <Link to="/dashboard" className="chat-back-btn">
+                    <ArrowLeft size={20} />
+                    <span>Back</span>
+                </Link>
                 <div className="sidebar-logo-section">
                     <span className="sidebar-logo-icon">⚖️</span>
                     <h2 className="chat-sidebar-title">AI Legal Assistant</h2>
@@ -381,6 +388,37 @@ export default function Chatbot() {
             position: sticky;
             top: 0;
             z-index: 20;
+        }
+
+        .chat-back-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            margin-bottom: 1rem;
+            background: transparent;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            width: fit-content;
+        }
+
+        .chat-back-btn:hover {
+            color: var(--accent-color);
+            border-color: var(--accent-color);
+            background: ${theme === 'dark' 
+                ? 'rgba(13, 110, 31, 0.1)' 
+                : 'rgba(13, 110, 31, 0.05)'};
+            transform: translateX(-3px);
+        }
+
+        .chat-back-btn:active {
+            transform: translateX(-1px) scale(0.98);
         }
 
         .sidebar-logo-section {

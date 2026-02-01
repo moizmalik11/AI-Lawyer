@@ -5,15 +5,13 @@ import {
   Scale, 
   FileText, 
   Search,
-  Settings,
-  ChevronLeft,
-  ChevronRight
+  Settings
 } from 'lucide-react';
 import { useSidebar } from '../context/SidebarContext';
 
 export default function Sidebar() {
   const location = useLocation();
-  const { isCollapsed, toggleSidebar } = useSidebar();
+  const { toggleSidebar } = useSidebar();
   
   const isActive = (path) => location.pathname === path;
   
@@ -26,20 +24,15 @@ export default function Sidebar() {
   ];
 
   return (
-    <aside className={`sidebar ${isCollapsed ? 'collapsed' : ''}`}>
+    <aside 
+      className="sidebar"
+      onMouseEnter={() => toggleSidebar()}
+      onMouseLeave={() => toggleSidebar()}
+    >
       <div className="sidebar-content">
-        <div className="sidebar-header">
-          <div className="sidebar-logo">
-            <span className="logo-icon">⚖️</span>
-            {!isCollapsed && <span className="logo-text">AI Lawyer</span>}
-          </div>
-          <button 
-            className="sidebar-toggle-btn" 
-            onClick={toggleSidebar}
-            title={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
-          >
-            {isCollapsed ? <ChevronRight size={20} /> : <ChevronLeft size={20} />}
-          </button>
+        <div className="sidebar-logo">
+          <span className="logo-icon">⚖️</span>
+          <span className="logo-text">AI Lawyer</span>
         </div>
         
         <nav className="sidebar-nav">
@@ -53,7 +46,7 @@ export default function Sidebar() {
                 title={item.label}
               >
                 <Icon className="nav-icon" size={20} />
-                {!isCollapsed && <span className="nav-label">{item.label}</span>}
+                <span className="nav-label">{item.label}</span>
               </Link>
             );
           })}
@@ -67,7 +60,7 @@ export default function Sidebar() {
             title="Settings"
           >
             <Settings className="nav-icon" size={20} />
-            {!isCollapsed && <span className="nav-label">Settings</span>}
+            <span className="nav-label">Settings</span>
           </Link>
         </div>
       </div>

@@ -20,7 +20,7 @@ const PrivateRoute = ({ children }) => {
 
 const MainLayout = ({ children }) => {
   const { user } = useAuth();
-  const { isCollapsed } = useSidebar();
+  const { isExpanded } = useSidebar();
   
   if (!user) {
     return children;
@@ -29,7 +29,7 @@ const MainLayout = ({ children }) => {
   return (
     <div className="app-layout">
       <Sidebar />
-      <div className={`main-content ${isCollapsed ? 'sidebar-collapsed' : ''}`}>
+      <div className={`main-content ${isExpanded ? 'sidebar-expanded' : ''}`}>
         <div className="page-content">
           {children}
         </div>
