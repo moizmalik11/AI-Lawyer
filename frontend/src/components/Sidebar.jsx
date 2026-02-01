@@ -11,9 +11,19 @@ import { useSidebar } from '../context/SidebarContext';
 
 export default function Sidebar() {
   const location = useLocation();
-  const { toggleSidebar } = useSidebar();
+  const { setIsExpanded } = useSidebar();
   
   const isActive = (path) => location.pathname === path;
+  
+  const handleMouseEnter = () => {
+    setIsExpanded(true);
+    document.querySelector('.app-layout')?.classList.add('sidebar-hover');
+  };
+
+  const handleMouseLeave = () => {
+    setIsExpanded(false);
+    document.querySelector('.app-layout')?.classList.remove('sidebar-hover');
+  };
   
   const navItems = [
     { path: '/dashboard', icon: Home, label: 'Home' },
@@ -26,8 +36,8 @@ export default function Sidebar() {
   return (
     <aside 
       className="sidebar"
-      onMouseEnter={() => toggleSidebar()}
-      onMouseLeave={() => toggleSidebar()}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
     >
       <div className="sidebar-content">
         <div className="sidebar-logo">

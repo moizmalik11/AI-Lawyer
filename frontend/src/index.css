@@ -364,6 +364,17 @@ a:hover {
     display: flex;
     min-height: 100vh;
     background: var(--background-primary);
+    position: relative;
+}
+
+/* CSS :has() selector for modern browsers */
+.app-layout:has(.sidebar:hover) .main-content {
+    margin-left: 280px;
+}
+
+/* Fallback with JavaScript class for older browsers */
+.app-layout.sidebar-hover .main-content {
+    margin-left: 280px;
 }
 
 .main-content {
@@ -372,10 +383,6 @@ a:hover {
     flex-direction: column;
     margin-left: 80px;
     transition: margin-left 0.3s ease;
-}
-
-.main-content.sidebar-expanded {
-    margin-left: 280px;
 }
 
 .page-content {
