@@ -140,14 +140,13 @@ export default function Chatbot() {
 
     return (
         <>
-        <div className="chat-layout">
-            <aside className="chat-sidebar">
-                <div className="chat-sidebar-header">
-                    <div className="sidebar-logo-section">
-                        <span className="sidebar-logo-icon">⚖️</span>
-                        <h2 className="chat-sidebar-title">AI Legal Assistant</h2>
-                    </div>
+        <aside className="chat-sidebar">
+            <div className="chat-sidebar-header">
+                <div className="sidebar-logo-section">
+                    <span className="sidebar-logo-icon">⚖️</span>
+                    <h2 className="chat-sidebar-title">AI Legal Assistant</h2>
                 </div>
+            </div>
                 <button className="new-chat-btn" onClick={createNewChat}>
                     <svg className="new-chat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                         <path d="M12 5v14M5 12h14" />
@@ -191,7 +190,7 @@ export default function Chatbot() {
                 </div>
             </aside>
 
-            <main className="main-chat-area">
+            <div className="main-chat-area">
                 {!hasMessages ? (
                     <div className="welcome-screen">
                         <div className="welcome-content">
@@ -204,37 +203,6 @@ export default function Chatbot() {
                             </div>
                             <h1 className="welcome-title">Your AI Legal Assistant is here</h1>
                             <p className="welcome-subtitle">How can I help you today?</p>
-                            <div className="suggestion-cards">
-                                <button className="suggestion-card" onClick={() => setInput("What are my rights under Pakistani labor law?")}>
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                        <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
-                                        <circle cx="8.5" cy="7" r="4" />
-                                        <path d="M20 8v6M23 11h-6" />
-                                    </svg>
-                                    <span>Labor Rights</span>
-                                </button>
-                                <button className="suggestion-card" onClick={() => setInput("Explain contract law in Pakistan")}>
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                                        <path d="M14 2v6h6M16 13H8M16 17H8M10 9H8" />
-                                    </svg>
-                                    <span>Contract Law</span>
-                                </button>
-                                <button className="suggestion-card" onClick={() => setInput("Recent Supreme Court judgments")}>
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-                                        <path d="M9 22V12h6v10" />
-                                    </svg>
-                                    <span>Court Judgments</span>
-                                </button>
-                                <button className="suggestion-card" onClick={() => setInput("Property law in Pakistan")}>
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                        <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-                                        <circle cx="12" cy="15" r="2" />
-                                    </svg>
-                                    <span>Property Law</span>
-                                </button>
-                            </div>
                         </div>
                         <div className="input-area-centered">
                             <div className="input-wrapper">
@@ -269,13 +237,6 @@ export default function Chatbot() {
                             {messages.map((msg, idx) => (
                                 <div key={idx} className={`message-wrapper ${msg.role}`}>
                                     <div className={`message ${msg.role}`}>
-                                        {msg.role === 'assistant' && (
-                                            <div className="message-avatar assistant-avatar">
-                                                <svg viewBox="0 0 24 24" fill="currentColor">
-                                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
-                                                </svg>
-                                            </div>
-                                        )}
                                         <div className="message-content">
                                             {msg.role === 'user' ? (
                                                 <p className="user-message-text">{msg.content}</p>
@@ -302,24 +263,12 @@ export default function Chatbot() {
                                                 </div>
                                             )}
                                         </div>
-                                        {msg.role === 'user' && (
-                                            <div className="message-avatar user-avatar">
-                                                <svg viewBox="0 0 24 24" fill="currentColor">
-                                                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                                                </svg>
-                                            </div>
-                                        )}
                                     </div>
                                 </div>
                             ))}
                             {loading && (
                                 <div className="message-wrapper assistant">
                                     <div className="message assistant">
-                                        <div className="message-avatar assistant-avatar">
-                                            <svg viewBox="0 0 24 24" fill="currentColor">
-                                                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z"/>
-                                            </svg>
-                                        </div>
                                         <div className="message-content">
                                             <div className="typing-indicator">
                                                 <span></span>
@@ -361,8 +310,7 @@ export default function Chatbot() {
                         </div>
                     </>
                 )}
-                </main>
-            </div>
+                </div>
 
             {modalSource && (
                 <div className="modal active" onClick={() => setModalSource(null)}>
@@ -401,38 +349,31 @@ export default function Chatbot() {
             )}
 
             <style>{`
-        /* Chat Layout */
-        .chat-layout {
-            display: flex;
-            flex: 1;
-            overflow: hidden;
-            margin-top: 0;
-            height: 100vh;
-            margin-left: 0;
-        }
-
         /* Sidebar Styling */
         .chat-sidebar {
-            position: relative;
-            width: 320px;
-            height: 100%;
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 260px;
+            height: 100vh;
             background: ${theme === 'dark' 
-                ? 'linear-gradient(180deg, rgba(10, 15, 30, 0.98) 0%, rgba(15, 23, 42, 0.95) 100%)' 
-                : 'linear-gradient(180deg, rgba(255, 255, 255, 0.98) 0%, rgba(248, 250, 252, 0.95) 100%)'};
-            border-right: 1px solid var(--glass-border);
+                ? 'var(--glass-bg)' 
+                : 'rgba(255, 255, 255, 0.98)'};
+            backdrop-filter: blur(12px);
+            border-right: 1px solid var(--border-color);
             display: flex;
             flex-direction: column;
             padding: 0;
             overflow: hidden;
-            z-index: 10;
+            z-index: 100;
             flex-shrink: 0;
             box-shadow: ${theme === 'dark' 
-                ? '4px 0 24px rgba(0, 0, 0, 0.3)' 
-                : '4px 0 24px rgba(15, 23, 42, 0.08)'};
+                ? '2px 0 12px rgba(0, 0, 0, 0.2)' 
+                : '2px 0 12px rgba(15, 23, 42, 0.06)'};
         }
         
         .chat-sidebar-header {
-            padding: 2rem 1.5rem 1.5rem;
+            padding: 1.5rem 1.5rem 1rem;
             border-bottom: 1px solid var(--glass-border);
             background: ${theme === 'dark' 
                 ? 'rgba(10, 15, 30, 0.9)' 
@@ -446,6 +387,7 @@ export default function Chatbot() {
             display: flex;
             align-items: center;
             gap: 0.75rem;
+            padding: 0 0.25rem;
         }
 
         .sidebar-logo-icon {
@@ -466,34 +408,34 @@ export default function Chatbot() {
         }
 
         .new-chat-btn {
-            margin: 1.5rem;
-            padding: 1rem;
+            margin: 1rem 1rem;
+            padding: 0.75rem 1rem;
             background: ${theme === 'dark'
                 ? 'linear-gradient(135deg, var(--accent-color) 0%, var(--accent-hover) 100%)'
                 : 'linear-gradient(135deg, var(--accent-color) 0%, var(--accent-dark) 100%)'};
             color: ${theme === 'dark' ? 'var(--primary-color)' : '#ffffff'};
             border: none;
-            border-radius: 12px;
+            border-radius: 10px;
             font-weight: 600;
-            font-size: 0.95rem;
+            font-size: 0.875rem;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 0.5rem;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.25);
+            box-shadow: 0 2px 8px rgba(13, 110, 31, 0.2);
             flex-shrink: 0;
         }
 
         .new-chat-btn:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.35);
+            box-shadow: 0 4px 16px rgba(13, 110, 31, 0.3);
         }
 
         .new-chat-icon {
-            width: 20px;
-            height: 20px;
+            width: 18px;
+            height: 18px;
         }
 
         .chat-history-section {
@@ -504,8 +446,8 @@ export default function Chatbot() {
         }
 
         .chat-history-header {
-            padding: 1rem 1.5rem 0.75rem;
-            font-size: 0.75rem;
+            padding: 0.75rem 1rem 0.5rem;
+            font-size: 0.7rem;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.1em;
@@ -561,9 +503,9 @@ export default function Chatbot() {
         }
 
         .chat-history-item {
-            padding: 0.875rem 1rem;
+            padding: 0.75rem 0.875rem;
             margin-bottom: 0.5rem;
-            border-radius: 12px;
+            border-radius: 10px;
             cursor: pointer;
             color: var(--text-color);
             transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
@@ -578,20 +520,21 @@ export default function Chatbot() {
 
         .chat-history-item:hover {
             background: ${theme === 'dark' 
-                ? 'rgba(212, 175, 55, 0.1)' 
-                : 'rgba(212, 175, 55, 0.08)'};
+                ? 'rgba(13, 110, 31, 0.12)' 
+                : 'rgba(13, 110, 31, 0.08)'};
             border-color: ${theme === 'dark' 
-                ? 'rgba(212, 175, 55, 0.2)' 
-                : 'rgba(212, 175, 55, 0.15)'};
-            transform: translateX(4px);
+                ? 'rgba(13, 110, 31, 0.25)' 
+                : 'rgba(13, 110, 31, 0.15)'};
+            transform: translateX(2px);
         }
 
         .chat-history-item.active {
             background: ${theme === 'dark'
-                ? 'linear-gradient(135deg, rgba(212, 175, 55, 0.15) 0%, rgba(184, 148, 31, 0.1) 100%)'
-                : 'linear-gradient(135deg, rgba(212, 175, 55, 0.12) 0%, rgba(184, 148, 31, 0.08) 100%)'};
+                ? 'linear-gradient(135deg, rgba(13, 110, 31, 0.2) 0%, rgba(10, 85, 24, 0.15) 100%)'
+                : 'linear-gradient(135deg, rgba(13, 110, 31, 0.15) 0%, rgba(10, 85, 24, 0.1) 100%)'};
             border-color: var(--accent-color);
-            box-shadow: 0 2px 8px rgba(212, 175, 55, 0.15);
+            box-shadow: 0 2px 8px rgba(13, 110, 31, 0.15);
+            border-left: 3px solid var(--accent-color);
         }
 
         .chat-item-icon {
@@ -644,7 +587,8 @@ export default function Chatbot() {
 
         /* Main Chat Area */
         .main-chat-area {
-            flex: 1;
+            margin-left: 260px;
+            height: 100vh;
             display: flex;
             flex-direction: column;
             position: relative;
@@ -660,24 +604,36 @@ export default function Chatbot() {
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: space-between;
-            padding: 4rem 2rem 2rem;
+            justify-content: center;
+            padding: 2rem;
+            position: relative;
         }
 
         .welcome-content {
-            flex: 1;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            max-width: 900px;
-            width: 100%;
+            text-align: center;
+            margin-bottom: 3rem;
+            animation: fadeInUp 0.6s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         .welcome-icon {
-            width: 80px;
-            height: 80px;
-            margin-bottom: 2rem;
+            width: 64px;
+            height: 64px;
+            margin-bottom: 1.5rem;
             color: var(--accent-color);
             animation: float 3s ease-in-out infinite;
         }
@@ -685,7 +641,7 @@ export default function Chatbot() {
         .welcome-icon svg {
             width: 100%;
             height: 100%;
-            filter: drop-shadow(0 4px 12px rgba(212, 175, 55, 0.3));
+            filter: drop-shadow(0 4px 12px rgba(13, 110, 31, 0.3));
         }
 
         @keyframes float {
@@ -694,75 +650,36 @@ export default function Chatbot() {
         }
 
         .welcome-title {
-            font-size: 2.5rem;
+            font-size: 2rem;
             font-weight: 700;
             text-align: center;
-            margin-bottom: 1rem;
+            margin-bottom: 0.75rem;
             background: linear-gradient(135deg, var(--accent-color), var(--accent-light));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
             font-family: var(--font-heading);
-            line-height: 1.2;
+            line-height: 1.3;
         }
 
         .welcome-subtitle {
-            font-size: 1.25rem;
+            font-size: 1.125rem;
             text-align: center;
             color: var(--text-muted);
-            margin-bottom: 3rem;
-        }
-
-        .suggestion-cards {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1rem;
-            width: 100%;
-            max-width: 800px;
-        }
-
-        .suggestion-card {
-            padding: 1.5rem;
-            background: ${theme === 'dark'
-                ? 'rgba(26, 35, 50, 0.6)'
-                : 'rgba(255, 255, 255, 0.8)'};
-            border: 1px solid var(--glass-border);
-            border-radius: 16px;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 1rem;
-            text-align: center;
-        }
-
-        .suggestion-card:hover {
-            background: ${theme === 'dark'
-                ? 'rgba(212, 175, 55, 0.1)'
-                : 'rgba(212, 175, 55, 0.08)'};
-            border-color: var(--accent-color);
-            transform: translateY(-4px);
-            box-shadow: 0 8px 24px rgba(212, 175, 55, 0.2);
-        }
-
-        .suggestion-card svg {
-            width: 32px;
-            height: 32px;
-            color: var(--accent-color);
-        }
-
-        .suggestion-card span {
-            font-size: 0.95rem;
-            font-weight: 600;
-            color: var(--text-color);
+            margin-bottom: 0;
         }
 
         /* Input Area Centered */
         .input-area-centered {
             width: 100%;
-            max-width: 800px;
-            padding: 2rem;
+            max-width: 700px;
+            padding: 0;
+            animation: fadeIn 0.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .input-wrapper {
@@ -779,18 +696,18 @@ export default function Chatbot() {
                 ? 'rgba(26, 35, 50, 0.8)'
                 : 'rgba(255, 255, 255, 0.9)'};
             border: 2px solid ${theme === 'dark'
-                ? 'rgba(212, 175, 55, 0.2)'
-                : 'rgba(212, 175, 55, 0.15)'};
-            border-radius: 16px;
-            padding: 1.25rem 1.5rem;
+                ? 'rgba(13, 110, 31, 0.2)'
+                : 'rgba(13, 110, 31, 0.15)'};
+            border-radius: 14px;
+            padding: 0.75rem 1rem;
             color: var(--text-color);
             font-family: var(--font-main);
-            font-size: 1rem;
+            font-size: 0.95rem;
             resize: none;
-            max-height: 150px;
-            min-height: 56px;
+            max-height: 120px;
+            min-height: 42px;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
         }
 
         .chat-input-centered:focus,
@@ -807,9 +724,9 @@ export default function Chatbot() {
 
         .send-btn-centered,
         .send-btn {
-            width: 56px;
-            height: 56px;
-            border-radius: 16px;
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
             background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-hover) 100%);
             border: none;
             color: ${theme === 'dark' ? 'var(--primary-color)' : '#ffffff'};
@@ -818,14 +735,14 @@ export default function Chatbot() {
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+            box-shadow: 0 2px 8px rgba(13, 110, 31, 0.25);
             flex-shrink: 0;
         }
 
         .send-btn-centered:hover:not(:disabled),
         .send-btn:hover:not(:disabled) {
             transform: translateY(-2px) scale(1.05);
-            box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
+            box-shadow: 0 4px 16px rgba(13, 110, 31, 0.35);
         }
 
         .send-btn-centered:disabled,
@@ -836,18 +753,19 @@ export default function Chatbot() {
 
         .send-btn-centered svg,
         .send-btn svg {
-            width: 24px;
-            height: 24px;
+            width: 20px;
+            height: 20px;
         }
 
         /* Chat Messages */
         .chat-messages {
             flex: 1;
             overflow-y: auto;
-            padding: 2rem;
+            padding: 1.5rem 2rem;
             scroll-behavior: smooth;
             display: flex;
             flex-direction: column;
+            max-height: calc(100vh - 80px);
         }
 
         .chat-messages::-webkit-scrollbar {
@@ -866,11 +784,11 @@ export default function Chatbot() {
         }
 
         .message-wrapper {
-            margin-bottom: 2rem;
+            margin-bottom: 1rem;
             display: flex;
             align-items: flex-start;
-            gap: 1rem;
-            animation: slideIn 0.3s ease;
+            gap: 0.5rem;
+            animation: slideIn 0.3s ease-out;
         }
 
         @keyframes slideIn {
@@ -889,35 +807,38 @@ export default function Chatbot() {
         }
 
         .message-avatar {
-            width: 40px;
-            height: 40px;
-            border-radius: 12px;
+            width: 32px;
+            height: 32px;
+            border-radius: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
+            transition: all 0.2s ease;
+            position: relative;
         }
 
         .assistant-avatar {
-            background: linear-gradient(135deg, var(--accent-color), var(--accent-light));
+            background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-light) 100%);
             color: ${theme === 'dark' ? 'var(--primary-color)' : '#ffffff'};
-            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+            box-shadow: 0 2px 8px rgba(13, 110, 31, 0.3);
         }
 
         .user-avatar {
             background: ${theme === 'dark'
-                ? 'linear-gradient(135deg, rgba(100, 116, 139, 0.4), rgba(71, 85, 105, 0.4))'
-                : 'linear-gradient(135deg, rgba(15, 23, 42, 0.1), rgba(30, 41, 59, 0.1))'};
+                ? 'linear-gradient(135deg, rgba(100, 116, 139, 0.5), rgba(71, 85, 105, 0.5))'
+                : 'linear-gradient(135deg, rgba(15, 23, 42, 0.15), rgba(30, 41, 59, 0.15))'};
             color: var(--text-color);
+            box-shadow: 0 2px 8px ${theme === 'dark' ? 'rgba(0, 0, 0, 0.2)' : 'rgba(15, 23, 42, 0.08)'};
         }
 
         .message-avatar svg {
-            width: 24px;
-            height: 24px;
+            width: 18px;
+            height: 18px;
         }
 
         .message {
-            max-width: 75%;
+            max-width: 80%;
             position: relative;
         }
 
@@ -930,25 +851,26 @@ export default function Chatbot() {
         }
 
         .message-content {
-            padding: 1.25rem 1.5rem;
+            padding: 0.875rem 1rem;
             border-radius: 16px;
-            line-height: 1.7;
+            line-height: 1.6;
+            position: relative;
         }
 
         .message.user .message-content {
-            background: linear-gradient(135deg, var(--accent-color), var(--accent-hover));
+            background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-hover) 100%);
             color: ${theme === 'dark' ? 'var(--primary-color)' : '#ffffff'};
             border-bottom-right-radius: 4px;
-            box-shadow: 0 4px 12px rgba(212, 175, 55, 0.25);
+            box-shadow: 0 2px 8px rgba(13, 110, 31, 0.25);
         }
 
         .message.assistant .message-content {
             background: ${theme === 'dark'
                 ? 'rgba(26, 35, 50, 0.8)'
                 : 'rgba(255, 255, 255, 0.9)'};
-            border: 1px solid var(--glass-border);
+            border: 1px solid ${theme === 'dark' ? 'rgba(13, 110, 31, 0.15)' : 'rgba(13, 110, 31, 0.1)'};
             border-bottom-left-radius: 4px;
-            box-shadow: 0 4px 12px ${theme === 'dark'
+            box-shadow: 0 2px 8px ${theme === 'dark'
                 ? 'rgba(0, 0, 0, 0.2)'
                 : 'rgba(15, 23, 42, 0.08)'};
         }
@@ -983,21 +905,31 @@ export default function Chatbot() {
 
         .markdown-content code {
             background: ${theme === 'dark'
-                ? 'rgba(0, 0, 0, 0.3)'
-                : 'rgba(15, 23, 42, 0.08)'};
-            padding: 0.2rem 0.4rem;
-            border-radius: 4px;
+                ? 'rgba(13, 110, 31, 0.15)'
+                : 'rgba(13, 110, 31, 0.08)'};
+            padding: 0.25rem 0.5rem;
+            border-radius: 6px;
             font-size: 0.9em;
+            border: 1px solid ${theme === 'dark' ? 'rgba(13, 110, 31, 0.2)' : 'rgba(13, 110, 31, 0.15)'};
+            font-family: 'Fira Code', 'Consolas', monospace;
         }
 
         .markdown-content pre {
             background: ${theme === 'dark'
-                ? 'rgba(0, 0, 0, 0.3)'
-                : 'rgba(15, 23, 42, 0.08)'};
-            padding: 1rem;
-            border-radius: 8px;
+                ? 'rgba(0, 0, 0, 0.4)'
+                : 'rgba(15, 23, 42, 0.05)'};
+            padding: 1.25rem;
+            border-radius: 12px;
             overflow-x: auto;
             margin: 1rem 0;
+            border: 1px solid ${theme === 'dark' ? 'rgba(13, 110, 31, 0.2)' : 'rgba(13, 110, 31, 0.1)'};
+            box-shadow: inset 0 2px 8px ${theme === 'dark' ? 'rgba(0, 0, 0, 0.3)' : 'rgba(0, 0, 0, 0.05)'};
+        }
+
+        .markdown-content pre code {
+            background: transparent;
+            padding: 0;
+            border: none;
         }
 
         /* Typing Indicator */
