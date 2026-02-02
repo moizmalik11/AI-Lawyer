@@ -130,8 +130,9 @@ export default function Contracts() {
 
         .upload-area:hover,
         .upload-area.dragover {
-            border-color: var(--accent-color);
-            background: rgba(212, 175, 55, 0.05);
+            border-color: #22c55e;
+            background: rgba(34, 197, 94, 0.1);
+            box-shadow: 0 0 24px rgba(34, 197, 94, 0.15);
         }
 
         .upload-icon {

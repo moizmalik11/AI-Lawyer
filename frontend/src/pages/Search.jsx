@@ -231,15 +231,17 @@ export default function Search() {
 
         .result-item:hover {
             background: rgba(30, 41, 59, 0.8);
-            border-color: var(--accent-color);
+            border-color: #22c55e;
+            box-shadow: 0 0 20px rgba(34, 197, 94, 0.2);
         }
 
         .result-title {
             font-size: 1.2rem;
             font-weight: 600;
-            color: var(--accent-color);
+            color: #22c55e;
             margin-bottom: 0.5rem;
             display: block;
+            text-shadow: 0 0 10px rgba(34, 197, 94, 0.3);
         }
 
         .result-meta {

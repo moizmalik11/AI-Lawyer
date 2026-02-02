@@ -2,10 +2,10 @@
     /* Lawyer Theme - Dark Mode (Default) */
     --primary-color: #0a0f1e; /* Deep Navy - Professional Dark */
     --secondary-color: #1a2332; /* Dark Slate */
-    --accent-color: #0d6e1f; /* Dark Green */
-    --accent-hover: #0a5518; /* Darker Green */
-    --accent-light: #108a2a; /* Lighter Dark Green */
-    --accent-dark: #084512; /* Deep Dark Green */
+    --accent-color: #22c55e; /* Parrot Green */
+    --accent-hover: #16a34a; /* Darker Parrot Green */
+    --accent-light: #34d399; /* Lighter Parrot Green */
+    --accent-dark: #15803d; /* Deep Dark Green */
     --success-color: #10b981; /* Emerald */
     --error-color: #dc2626; /* Professional Red */
     --warning-color: #f59e0b; /* Amber */
@@ -42,10 +42,10 @@
     --shadow-sm: 0 2px 8px rgba(15, 23, 42, 0.08);
     --shadow-md: 0 4px 16px rgba(15, 23, 42, 0.12);
     --shadow-lg: 0 10px 40px rgba(15, 23, 42, 0.15);
-    --shadow-accent: 0 8px 32px rgba(13, 110, 31, 0.25);
-    --shadow-glow: 0 0 30px rgba(13, 110, 31, 0.2);
-    --accent-color: #0d6e1f;
-    --accent-hover: #0a5518;
+    --shadow-accent: 0 8px 32px rgba(34, 197, 94, 0.3);
+    --shadow-glow: 0 0 30px rgba(34, 197, 94, 0.25);
+    --accent-color: #22c55e;
+    --accent-hover: #16a34a;
 }
 
 * {
@@ -483,8 +483,9 @@ a:hover {
 }
 
 .sidebar-nav-item.active {
-    background: linear-gradient(135deg, rgba(212, 175, 55, 0.2), rgba(212, 175, 55, 0.1));
+    background: linear-gradient(135deg, rgba(34, 197, 94, 0.25), rgba(21, 128, 61, 0.15));
     color: var(--accent-color);
+    box-shadow: 0 0 16px rgba(34, 197, 94, 0.2);
 }
 
 .sidebar-nav-item.active::before {

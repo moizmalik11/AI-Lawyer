@@ -189,8 +189,9 @@ export default function Judgments() {
         }
 
         .judgment-card:hover {
-            border-color: var(--accent-color);
+            border-color: #22c55e;
             transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(34, 197, 94, 0.25);
         }
 
         .judgment-meta {
