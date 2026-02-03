@@ -1,22 +1,64 @@
-import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
+import { useNavigate, useLocation } from 'react-router-dom';
+import { Sun, Moon, LogOut, User, ArrowLeft } from 'lucide-react';
 
 export default function Navbar() {
-    const { logout } = useAuth();
+    const { logout, user } = useAuth();
+    const { theme, toggleTheme } = useTheme();
+    const navigate = useNavigate();
     const location = useLocation();
-
-    const isActive = (path) => location.pathname === path ? 'active' : '';
+    
+    const canGoBack = location.pathname !== '/dashboard';
+    const handleBack = () => {
+        if (window.history.length > 1) {
+            navigate(-1);
+        } else {
+            navigate('/dashboard');
+        }
+    };
 
     return (
         <nav className="navbar">
-            <div className="container">
-                <div className="logo">
-                    <span>⚖️</span> AI Lawyer
+            <div className="navbar-content">
+                <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
+                    {canGoBack && (
+                        <button 
+                            onClick={handleBack}
+                            className="professional-back-btn"
+                            aria-label="Go back"
+                        >
+                            <ArrowLeft size={20} className="back-icon" />
+                            <span className="back-text">Back</span>
+                        </button>
+                    )}
+                    <div className="navbar-title">
+                        AI Legal Assistant
+                    </div>
                 </div>
-                <ul className="nav-links">
-                    <li><Link to="/dashboard" className={isActive('/dashboard')}>Dashboard</Link></li>
-                    <li><button onClick={logout} style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer', fontSize: '1rem', fontWeight: 500, fontFamily: 'var(--font-main)' }}>Logout</button></li>
-                </ul>
+                
+                <div className="navbar-actions">
+                    <div className="user-info">
+                        <User size={18} />
+                        <span>{user?.username || 'User'}</span>
+                    </div>
+                    
+                    <button 
+                        onClick={toggleTheme} 
+                        className="icon-btn theme-toggle-btn"
+                        aria-label="Toggle theme"
+                    >
+                        {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
+                    </button>
+                    
+                    <button 
+                        onClick={logout} 
+                        className="icon-btn logout-btn"
+                        aria-label="Logout"
+                    >
+                        <LogOut size={18} />
+                    </button>
+                </div>
             </div>
         </nav>
     );
