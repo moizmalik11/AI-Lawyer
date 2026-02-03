@@ -21,6 +21,14 @@ let currentKeyIndex = 0; // Track which key we're using
 const OPENROUTER_URL = 'https://openrouter.ai/api/v1/chat/completions';
 // Try different free models if one is rate-limited
 const MODELS = [
+  "nvidia/nemotron-3-nano-30b-a3b:free",
+  "arcee-ai/trinity-large-preview:free",
+  "arcee-ai/trinity-mini:free",
+  "tngtech/deepseek-r1t2-chimera:free",
+  "tngtech/deepseek-r1t-chimera:free",
+  "stepfun/step-3.5-flash:free",
+  "stepfun/step-3.5-flash:free",
+  "liquid/lfm-2.5-1.2b-thinking:free",
   "meta-llama/llama-3.3-70b-instruct:free",
   "qwen/qwen-2.5-72b-instruct:free",
   "mistralai/mistral-small-3.2-24b-instruct:free",
