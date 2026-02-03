@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { marked } from 'marked';
 import { fetchWithAuth } from '../utils/api';
-import Navbar from '../components/Navbar';
 
 export default function Judgments() {
     const [judgments, setJudgments] = useState([]);
@@ -64,58 +63,57 @@ export default function Judgments() {
 
     return (
         <>
-            <Navbar />
-            <div className="container">
-                <div className="page-header">
-                    <div>
-                        <h1>Case Law Database</h1>
-                        <p style={{ color: 'var(--text-muted)' }}>Browse and summarize recent judgments</p>
-                    </div>
-                    <div className="search-bar">
-                        <input
-                            type="text"
-                            placeholder="Search judgments by title or keyword..."
-                            value={search}
-                            onChange={(e) => { setSearch(e.target.value); setPage(1); }}
-                        />
-                        <button onClick={loadJudgments}>🔍</button>
-                    </div>
+        <div className="container">
+            <div className="page-header">
+                <div>
+                    <h1>Case Law Database</h1>
+                    <p style={{ color: 'var(--text-muted)' }}>Browse and summarize recent judgments</p>
                 </div>
-
-                {loading ? (
-                    <div style={{ textAlign: 'center', marginTop: '2rem' }}>
-                        <div className="spinner"></div>
-                    </div>
-                ) : (
-                    <>
-                        <div className="judgments-grid">
-                            {judgments.length > 0 ? judgments.map((judgment, idx) => (
-                                <div key={idx} className="glass-card judgment-card fade-in" onClick={() => openSummary(judgment.title)}>
-                                    <div className="judgment-meta">
-                                        <span>{judgment.court || 'Court N/A'}</span>
-                                        <span>•</span>
-                                        <span>{judgment.year || 'Year N/A'}</span>
-                                    </div>
-                                    <div className="judgment-title">{judgment.title}</div>
-                                    <div style={{ marginTop: 'auto' }}>
-                                        <button className="btn btn-secondary" style={{ width: '100%', fontSize: '0.9rem' }}>View Summary</button>
-                                    </div>
-                                </div>
-                            )) : (
-                                <p style={{ textAlign: 'center', gridColumn: '1/-1', color: 'var(--text-muted)' }}>No judgments found. Try searching for keywords like "civil", "criminal", or "tax".</p>
-                            )}
-                        </div>
-
-                        {judgments.length > 0 && (
-                            <div className="pagination-controls">
-                                <button className="btn-icon" disabled={page <= 1} onClick={() => setPage(p => p - 1)}>‹</button>
-                                <span style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>Page {page} of {totalPages}</span>
-                                <button className="btn-icon" disabled={page >= totalPages} onClick={() => setPage(p => p + 1)}>›</button>
-                            </div>
-                        )}
-                    </>
-                )}
+                <div className="search-bar">
+                    <input
+                        type="text"
+                        placeholder="Search judgments by title or keyword..."
+                        value={search}
+                        onChange={(e) => { setSearch(e.target.value); setPage(1); }}
+                    />
+                    <button onClick={loadJudgments}>🔍</button>
+                </div>
             </div>
+
+            {loading ? (
+                <div style={{ textAlign: 'center', marginTop: '2rem' }}>
+                    <div className="spinner"></div>
+                </div>
+            ) : (
+                <>
+                    <div className="judgments-grid">
+                            {judgments.length > 0 ? judgments.map((judgment, idx) => (
+                            <div key={idx} className="glass-card judgment-card fade-in" onClick={() => openSummary(judgment.title)}>
+                                <div className="judgment-meta">
+                                    <span>{judgment.court || 'Court N/A'}</span>
+                                    <span>•</span>
+                                    <span>{judgment.year || 'Year N/A'}</span>
+                                </div>
+                                <div className="judgment-title">{judgment.title}</div>
+                                <div style={{ marginTop: 'auto' }}>
+                                    <button className="btn btn-secondary" style={{ width: '100%', fontSize: '0.9rem' }}>View Summary</button>
+                                </div>
+                            </div>
+                        )) : (
+                            <p style={{ textAlign: 'center', gridColumn: '1/-1', color: 'var(--text-muted)' }}>No judgments found. Try searching for keywords like "civil", "criminal", or "tax".</p>
+                        )}
+                    </div>
+
+                    {judgments.length > 0 && (
+                        <div className="pagination-controls">
+                            <button className="btn-icon" disabled={page <= 1} onClick={() => setPage(p => p - 1)}>‹</button>
+                            <span style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>Page {page} of {totalPages}</span>
+                            <button className="btn-icon" disabled={page >= totalPages} onClick={() => setPage(p => p + 1)}>›</button>
+                        </div>
+                    )}
+                </>
+            )}
+        </div>
 
             {(modalTitle || summaryLoading) && (
                 <div className="modal active" onClick={() => { setModalTitle(''); setModalSummary(null); }}>
@@ -191,8 +189,9 @@ export default function Judgments() {
         }
 
         .judgment-card:hover {
-            border-color: var(--accent-color);
+            border-color: #22c55e;
             transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(34, 197, 94, 0.25);
         }
 
         .judgment-meta {
@@ -303,6 +302,22 @@ export default function Judgments() {
         .btn-icon:disabled {
             opacity: 0.3;
             cursor: not-allowed;
+        }
+        
+        @media (max-width: 768px) {
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1.5rem;
+            }
+            
+            .search-bar {
+                max-width: 100%;
+            }
+            
+            .judgments-grid {
+                grid-template-columns: 1fr;
+            }
         }
       `}</style>
         </>

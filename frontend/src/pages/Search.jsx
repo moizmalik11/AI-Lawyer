@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { fetchWithAuth } from '../utils/api';
-import Navbar from '../components/Navbar';
 
 export default function Search() {
     const [query, setQuery] = useState('');
@@ -106,55 +105,53 @@ export default function Search() {
     };
 
     return (
-        <>
-            <Navbar />
-            <div className="container" style={{ paddingTop: '3rem' }}>
-                <div className="search-container">
-                    <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-                        <h1>Search Legal Database</h1>
-                        <p style={{ color: 'var(--text-muted)' }}>Find acts, sections, and judgments across all jurisdictions.</p>
-                    </div>
+        <div className="container" style={{ paddingTop: '3rem' }}>
+            <div className="search-container">
+                <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
+                    <h1>Search Legal Database</h1>
+                    <p style={{ color: 'var(--text-muted)' }}>Find acts, sections, and judgments across all jurisdictions.</p>
+                </div>
 
-                    <div className="search-box">
+                <div className="search-box">
+                    <input
+                        type="text"
+                        placeholder="e.g., 'punishment for theft' or 'employee rights'"
+                        value={query}
+                        onChange={(e) => setQuery(e.target.value)}
+                        onKeyDown={(e) => e.key === 'Enter' && handleSearchClick()}
+                    />
+                    <button className="btn btn-primary" onClick={handleSearchClick}>Search</button>
+                </div>
+
+                <div className="filters-grid">
+                    <div className="input-group" style={{ margin: 0 }}>
+                        <label>Document Type</label>
+                        <select value={type} onChange={(e) => { setType(e.target.value); handleSearchClick(); }}>
+                            <option value="">All Types</option>
+                            {documentTypes.map(t => (
+                                <option key={t} value={t}>{t.charAt(0).toUpperCase() + t.slice(1)}</option>
+                            ))}
+                        </select>
+                    </div>
+                    <div className="input-group" style={{ margin: 0 }}>
+                        <label>Year</label>
                         <input
-                            type="text"
-                            placeholder="e.g., 'punishment for theft' or 'employee rights'"
-                            value={query}
-                            onChange={(e) => setQuery(e.target.value)}
-                            onKeyDown={(e) => e.key === 'Enter' && handleSearchClick()}
+                            type="number"
+                            placeholder="e.g. 2023"
+                            value={year}
+                            onChange={(e) => setYear(e.target.value)}
+                            onBlur={handleSearchClick}
                         />
-                        <button className="btn btn-primary" onClick={handleSearchClick}>Search</button>
                     </div>
+                </div>
 
-                    <div className="filters-grid">
-                        <div className="input-group" style={{ margin: 0 }}>
-                            <label>Document Type</label>
-                            <select value={type} onChange={(e) => { setType(e.target.value); handleSearchClick(); }}>
-                                <option value="">All Types</option>
-                                {documentTypes.map(t => (
-                                    <option key={t} value={t}>{t.charAt(0).toUpperCase() + t.slice(1)}</option>
-                                ))}
-                            </select>
-                        </div>
-                        <div className="input-group" style={{ margin: 0 }}>
-                            <label>Year</label>
-                            <input
-                                type="number"
-                                placeholder="e.g. 2023"
-                                value={year}
-                                onChange={(e) => setYear(e.target.value)}
-                                onBlur={handleSearchClick}
-                            />
-                        </div>
+                {loading ? (
+                    <div style={{ textAlign: 'center', marginTop: '2rem' }}>
+                        <div className="spinner"></div>
                     </div>
-
-                    {loading ? (
-                        <div style={{ textAlign: 'center', marginTop: '2rem' }}>
-                            <div className="spinner"></div>
-                        </div>
-                    ) : (
-                        <>
-                            <div className="results-list">
+                ) : (
+                    <>
+                        <div className="results-list">
                                 {results.length > 0 ? results.map((result, idx) => (
                                     <div key={idx} className="result-item fade-in">
                                         <div className="result-title">{result.title || 'Untitled Document'}</div>
@@ -174,18 +171,17 @@ export default function Search() {
                                             )}
                                         </div>
                                         <div className="result-snippet">
-                                            {result.text ? result.text.substring(0, 300) + '...' : ''}
-                                        </div>
-                                    </div>
-                                )) : (
-                                    <p style={{ textAlign: 'center', color: 'var(--text-muted)' }}>No results found.</p>
-                                )}
-                            </div>
-                            {renderPagination()}
-                        </>
-                    )}
-                </div>
+                            {result.text ? result.text.substring(0, 300) + '...' : ''}
+                        </div>
+                    </div>
+                )) : (
+                    <p style={{ textAlign: 'center', color: 'var(--text-muted)' }}>No results found.</p>
+                )}
             </div>
+            {renderPagination()}
+        </>
+    )}
+</div>
 
             <style>{`
         .search-container {
@@ -235,15 +231,17 @@ export default function Search() {
 
         .result-item:hover {
             background: rgba(30, 41, 59, 0.8);
-            border-color: var(--accent-color);
+            border-color: #22c55e;
+            box-shadow: 0 0 20px rgba(34, 197, 94, 0.2);
         }
 
         .result-title {
             font-size: 1.2rem;
             font-weight: 600;
-            color: var(--accent-color);
+            color: #22c55e;
             margin-bottom: 0.5rem;
             display: block;
+            text-shadow: 0 0 10px rgba(34, 197, 94, 0.3);
         }
 
         .result-meta {
@@ -293,7 +291,28 @@ export default function Search() {
             opacity: 0.5;
             cursor: not-allowed;
         }
+        
+        @media (max-width: 768px) {
+            .search-section {
+                margin-bottom: 1.5rem;
+            }
+            
+            .search-input {
+                font-size: 1rem;
+                padding: 0.875rem 1.25rem;
+            }
+            
+            .filters-grid {
+                grid-template-columns: 1fr;
+                padding: 1rem;
+            }
+            
+            .result-meta {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
       `}</style>
-        </>
+        </div>
     );
 }

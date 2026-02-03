@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { marked } from 'marked';
 import { fetchWithAuth } from '../utils/api';
-import Navbar from '../components/Navbar';
 
 export default function Contracts() {
     const [selectedFile, setSelectedFile] = useState(null);
@@ -72,15 +71,13 @@ export default function Contracts() {
     };
 
     return (
-        <>
-            <Navbar />
-            <div className="container" style={{ paddingTop: '2rem' }}>
-                <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
-                    <h1>AI Contract Review</h1>
-                    <p style={{ color: 'var(--text-muted)' }}>Upload your contract (PDF or TXT) to identify risks, loopholes, and key terms.</p>
-                </div>
+        <div className="container" style={{ paddingTop: '2rem' }}>
+            <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
+                <h1>AI Contract Review</h1>
+                <p style={{ color: 'var(--text-muted)' }}>Upload your contract (PDF or TXT) to identify risks, loopholes, and key terms.</p>
+            </div>
 
-                <div className="glass-card fade-in">
+            <div className="glass-card fade-in">
                     <div
                         className={`upload-area ${dragActive ? 'dragover' : ''}`}
                         onDragEnter={handleDrag}
@@ -109,16 +106,15 @@ export default function Contracts() {
                         onClick={analyzeContract}
                     >
                         {loading ? <><span className="spinner"></span> Analyzing...</> : 'Analyze Contract'}
-                    </button>
-                </div>
-
-                {analysis && (
-                    <div className="glass-card fade-in" style={{ marginTop: '2rem' }}>
-                        <h2 style={{ borderBottom: '1px solid var(--glass-border)', paddingBottom: '1rem', marginBottom: '2rem' }}>Analysis Report</h2>
-                        <div className="markdown-content" dangerouslySetInnerHTML={{ __html: marked.parse(analysis) }} />
-                    </div>
-                )}
+                </button>
             </div>
+
+            {analysis && (
+                <div className="glass-card fade-in" style={{ marginTop: '2rem' }}>
+                    <h2 style={{ borderBottom: '1px solid var(--glass-border)', paddingBottom: '1rem', marginBottom: '2rem' }}>Analysis Report</h2>
+                    <div className="markdown-content" dangerouslySetInnerHTML={{ __html: marked.parse(analysis) }} />
+                </div>
+            )}
 
             <style>{`
         .upload-area {
@@ -134,8 +130,9 @@ export default function Contracts() {
 
         .upload-area:hover,
         .upload-area.dragover {
-            border-color: var(--accent-color);
-            background: rgba(212, 175, 55, 0.05);
+            border-color: #22c55e;
+            background: rgba(34, 197, 94, 0.1);
+            box-shadow: 0 0 24px rgba(34, 197, 94, 0.15);
         }
 
         .upload-icon {
@@ -149,7 +146,17 @@ export default function Contracts() {
             color: var(--accent-color);
             font-weight: 500;
         }
+        
+        @media (max-width: 768px) {
+            .upload-area {
+                padding: 2rem 1rem;
+            }
+            
+            .upload-icon {
+                font-size: 2rem;
+            }
+        }
       `}</style>
-        </>
+        </div>
     );
 }
