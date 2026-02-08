@@ -490,9 +490,31 @@ export default function Settings() {
           box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
         }
 
+        @media (max-width: 1024px) {
+          .settings-content {
+            grid-template-columns: 200px 1fr;
+          }
+
+          .settings-panel {
+            padding: 1.5rem;
+          }
+        }
+
         @media (max-width: 768px) {
           .settings-page {
             padding: 1rem;
+          }
+
+          .settings-header {
+            padding: 1.5rem;
+          }
+
+          .settings-header h1 {
+            font-size: 1.75rem;
+          }
+
+          .settings-subtitle {
+            font-size: 0.95rem;
           }
 
           .settings-content {
@@ -504,10 +526,138 @@ export default function Settings() {
             border-bottom: 1px solid var(--border-color);
             flex-direction: row;
             overflow-x: auto;
+            padding: 0.75rem;
+            gap: 0.75rem;
+          }
+
+          .settings-tab {
+            flex-shrink: 0;
+            padding: 0.75rem;
+            min-width: 44px;
+            justify-content: center;
           }
 
           .settings-tab span {
             display: none;
+          }
+
+          .settings-panel {
+            padding: 1.5rem;
+          }
+
+          .section-title {
+            font-size: 1.375rem;
+          }
+
+          .section-description {
+            font-size: 0.95rem;
+          }
+
+          .profile-avatar-section {
+            flex-direction: column;
+            text-align: center;
+            padding: 1.5rem;
+          }
+
+          .profile-avatar {
+            width: 64px;
+            height: 64px;
+          }
+
+          .theme-option {
+            padding: 1.25rem;
+            gap: 1rem;
+          }
+
+          .theme-preview {
+            width: 48px;
+            height: 48px;
+          }
+
+          .theme-details h3 {
+            font-size: 1rem;
+          }
+
+          .theme-details p {
+            font-size: 0.85rem;
+          }
+
+          .theme-btn {
+            padding: 0.5rem 1.25rem;
+            font-size: 0.9rem;
+          }
+
+          .settings-footer {
+            padding: 1.5rem;
+          }
+
+          .logout-btn {
+            width: 100%;
+            justify-content: center;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .settings-page {
+            padding: 0.75rem;
+          }
+
+          .settings-header {
+            padding: 1.25rem;
+          }
+
+          .settings-header h1 {
+            font-size: 1.5rem;
+          }
+
+          .settings-panel {
+            padding: 1.25rem;
+          }
+
+          .section-title {
+            font-size: 1.25rem;
+          }
+
+          .profile-avatar-section {
+            padding: 1.25rem;
+          }
+
+          .profile-avatar {
+            width: 56px;
+            height: 56px;
+          }
+
+          .profile-info h3 {
+            font-size: 1.125rem;
+          }
+
+          .form-group label {
+            font-size: 0.875rem;
+          }
+
+          .input-with-icon input {
+            padding: 0.75rem 0.875rem 0.75rem 2.75rem;
+            font-size: 16px; /* Prevents iOS zoom */
+          }
+
+          .btn-primary {
+            padding: 0.75rem 1.25rem;
+            font-size: 0.95rem;
+          }
+
+          .theme-option {
+            padding: 1rem;
+            flex-direction: column;
+            text-align: center;
+          }
+
+          .theme-btn {
+            width: 100%;
+          }
+
+          .logout-btn {
+            padding: 0.75rem 1.25rem;
+            font-size: 0.95rem;
           }
         }
       `}</style>

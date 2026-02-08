@@ -147,13 +147,71 @@ export default function Contracts() {
             font-weight: 500;
         }
         
+        @media (max-width: 1024px) {
+            .container {
+                padding-top: 1.5rem;
+            }
+        }
+
         @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .container h1 {
+                font-size: 1.75rem;
+            }
+
+            .container p {
+                font-size: 0.95rem;
+            }
+
+            .glass-card {
+                padding: 1.5rem;
+            }
+
             .upload-area {
-                padding: 2rem 1rem;
+                padding: 2.5rem 1rem;
             }
             
             .upload-icon {
                 font-size: 2rem;
+            }
+
+            .upload-area h3 {
+                font-size: 1.125rem;
+            }
+
+            .upload-area p {
+                font-size: 0.9rem;
+            }
+
+            .btn {
+                font-size: 0.95rem;
+                padding: 0.875rem 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container h1 {
+                font-size: 1.5rem;
+            }
+
+            .glass-card {
+                padding: 1.25rem;
+            }
+
+            .upload-area {
+                padding: 2rem 0.75rem;
+            }
+
+            .upload-area h3 {
+                font-size: 1rem;
+            }
+
+            .btn {
+                font-size: 0.875rem;
+                padding: 0.75rem 1.25rem;
             }
         }
       `}</style>

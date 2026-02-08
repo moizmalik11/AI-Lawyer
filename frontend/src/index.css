@@ -1088,9 +1088,19 @@ a:hover {
     .page-content {
         padding: 1.5rem;
     }
+
+    .dashboard-grid,
+    .guide-grid,
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
 }
 
 @media (max-width: 768px) {
+    html, body {
+        overflow-x: hidden;
+    }
+
     .hero-title {
         font-size: 2rem;
     }
@@ -1133,6 +1143,60 @@ a:hover {
         padding: 0.5rem;
         min-width: 36px;
         justify-content: center;
+    }
+
+    .glass-card {
+        padding: 1.5rem;
+    }
+
+    .input-group input,
+    .input-group textarea,
+    .input-group select {
+        font-size: 16px; /* Prevents iOS zoom */
+    }
+
+    .btn {
+        padding: 0.625rem 1.25rem;
+        font-size: 0.95rem;
+    }
+
+    .icon-btn {
+        width: 36px;
+        height: 36px;
+    }
+
+    .sidebar {
+        width: 100%;
+        height: auto;
+        max-height: 60vh;
+        border-right: none;
+        border-bottom: 1px solid var(--border-color);
+        position: fixed;
+        z-index: 999;
+        transform: translateY(-100%);
+    }
+
+    .sidebar.open {
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 480px) {
+    .container {
+        padding: 0 0.75rem;
+    }
+
+    .page-content {
+        padding: 0.75rem;
+    }
+
+    .glass-card {
+        padding: 1.25rem;
+    }
+
+    .btn {
+        padding: 0.5rem 1rem;
+        font-size: 0.875rem;
     }
 }
 

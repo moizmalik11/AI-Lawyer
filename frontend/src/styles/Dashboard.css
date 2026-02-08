@@ -231,6 +231,21 @@
 }
 
 /* Responsive Design */
+@media (max-width: 1024px) {
+    .dashboard-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+
+    .guide-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
 @media (max-width: 768px) {
     .dashboard-hero {
         padding: 2rem 1rem;
@@ -257,6 +272,11 @@
     .section-title {
         font-size: 1.5rem;
     }
+
+    .section-subtitle {
+        font-size: 1rem;
+        margin-bottom: 2rem;
+    }
     
     .dashboard-grid,
     .guide-grid,
@@ -270,4 +290,71 @@
     .stat-card {
         padding: 1.5rem;
     }
+
+    .feature-card h3 {
+        font-size: 1.25rem;
+    }
+
+    .feature-card p {
+        font-size: 0.95rem;
+    }
+
+    .guide-header h3 {
+        font-size: 1.125rem;
+    }
+
+    .guide-steps li {
+        font-size: 0.95rem;
+        padding-left: 2.5rem;
+    }
+
+    .guide-steps li::before {
+        width: 1.75rem;
+        height: 1.75rem;
+        font-size: 0.8rem;
+    }
+
+    .stat-value {
+        font-size: 2.5rem;
+    }
+
+    .stat-label {
+        font-size: 0.95rem;
+    }
 }
+
+@media (max-width: 480px) {
+    .hero-title {
+        font-size: 1.5rem;
+    }
+
+    .hero-subtitle {
+        font-size: 0.95rem;
+    }
+
+    .dashboard-container {
+        padding: 0 0.75rem;
+    }
+
+    .feature-card,
+    .guide-card,
+    .stat-card {
+        padding: 1.25rem;
+    }
+
+    .feature-icon {
+        width: 48px;
+        height: 48px;
+        margin-bottom: 1rem;
+    }
+
+    .feature-icon svg {
+        width: 20px;
+        height: 20px;
+    }
+
+    .stat-value {
+        font-size: 2rem;
+    }
+}
+

@@ -292,24 +292,129 @@ export default function Search() {
             cursor: not-allowed;
         }
         
+        @media (max-width: 1024px) {
+            .search-container {
+                max-width: 90%;
+            }
+
+            .filters-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
         @media (max-width: 768px) {
+            .container {
+                padding: 1.5rem 1rem;
+            }
+
+            .container h1 {
+                font-size: 1.75rem;
+            }
+
+            .container p {
+                font-size: 0.95rem;
+            }
+
             .search-section {
                 margin-bottom: 1.5rem;
             }
-            
-            .search-input {
+
+            .search-box {
+                flex-direction: column;
+                gap: 0.75rem;
+            }
+
+            .search-box input {
                 font-size: 1rem;
                 padding: 0.875rem 1.25rem;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+                padding: 0.875rem;
             }
             
             .filters-grid {
                 grid-template-columns: 1fr;
-                padding: 1rem;
+                padding: 1.25rem;
+                gap: 0.75rem;
+            }
+
+            .result-item {
+                padding: 1.25rem;
+            }
+
+            .result-title {
+                font-size: 1.1rem;
             }
             
             .result-meta {
                 flex-direction: column;
+                gap: 0.25rem;
+            }
+
+            .result-meta span {
+                display: block;
+            }
+
+            .result-meta span:nth-child(even) {
+                display: none;
+            }
+
+            .result-snippet {
+                font-size: 0.9rem;
+            }
+
+            .pagination {
+                gap: 0.375rem;
+            }
+
+            .page-btn {
+                padding: 0.5rem 0.75rem;
+                font-size: 0.9rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 1rem 0.75rem;
+            }
+
+            .container h1 {
+                font-size: 1.5rem;
+            }
+
+            .search-box input {
+                padding: 0.75rem 1rem;
+                font-size: 16px; /* Prevents iOS zoom */
+            }
+
+            .filters-grid {
+                padding: 1rem;
+            }
+
+            .result-item {
+                padding: 1rem;
+            }
+
+            .result-title {
+                font-size: 1rem;
+            }
+
+            .result-links {
+                display: flex;
+                flex-direction: column;
                 gap: 0.5rem;
+            }
+
+            .result-links a {
+                display: block;
+            }
+
+            .page-btn {
+                padding: 0.5rem;
+                min-width: 36px;
             }
         }
       `}</style>

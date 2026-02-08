@@ -304,19 +304,116 @@ export default function Judgments() {
             cursor: not-allowed;
         }
         
+        @media (max-width: 1024px) {
+            .judgments-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
         @media (max-width: 768px) {
             .page-header {
                 flex-direction: column;
                 align-items: flex-start;
                 gap: 1.5rem;
+                padding: 1.5rem 0;
+            }
+
+            .container h1 {
+                font-size: 1.75rem;
+            }
+
+            .container p {
+                font-size: 0.95rem;
             }
             
             .search-bar {
                 max-width: 100%;
             }
+
+            .search-bar input {
+                padding: 0.875rem 1.25rem;
+                padding-right: 3rem;
+                font-size: 0.95rem;
+            }
             
             .judgments-grid {
                 grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            .judgment-card {
+                padding: 1.25rem;
+            }
+
+            .judgment-title {
+                font-size: 1.1rem;
+            }
+
+            .judgment-meta {
+                font-size: 0.8rem;
+            }
+
+            .pagination-controls {
+                margin-top: 1.5rem;
+                gap: 0.75rem;
+            }
+
+            .btn-icon {
+                width: 36px;
+                height: 36px;
+            }
+
+            .modal {
+                padding: 1rem;
+            }
+
+            .modal-content {
+                max-width: 95%;
+                border-radius: 16px;
+            }
+
+            .modal-header {
+                padding: 1.25rem;
+            }
+
+            .modal-header h2 {
+                font-size: 1.125rem;
+            }
+
+            .modal-body {
+                padding: 1.5rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container h1 {
+                font-size: 1.5rem;
+            }
+
+            .page-header {
+                padding: 1rem 0;
+            }
+
+            .search-bar input {
+                padding: 0.75rem 1rem;
+                padding-right: 2.5rem;
+            }
+
+            .judgment-card {
+                padding: 1rem;
+            }
+
+            .judgment-title {
+                font-size: 1rem;
+            }
+
+            .btn {
+                font-size: 0.875rem;
+                padding: 0.625rem 1rem;
+            }
+
+            .modal-body {
+                padding: 1.25rem;
             }
         }
       `}</style>

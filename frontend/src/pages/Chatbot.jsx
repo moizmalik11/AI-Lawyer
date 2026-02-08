@@ -1203,17 +1203,23 @@ export default function Chatbot() {
         }
 
         @media (max-width: 768px) {
-            .chat-layout {
-                flex-direction: column;
+            .chat-sidebar {
+                position: fixed;
+                width: 280px;
+                max-width: 80vw;
                 height: 100vh;
+                transform: translateX(-100%);
+                z-index: 1000;
+                box-shadow: 2px 0 20px rgba(0, 0, 0, 0.3);
+            }
+
+            .chat-sidebar.open {
+                transform: translateX(0);
             }
             
-            .chat-sidebar {
+            .main-chat-area {
+                margin-left: 0;
                 width: 100%;
-                height: auto;
-                max-height: 40vh;
-                border-right: none;
-                border-bottom: 1px solid var(--glass-border);
             }
             
             .chat-sidebar-header {
@@ -1247,8 +1253,8 @@ export default function Chatbot() {
             }
 
             .welcome-icon {
-                width: 60px;
-                height: 60px;
+                width: 56px;
+                height: 56px;
                 margin-bottom: 1.5rem;
             }
 
@@ -1282,6 +1288,10 @@ export default function Chatbot() {
             .message-content {
                 padding: 1rem 1.25rem;
             }
+
+            .chat-messages {
+                padding: 1rem;
+            }
             
             .input-area,
             .input-area-centered {
@@ -1308,12 +1318,81 @@ export default function Chatbot() {
 
             .modal-content {
                 max-width: 95%;
+                margin: 1rem;
                 border-radius: 16px;
             }
 
             .modal-header,
             .modal-body {
                 padding: 1.5rem;
+            }
+
+            .modal-header h3 {
+                font-size: 1.25rem;
+            }
+
+            .sources-list {
+                flex-direction: column;
+            }
+
+            .source-badge-new {
+                width: 100%;
+                justify-content: flex-start;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .chat-sidebar {
+                max-width: 85vw;
+            }
+
+            .chat-sidebar-title {
+                font-size: 1rem;
+            }
+
+            .welcome-title {
+                font-size: 1.5rem;
+            }
+
+            .welcome-subtitle {
+                font-size: 0.95rem;
+            }
+
+            .welcome-icon {
+                width: 48px;
+                height: 48px;
+            }
+
+            .chat-messages {
+                padding: 0.75rem;
+            }
+
+            .message-content {
+                padding: 0.875rem 1rem;
+            }
+
+            .input-area,
+            .input-area-centered {
+                padding: 0.75rem;
+            }
+
+            .chat-input,
+            .chat-input-centered {
+                padding: 0.875rem 1rem;
+            }
+
+            .send-btn,
+            .send-btn-centered {
+                width: 44px;
+                height: 44px;
+            }
+
+            .modal-header h3 {
+                font-size: 1.125rem;
+            }
+
+            .modal-body {
+                padding: 1.25rem;
             }
         }
       `}</style>

@@ -467,6 +467,20 @@
 }
 
 /* Responsive Design */
+@media (max-width: 1024px) {
+  .auth-brand-content h1 {
+    font-size: 2.5rem;
+  }
+
+  .auth-brand-content p {
+    font-size: 1.125rem;
+  }
+
+  .auth-form-section {
+    max-width: 420px;
+  }
+}
+
 @media (max-width: 768px) {
   .auth-container {
     padding: 1rem;
@@ -502,31 +516,55 @@
   }
 
   .auth-form-container {
-    padding: 1.5rem;
+    padding: 1.75rem 1.5rem;
   }
 
   .auth-form-header h2 {
-    font-size: 1.5rem;
+    font-size: 1.375rem;
   }
 
   .auth-form-header p {
+    font-size: 0.875rem;
+  }
+
+  .form-group label {
     font-size: 0.9rem;
   }
 
+  .form-input {
+    padding: 0.875rem 0.875rem 0.875rem 2.75rem;
+    font-size: 0.95rem;
+  }
+
+  .btn-auth,
   .btn-google {
     padding: 0.875rem;
     font-size: 0.95rem;
+  }
+
+  .auth-footer {
+    font-size: 0.9rem;
   }
 }
 
 @media (max-width: 480px) {
   .auth-container {
-    padding: 0.5rem;
+    padding: 0.75rem;
+  }
+
+  .auth-header-inline {
+    top: 0.75rem;
+    left: 0.75rem;
+  }
+
+  .auth-theme-toggle {
+    top: 0.75rem;
+    right: 0.75rem;
   }
 
   .auth-form-container {
-    padding: 1.5rem 1rem;
-    border-radius: 20px;
+    padding: 1.5rem 1.25rem;
+    border-radius: 16px;
   }
 
   .auth-tabs {
@@ -534,7 +572,7 @@
   }
 
   .auth-tab {
-    padding: 0.75rem;
+    padding: 0.75rem 0.5rem;
     font-size: 0.9rem;
   }
 
@@ -547,5 +585,15 @@
   .btn-google {
     padding: 0.875rem;
     font-size: 0.95rem;
+  }
+
+  .error-message,
+  .success-message {
+    font-size: 0.875rem;
+    padding: 0.875rem;
+  }
+
+  .auth-divider {
+    font-size: 0.8rem;
   }
 }
