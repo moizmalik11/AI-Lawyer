@@ -360,53 +360,6 @@
   to { transform: rotate(360deg); }
 }
 
-/* Auth Divider */
-.auth-divider {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin: 1.25rem 0;
-  color: var(--text-muted);
-  font-size: 0.85rem;
-}
-
-.auth-divider::before,
-.auth-divider::after {
-  content: '';
-  flex: 1;
-  height: 1px;
-  background: var(--border-color);
-}
-
-/* Google Sign-in Button */
-.btn-google {
-  width: 100%;
-  padding: 0.875rem;
-  background: var(--background-secondary);
-  border: 2px solid var(--border-color);
-  border-radius: 10px;
-  color: var(--text-color);
-  font-weight: 600;
-  font-size: 0.95rem;
-  cursor: pointer;
-  transition: all 0.3s ease;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.75rem;
-}
-
-.btn-google:hover {
-  background: var(--card-bg);
-  border-color: var(--accent-color);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-md);
-}
-
-.btn-google svg {
-  flex-shrink: 0;
-}
-
 .auth-footer {
   text-align: center;
   margin-top: 2rem;
@@ -536,8 +489,7 @@
     font-size: 0.95rem;
   }
 
-  .btn-auth,
-  .btn-google {
+  .btn-auth {
     padding: 0.875rem;
     font-size: 0.95rem;
   }
@@ -581,8 +533,7 @@
     font-size: 16px; /* Prevents iOS zoom */
   }
 
-  .btn-auth,
-  .btn-google {
+  .btn-auth {
     padding: 0.875rem;
     font-size: 0.95rem;
   }
@@ -591,9 +542,5 @@
   .success-message {
     font-size: 0.875rem;
     padding: 0.875rem;
-  }
-
-  .auth-divider {
-    font-size: 0.8rem;
   }
 }

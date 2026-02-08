@@ -252,6 +252,31 @@ a:hover {
     align-items: center;
 }
 
+/* Mobile Navbar Menu Button */
+.mobile-nav-menu-btn {
+    display: none;
+    width: 40px;
+    height: 40px;
+    background: transparent;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    color: var(--text-color);
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.mobile-nav-menu-btn:hover {
+    background: var(--accent-color);
+    color: white;
+    border-color: var(--accent-color);
+}
+
+.mobile-nav-menu-btn:active {
+    transform: scale(0.95);
+}
+
 .navbar-title {
     font-family: var(--font-heading);
     font-size: 1.25rem;
@@ -405,11 +430,50 @@ a:hover {
     display: flex;
     flex-direction: column;
     z-index: 100;
-    transition: width 0.3s ease;
+    transition: width 0.3s ease, transform 0.3s ease;
 }
 
 .sidebar:hover {
     width: 280px;
+}
+
+/* Mobile Sidebar Overlay */
+.sidebar-overlay-main {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    z-index: 99;
+    animation: fadeIn 0.3s ease;
+}
+
+/* Mobile Sidebar Close Button */
+.sidebar-close-btn {
+    display: none;
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 36px;
+    height: 36px;
+    background: transparent;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    color: var(--text-color);
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    z-index: 101;
+}
+
+.sidebar-close-btn:hover {
+    background: var(--error-color);
+    color: white;
+    border-color: var(--error-color);
 }
 
 .sidebar-content {
@@ -1099,6 +1163,46 @@ a:hover {
 @media (max-width: 768px) {
     html, body {
         overflow-x: hidden;
+    }
+
+    /* Show mobile menu button */
+    .mobile-nav-menu-btn {
+        display: flex;
+    }
+
+    /* Sidebar mobile styles */
+    .sidebar {
+        width: 280px;
+        transform: translateX(-100%);
+        z-index: 100;
+    }
+
+    .sidebar.mobile-open {
+        transform: translateX(0);
+    }
+
+    .sidebar:hover {
+        width: 280px;
+    }
+
+    .sidebar-overlay-main {
+        display: block;
+    }
+
+    .sidebar-close-btn {
+        display: flex;
+    }
+
+    /* Always show nav labels on mobile when sidebar is open */
+    .sidebar.mobile-open .nav-label,
+    .sidebar.mobile-open .logo-text {
+        opacity: 1;
+        width: auto;
+    }
+
+    /* Main content takes full width */
+    .main-content {
+        margin-left: 0 !important;
     }
 
     .hero-title {

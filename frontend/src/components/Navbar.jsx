@@ -1,11 +1,13 @@
 import { useAuth } from '../context/AuthContext';
 import { useTheme } from '../context/ThemeContext';
+import { useSidebar } from '../context/SidebarContext';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { Sun, Moon, LogOut, User, ArrowLeft } from 'lucide-react';
+import { Sun, Moon, LogOut, User, ArrowLeft, Menu } from 'lucide-react';
 
 export default function Navbar() {
     const { logout, user } = useAuth();
     const { theme, toggleTheme } = useTheme();
+    const { toggleMobileSidebar } = useSidebar();
     const navigate = useNavigate();
     const location = useLocation();
     
@@ -21,7 +23,16 @@ export default function Navbar() {
     return (
         <nav className="navbar">
             <div className="navbar-content">
-                <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                    {/* Mobile Menu Button */}
+                    <button 
+                        onClick={toggleMobileSidebar}
+                        className="mobile-nav-menu-btn"
+                        aria-label="Toggle menu"
+                    >
+                        <Menu size={20} />
+                    </button>
+
                     {canGoBack && (
                         <button 
                             onClick={handleBack}

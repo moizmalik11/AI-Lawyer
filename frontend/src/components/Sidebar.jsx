@@ -5,13 +5,14 @@ import {
   Scale, 
   FileText, 
   Search,
-  Settings
+  Settings,
+  X
 } from 'lucide-react';
 import { useSidebar } from '../context/SidebarContext';
 
 export default function Sidebar() {
   const location = useLocation();
-  const { setIsExpanded } = useSidebar();
+  const { setIsExpanded, isMobileOpen, closeMobileSidebar } = useSidebar();
   
   const isActive = (path) => location.pathname === path;
   
@@ -24,6 +25,10 @@ export default function Sidebar() {
     setIsExpanded(false);
     document.querySelector('.app-layout')?.classList.remove('sidebar-hover');
   };
+
+  const handleNavClick = () => {
+    closeMobileSidebar();
+  };
   
   const navItems = [
     { path: '/dashboard', icon: Home, label: 'Home' },
@@ -34,16 +39,25 @@ export default function Sidebar() {
   ];
 
   return (
-    <aside 
-      className="sidebar"
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-    >
-      <div className="sidebar-content">
-        <div className="sidebar-logo">
-          <span className="logo-icon">⚖️</span>
-          <span className="logo-text">AI Lawyer</span>
-        </div>
+    <>
+      {/* Mobile Overlay */}
+      {isMobileOpen && <div className="sidebar-overlay-main" onClick={closeMobileSidebar}></div>}
+      
+      <aside 
+        className={`sidebar ${isMobileOpen ? 'mobile-open' : ''}`}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
+      >
+        <div className="sidebar-content">
+          {/* Mobile Close Button */}
+          <button className="sidebar-close-btn" onClick={closeMobileSidebar}>
+            <X size={24} />
+          </button>
+
+          <div className="sidebar-logo">
+            <span className="logo-icon">⚖️</span>
+            <span className="logo-text">AI Lawyer</span>
+          </div>
         
         <nav className="sidebar-nav">
           {navItems.map((item) => {
@@ -54,6 +68,7 @@ export default function Sidebar() {
                 to={item.path}
                 className={`sidebar-nav-item ${isActive(item.path) ? 'active' : ''}`}
                 title={item.label}
+                onClick={handleNavClick}
               >
                 <Icon className="nav-icon" size={20} />
                 <span className="nav-label">{item.label}</span>
@@ -68,6 +83,7 @@ export default function Sidebar() {
             to="/settings"
             className={`sidebar-settings-btn ${isActive('/settings') ? 'active' : ''}`}
             title="Settings"
+            onClick={handleNavClick}
           >
             <Settings className="nav-icon" size={20} />
             <span className="nav-label">Settings</span>
@@ -75,5 +91,6 @@ export default function Sidebar() {
         </div>
       </div>
     </aside>
+    </>
   );
 }

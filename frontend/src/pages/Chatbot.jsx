@@ -12,6 +12,7 @@ export default function Chatbot() {
     const [input, setInput] = useState('');
     const [loading, setLoading] = useState(false);
     const [modalSource, setModalSource] = useState(null);
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
     const { theme } = useTheme();
 
     const messagesEndRef = useRef(null);
@@ -70,6 +71,7 @@ export default function Chatbot() {
             if (data.success) {
                 setCurrentChatId(chatId);
                 setMessages(data.chat.messages);
+                setIsSidebarOpen(false);
             }
         } catch (error) {
             console.error('Failed to load chat:', error);
@@ -79,6 +81,7 @@ export default function Chatbot() {
     const createNewChat = () => {
         setCurrentChatId(null);
         setMessages([]);
+        setIsSidebarOpen(false);
     };
 
     const deleteChat = async (chatId, e) => {
@@ -143,7 +146,23 @@ export default function Chatbot() {
 
     return (
         <>
-        <aside className="chat-sidebar">
+        {/* Mobile Menu Button */}
+        <button 
+            className="mobile-menu-btn" 
+            onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+            aria-label="Toggle menu"
+        >
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <line x1="3" y1="12" x2="21" y2="12"></line>
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+        </button>
+
+        {/* Overlay for mobile */}
+        {isSidebarOpen && <div className="sidebar-overlay" onClick={() => setIsSidebarOpen(false)}></div>}
+
+        <aside className={`chat-sidebar ${isSidebarOpen ? 'open' : ''}`}>
             <div className="chat-sidebar-header">
                 <div className="header-content">
                     <Link to="/dashboard" className="chat-back-btn">
@@ -354,6 +373,60 @@ export default function Chatbot() {
             )}
 
             <style>{`
+        /* Mobile Menu Button */
+        .mobile-menu-btn {
+            display: none;
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            z-index: 1001;
+            width: 44px;
+            height: 44px;
+            background: ${theme === 'dark' 
+                ? 'var(--glass-bg)' 
+                : 'rgba(255, 255, 255, 0.98)'};
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            color: var(--text-color);
+            cursor: pointer;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            box-shadow: ${theme === 'dark' 
+                ? '0 4px 12px rgba(0, 0, 0, 0.3)' 
+                : '0 4px 12px rgba(15, 23, 42, 0.1)'};
+        }
+
+        .mobile-menu-btn:hover {
+            background: var(--accent-color);
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .mobile-menu-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* Sidebar Overlay */
+        .sidebar-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(4px);
+            z-index: 999;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
         /* Sidebar Styling */
         .chat-sidebar {
             position: fixed;
@@ -375,6 +448,7 @@ export default function Chatbot() {
             box-shadow: ${theme === 'dark' 
                 ? '2px 0 12px rgba(0, 0, 0, 0.2)' 
                 : '2px 0 12px rgba(15, 23, 42, 0.06)'};
+            transition: transform 0.3s ease;
         }
         
         .chat-sidebar-header {
@@ -1203,6 +1277,14 @@ export default function Chatbot() {
         }
 
         @media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: flex;
+            }
+
+            .sidebar-overlay {
+                display: block;
+            }
+
             .chat-sidebar {
                 position: fixed;
                 width: 280px;
@@ -1210,7 +1292,7 @@ export default function Chatbot() {
                 height: 100vh;
                 transform: translateX(-100%);
                 z-index: 1000;
-                box-shadow: 2px 0 20px rgba(0, 0, 0, 0.3);
+                box-shadow: 4px 0 20px rgba(0, 0, 0, 0.4);
             }
 
             .chat-sidebar.open {
