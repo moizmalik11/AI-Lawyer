@@ -22,8 +22,10 @@ export default function Auth() {
     const [activeTab, setActiveTab] = useState(initialMode);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
     const [username, setUsername] = useState('');
     const [showPassword, setShowPassword] = useState(false);
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false);
     const [rememberMe, setRememberMe] = useState(false);
     const [error, setError] = useState('');
     const [success, setSuccess] = useState('');
@@ -62,6 +64,11 @@ export default function Auth() {
             return;
         }
         
+        if (password !== confirmPassword) {
+            setError('Passwords do not match. Please try again.');
+            return;
+        }
+        
         setLoading(true);
         const result = await register(username, email, password);
         setLoading(false);
@@ -71,6 +78,7 @@ export default function Auth() {
             setActiveTab('login');
             setEmail(email);
             setPassword('');
+            setConfirmPassword('');
             setUsername('');
         } else {
             setError(result.error || 'Registration failed. Please try again.');
@@ -120,6 +128,7 @@ export default function Auth() {
                                 setActiveTab('login');
                                 setError('');
                                 setSuccess('');
+                                setConfirmPassword('');
                             }}
                         >
                             Login
@@ -130,6 +139,7 @@ export default function Auth() {
                                 setActiveTab('register');
                                 setError('');
                                 setSuccess('');
+                                setConfirmPassword('');
                             }}
                         >
                             Register
@@ -275,6 +285,30 @@ export default function Auth() {
                                 </div>
                             </div>
 
+                            <div className="form-group">
+                                <label htmlFor="confirm-password">Confirm Password</label>
+                                <div className="input-wrapper">
+                                    <Lock className="input-icon" size={18} />
+                                    <input
+                                        id="confirm-password"
+                                        type={showConfirmPassword ? 'text' : 'password'}
+                                        className="form-input"
+                                        placeholder="Re-enter your password"
+                                        value={confirmPassword}
+                                        onChange={(e) => setConfirmPassword(e.target.value)}
+                                        required
+                                        minLength={6}
+                                    />
+                                    <button
+                                        type="button"
+                                        className="password-toggle"
+                                        onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                    >
+                                        {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+                                    </button>
+                                </div>
+                            </div>
+
                             <button type="submit" className="btn-auth" disabled={loading}>
                                 {loading ? (
                                     <>
@@ -299,6 +333,7 @@ export default function Auth() {
                                     setActiveTab('register');
                                     setError('');
                                     setSuccess('');
+                                    setConfirmPassword('');
                                 }}>
                                     Sign up now
                                 </a>
@@ -310,6 +345,7 @@ export default function Auth() {
                                     setActiveTab('login');
                                     setError('');
                                     setSuccess('');
+                                    setConfirmPassword('');
                                 }}>
                                     Sign in
                                 </a>
