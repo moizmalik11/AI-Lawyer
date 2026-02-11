@@ -11,15 +11,31 @@ import {
   X,
   Shield,
   Gavel,
-  BookOpen
+  BookOpen,
+  UserPlus,
+  LogIn,
+  MessageSquare,
+  CheckCircle2,
+  ArrowRight,
+  Play,
+  Zap
 } from 'lucide-react';
 import ThemeToggle from '../components/ThemeToggle';
 import '../styles/Landing.css';
+
+const animatedFeatures = [
+  'Search Legal Database',
+  'Analyze Judgments',
+  'Review Contracts',
+  'Find Case Laws',
+  'Research Family Law'
+];
 
 const Landing = () => {
   const navigate = useNavigate();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [currentFeatureIndex, setCurrentFeatureIndex] = useState(0);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -27,6 +43,13 @@ const Landing = () => {
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentFeatureIndex((prev) => (prev + 1) % animatedFeatures.length);
+    }, 2500);
+    return () => clearInterval(interval);
   }, []);
 
   const scrollToSection = (sectionId) => {
@@ -110,7 +133,7 @@ const Landing = () => {
         <div className="hero-content">
           <div className="hero-badge">
             <Sparkles size={16} />
-            <span>Powered by Advanced AI Technology</span>
+            <span>AI-Powered Civil Law Platform for Pakistan</span>
           </div>
           <h1 className="hero-title">
             AI-Powered <span className="gradient-text">Civil Law</span> Research
@@ -145,17 +168,13 @@ const Landing = () => {
           </div>
         </div>
         <div className="hero-visual">
-          <div className="floating-card card-1">
-            <Scale size={24} />
-            <span>Legal Research</span>
-          </div>
-          <div className="floating-card card-2">
-            <FileText size={24} />
-            <span>Contract Analysis</span>
-          </div>
-          <div className="floating-card card-3">
-            <Languages size={24} />
-            <span>Bilingual Support</span>
+          <div className="animated-text-container">
+            <h2 className="static-text">Now you can</h2>
+            <div className="animated-text-wrapper">
+              <h2 className="animated-text" key={currentFeatureIndex}>
+                {animatedFeatures[currentFeatureIndex]}
+              </h2>
+            </div>
           </div>
         </div>
       </section>
@@ -274,16 +293,18 @@ const Landing = () => {
           </div>
           <div className="about-content">
             <div className="about-text">
-              <h3>Revolutionizing Legal Research in Pakistan</h3>
+              <h3>Your Trusted Guide to Pakistani Civil Law</h3>
               <p>
-                <strong>Smart Lawyer</strong> is an innovative AI-powered legal assistant designed specifically 
-                for Pakistani civil law. Our platform combines the power of advanced artificial intelligence 
-                with comprehensive legal databases to provide instant, accurate legal information.
+                <strong>Smart Lawyer</strong> is Pakistan's first AI-powered legal assistant exclusively designed 
+                for Civil Law matters. Our platform specializes in Contract Law, Property Law, Family Law, Tort Law, 
+                and Civil Procedure, combining cutting-edge artificial intelligence with Pakistan's comprehensive 
+                civil law framework.
               </p>
               <p>
-                Whether you're a legal professional, student, or someone seeking legal guidance, Smart Lawyer 
-                makes complex legal information accessible and understandable. Our bilingual interface supports 
-                both English and Urdu, ensuring that legal knowledge is available to everyone.
+                Whether you're a legal professional researching case precedents, a law student studying civil statutes, 
+                or a citizen seeking guidance on property rights, inheritance, or contract disputes, Smart Lawyer 
+                provides instant, accurate, and citation-backed legal information. Our bilingual interface (English & Urdu) 
+                ensures accessibility for all Pakistanis.
               </p>
               <div className="about-features">
                 <div className="about-feature-item">
@@ -328,7 +349,7 @@ const Landing = () => {
           </div>
           <div className="features-grid">
             {features.map((feature, index) => (
-              <div key={index} className="feature-card">
+              <div key={index} className="feature-card" style={{ animationDelay: `${index * 0.1}s` }}>
                 <div className="feature-icon-wrapper">
                   {feature.icon}
                 </div>
@@ -336,6 +357,123 @@ const Landing = () => {
                 <p>{feature.description}</p>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* How It Works Section */}
+      <section className="how-it-works-section">
+        <div className="container">
+          <div className="section-header">
+            <div className="tutorial-badge">
+              <Play size={18} />
+              <span>Quick Start Guide</span>
+            </div>
+            <h2 className="section-title">How It Works</h2>
+            <p className="section-subtitle">
+              Get started in just 3 simple steps and unlock the power of AI-driven legal research
+            </p>
+          </div>
+
+          <div className="tutorial-timeline">
+            <div className="tutorial-step step-1">
+              <div className="step-number">
+                <UserPlus size={28} />
+                <span className="step-badge">Step 1</span>
+              </div>
+              <div className="step-content">
+                <h3>Create Your Account</h3>
+                <p>
+                  Sign up in seconds with your email. No credit card required - start with our free tier 
+                  and explore all features immediately.
+                </p>
+                <ul className="step-features">
+                  <li><CheckCircle2 size={16} /> Free registration</li>
+                  <li><CheckCircle2 size={16} /> Instant access</li>
+                  <li><CheckCircle2 size={16} /> No hidden fees</li>
+                </ul>
+                <button className="btn-step" onClick={() => navigate('/auth?mode=register')}>
+                  Sign Up Now
+                  <ArrowRight size={18} />
+                </button>
+              </div>
+              <div className="step-visual">
+                <div className="visual-card animate-float">
+                  <UserPlus size={64} />
+                  <div className="pulse-ring"></div>
+                </div>
+              </div>
+            </div>
+
+            <div className="tutorial-step step-2">
+              <div className="step-number">
+                <LogIn size={28} />
+                <span className="step-badge">Step 2</span>
+              </div>
+              <div className="step-content">
+                <h3>Explore the Dashboard</h3>
+                <p>
+                  Access your personalized dashboard with all features at your fingertips. Choose from 
+                  legal search, judgment analysis, contract review, or start a chat with our AI assistant.
+                </p>
+                <ul className="step-features">
+                  <li><CheckCircle2 size={16} /> Intuitive interface</li>
+                  <li><CheckCircle2 size={16} /> Multiple tools</li>
+                  <li><CheckCircle2 size={16} /> Easy navigation</li>
+                </ul>
+                <button className="btn-step" onClick={() => navigate('/auth?mode=login')}>
+                  Login to Dashboard
+                  <ArrowRight size={18} />
+                </button>
+              </div>
+              <div className="step-visual">
+                <div className="visual-card animate-float" style={{ animationDelay: '0.5s' }}>
+                  <LogIn size={64} />
+                  <div className="pulse-ring"></div>
+                </div>
+              </div>
+            </div>
+
+            <div className="tutorial-step step-3">
+              <div className="step-number">
+                <MessageSquare size={28} />
+                <span className="step-badge">Step 3</span>
+              </div>
+              <div className="step-content">
+                <h3>Start Your Research</h3>
+                <p>
+                  Ask any legal question in plain English or Urdu. Our AI analyzes thousands of legal documents 
+                  instantly and provides accurate, citation-backed answers from Pakistani civil law.
+                </p>
+                <ul className="step-features">
+                  <li><CheckCircle2 size={16} /> Instant results</li>
+                  <li><CheckCircle2 size={16} /> Bilingual support</li>
+                  <li><CheckCircle2 size={16} /> Accurate citations</li>
+                </ul>
+                <button className="btn-step btn-step-primary" onClick={() => navigate('/auth?mode=register')}>
+                  Get Started Free
+                  <Zap size={18} />
+                </button>
+              </div>
+              <div className="step-visual">
+                <div className="visual-card animate-float" style={{ animationDelay: '1s' }}>
+                  <MessageSquare size={64} />
+                  <div className="pulse-ring"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="tutorial-cta">
+            <div className="tutorial-cta-content">
+              <Sparkles size={32} />
+              <h3>Ready to Transform Your Legal Research?</h3>
+              <p>Join hundreds of legal professionals already using Smart Lawyer</p>
+              <button className="btn-tutorial-cta" onClick={() => navigate('/auth?mode=register')}>
+                Start Free Trial
+                <ChevronRight size={20} />
+              </button>
+            </div>
           </div>
         </div>
       </section>
