@@ -2,15 +2,177 @@
  * RAG Service
  * Orchestrates the RAG (Retrieval-Augmented Generation) pipeline
  * Combines embedding generation, vector search, and LLM generation
+ * 
+ * Enhanced with:
+ * - Query Expansion: Generates alternative phrasings for better recall
+ * - Multi-Query Retrieval: Searches with multiple query variants
+ * - Reciprocal Rank Fusion (RRF): Combines results from multiple queries
  */
 
 import embeddingService from './embeddingService.js';
 import qdrantService from './qdrantService.js';
 import llmService from './llmService.js';
 
+// Configuration for enhanced retrieval
+const ENABLE_MULTI_QUERY = true; // Toggle for multi-query retrieval
+const NUM_QUERY_VARIANTS = 3; // Number of alternative queries to generate
+const RRF_K = 60; // RRF constant (higher = more weight to lower-ranked results)
+const CHUNKS_PER_QUERY = 30; // Chunks to retrieve per query variant
+
 class RAGService {
   /**
-   * Process a user query using RAG pipeline
+   * Expand a query into multiple alternative phrasings using LLM
+   * @param {string} query - The original query
+   * @returns {Promise<string[]>} - Array of query variants (including original)
+   */
+  async expandQuery(query) {
+    try {
+      console.log('🔄 Expanding query into multiple variants...');
+
+      // Simple, direct prompt that encourages SHORT responses
+      const expansionPrompt = `Rewrite this query ${NUM_QUERY_VARIANTS} different ways using legal synonyms. Keep each under 15 words.
+
+"${query}"
+
+JSON array only: ["rewrite1", "rewrite2", "rewrite3"]`;
+
+      const messages = [{ role: 'user', content: expansionPrompt }];
+
+      const response = await llmService.callGeminiAPI(messages, 0.3, 800);
+
+      // Parse the JSON response with multiple fallback strategies
+      let variants = [];
+      try {
+        // Clean the response - remove markdown code blocks if present
+        let cleanResponse = response.trim();
+
+        // Remove markdown code blocks
+        cleanResponse = cleanResponse.replace(/```json\s*/gi, '').replace(/```\s*/g, '').trim();
+
+        // Try to find and extract the JSON array
+        const arrayMatch = cleanResponse.match(/\[[\s\S]*?\]/);
+        if (arrayMatch) {
+          cleanResponse = arrayMatch[0];
+        }
+
+        // Fix incomplete JSON - if it doesn't end with ], try to close it
+        if (!cleanResponse.endsWith(']')) {
+          // Find the last complete string and close the array
+          const lastQuoteIndex = cleanResponse.lastIndexOf('"');
+          if (lastQuoteIndex > 0) {
+            cleanResponse = cleanResponse.substring(0, lastQuoteIndex + 1) + ']';
+          }
+        }
+
+        variants = JSON.parse(cleanResponse);
+
+        if (!Array.isArray(variants)) {
+          throw new Error('Response is not an array');
+        }
+
+        // Filter out any non-string or empty entries
+        variants = variants.filter(v => typeof v === 'string' && v.trim().length > 0);
+
+      } catch (parseError) {
+        // Fallback: Try to extract any quoted strings from the response
+        console.log('⚠️ JSON parse failed, trying regex extraction...');
+        const quotedStrings = response.match(/"([^"]+)"/g);
+        if (quotedStrings && quotedStrings.length > 0) {
+          variants = quotedStrings
+            .map(s => s.replace(/"/g, '').trim())
+            .filter(s => s.length > 5 && s.length < 200); // Filter reasonable lengths
+          console.log(`   Extracted ${variants.length} variants via regex`);
+        } else {
+          console.log('⚠️ Failed to parse query expansion response, using original query only');
+          console.log('   Raw response:', response.substring(0, 200));
+          return [query];
+        }
+      }
+
+      // Always include the original query first
+      const allQueries = [query, ...variants.slice(0, NUM_QUERY_VARIANTS)];
+
+      console.log(`✅ Generated ${allQueries.length} query variants:`);
+      allQueries.forEach((q, i) => console.log(`   ${i + 1}. ${q.substring(0, 80)}${q.length > 80 ? '...' : ''}`));
+
+      return allQueries;
+
+    } catch (error) {
+      console.log('⚠️ Query expansion failed, using original query:', error.message);
+      return [query];
+    }
+  }
+
+  /**
+   * Perform multi-query retrieval with Reciprocal Rank Fusion
+   * @param {string[]} queries - Array of query variants
+   * @returns {Promise<Array>} - Combined and ranked chunks
+   */
+  async multiQueryRetrieval(queries) {
+    console.log(`🔎 Performing multi-query retrieval with ${queries.length} variants...`);
+
+    // Generate embeddings for all queries in parallel
+    console.log('📊 Generating embeddings for all query variants...');
+    const embeddings = await Promise.all(
+      queries.map(q => embeddingService.generateEmbedding(q))
+    );
+
+    // Search with each embedding in parallel
+    console.log('🔍 Searching with each query variant...');
+    const allResults = await Promise.all(
+      embeddings.map(emb => qdrantService.searchSimilar(emb, CHUNKS_PER_QUERY))
+    );
+
+    // Apply Reciprocal Rank Fusion (RRF) to combine results
+    console.log('🔀 Applying Reciprocal Rank Fusion...');
+    const rrfScores = new Map(); // id -> RRF score
+    const chunkData = new Map(); // id -> chunk data
+
+    allResults.forEach((results, queryIndex) => {
+      results.forEach((result, rank) => {
+        const id = result.id;
+
+        // RRF formula: 1 / (k + rank)
+        const rrfScore = 1 / (RRF_K + rank + 1);
+
+        // Accumulate RRF scores across all query variants
+        const currentScore = rrfScores.get(id) || 0;
+        rrfScores.set(id, currentScore + rrfScore);
+
+        // Store chunk data (keep the one with highest original score)
+        if (!chunkData.has(id) || chunkData.get(id).score < result.score) {
+          chunkData.set(id, result);
+        }
+      });
+    });
+
+    // Convert to array, sort by RRF score, and attach the score
+    const combinedResults = Array.from(rrfScores.entries())
+      .map(([id, rrfScore]) => {
+        const chunk = chunkData.get(id);
+        return {
+          ...chunk,
+          rrf_score: rrfScore,
+          // Normalize RRF score to 0-1 range for display (max possible = queries.length / (k+1))
+          score: chunk.score, // Keep original vector similarity score
+          combined_score: rrfScore / (queries.length / (RRF_K + 1)) // Normalized RRF
+        };
+      })
+      .sort((a, b) => b.rrf_score - a.rrf_score);
+
+    console.log(`✅ Combined ${combinedResults.length} unique chunks from ${queries.length} queries`);
+
+    // Log top 5 RRF scores
+    console.log('📊 Top 5 RRF scores:');
+    combinedResults.slice(0, 5).forEach((c, i) => {
+      console.log(`   ${i + 1}. RRF: ${c.rrf_score.toFixed(4)}, Vector: ${c.score.toFixed(4)} - ${(c.title || 'Unknown').substring(0, 50)}`);
+    });
+
+    return combinedResults;
+  }
+
+  /**
+   * Process a user query using enhanced RAG pipeline
    * @param {string} query - The user's question
    * @param {number} topK - Number of relevant chunks to retrieve (default: 5)
    * @returns {Promise<Object>} - Response with answer and sources
@@ -29,16 +191,36 @@ class RAGService {
         console.log('📝 Detected Urdu query, using translated version for search');
       }
 
-      // Step 2: Generate embedding for the translated/English query
-      console.log('📊 Generating query embedding...');
-      const queryEmbedding = await embeddingService.generateEmbedding(queryForEmbedding);
+      let initialChunks;
+      let retrievalMetadata = {};
 
-      // Step 3: Search for similar chunks in Qdrant
-      // Retrieve a larger set first (50 chunks) to find all potentially relevant ones
-      console.log('🔎 Searching for relevant legal documents...');
-      const initialChunks = await qdrantService.searchSimilar(queryEmbedding, 50);
+      // Step 2: Enhanced retrieval with query expansion and multi-query
+      if (ENABLE_MULTI_QUERY) {
+        // Step 2a: Expand query into multiple variants
+        const queryVariants = await this.expandQuery(queryForEmbedding);
 
-      // Apply dynamic filtering based on score threshold
+        // Step 2b: Perform multi-query retrieval with RRF
+        initialChunks = await this.multiQueryRetrieval(queryVariants);
+
+        retrievalMetadata = {
+          multi_query_enabled: true,
+          query_variants: queryVariants.length,
+          queries_used: queryVariants
+        };
+      } else {
+        // Fallback to single query retrieval
+        console.log('📊 Generating query embedding...');
+        const queryEmbedding = await embeddingService.generateEmbedding(queryForEmbedding);
+
+        console.log('🔎 Searching for relevant legal documents...');
+        initialChunks = await qdrantService.searchSimilar(queryEmbedding, 50);
+
+        retrievalMetadata = {
+          multi_query_enabled: false
+        };
+      }
+
+      // Step 3: Apply dynamic filtering based on score threshold
       let relevantChunks = this.filterChunksByScore(initialChunks, topK);
 
       if (relevantChunks.length === 0) {
@@ -93,7 +275,7 @@ class RAGService {
         return match;
       });
 
-      // Step 4: Prepare sources for citation - only include sources that were actually used
+      // Step 5: Prepare sources for citation - only include sources that were actually used
       const sources = relevantChunks
         .map((chunk, index) => ({ chunk, originalIndex: index + 1 }))
         .filter(({ originalIndex }) => usedSourceIndices.includes(originalIndex))
@@ -102,6 +284,7 @@ class RAGService {
             // Reference Information - keep the original index so it matches citations in the answer
             index: originalIndex,
             relevance_score: parseFloat(chunk.score.toFixed(4)),
+            rrf_score: chunk.rrf_score ? parseFloat(chunk.rrf_score.toFixed(4)) : undefined,
 
             // Document Details
             title: chunk.chunk_title || chunk.title || 'Unknown Source', // Top level title for frontend
@@ -153,6 +336,7 @@ class RAGService {
           embedding_model: 'sentence-transformers/all-mpnet-base-v2',
           query_translated: translationResult.isUrdu,
           query_for_search: translationResult.isUrdu ? queryForEmbedding : undefined,
+          ...retrievalMetadata
         },
       };
     } catch (error) {

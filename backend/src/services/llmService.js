@@ -1,32 +1,72 @@
 /**
  * LLM Service
- * Handles interactions with OpenRouter API using Gemini 2.0 Flash
+ * Handles interactions with Gemini API with fallback to OpenRouter
+ * Priority: Gemini (all API keys) → OpenRouter (all API keys)
+ * Automatically discovers all API keys matching patterns:
+ *   - GEMINI_API_KEY, GEMINI_API_KEY_0, GEMINI_API_KEY_1, ...
+ *   - OPENROUTER_API_KEY, OPENROUTER_API_KEY_0, OPENROUTER_API_KEY_1, ...
+ * LLM_SERVICE=gemini → Try Gemini first, then fallback to OpenRouter
+ * LLM_SERVICE=<anything else or missing> → Use OpenRouter directly (default)
  */
 
 import dotenv from 'dotenv';
 
 dotenv.config();
 
-// Collect all OpenRouter API keys from environment variables
-const OPENROUTER_API_KEYS = [
-  process.env.OPENROUTER_API_KEY,
-  process.env.OPENROUTER_API_KEY_1,
-  process.env.OPENROUTER_API_KEY_2,
-  process.env.OPENROUTER_API_KEY_3,
-  process.env.OPENROUTER_API_KEY_4,
-].filter(key => key && key.trim() !== ''); // Remove undefined/empty keys
+// LLM Service Toggle - 'gemini' uses Gemini API with fallback, anything else defaults to OpenRouter only
+const LLM_SERVICE = process.env.LLM_SERVICE?.toLowerCase()?.trim() || 'openrouter';
+const USE_GEMINI = LLM_SERVICE === 'gemini';
 
-let currentKeyIndex = 0; // Track which key we're using
+/**
+ * Auto-discover all API keys matching a prefix pattern
+ * Looks for: PREFIX, PREFIX_0, PREFIX_1, PREFIX_2, ... up to PREFIX_99
+ * @param {string} prefix - The prefix to search for (e.g., 'GEMINI_API_KEY')
+ * @returns {Array<string>} - Array of found API keys
+ */
+function discoverApiKeys(prefix) {
+  const keys = [];
+
+  // Check for base key without number (e.g., GEMINI_API_KEY)
+  if (process.env[prefix] && process.env[prefix].trim() !== '') {
+    keys.push(process.env[prefix]);
+  }
+
+  // Check for numbered keys (e.g., GEMINI_API_KEY_0, GEMINI_API_KEY_1, ...)
+  for (let i = 0; i < 100; i++) {
+    const key = process.env[`${prefix}_${i}`];
+    if (key && key.trim() !== '') {
+      keys.push(key);
+    }
+  }
+
+  return keys;
+}
+
+// Gemini API Configuration - Multiple models and keys for fallback
+const GEMINI_API_KEYS = discoverApiKeys('GEMINI_API_KEY');
+const GEMINI_BASE_URL = 'https://generativelanguage.googleapis.com/v1beta/models';
+const GEMINI_MODELS = [
+  'gemini-2.5-flash',   // Primary: Gemini 2.5 Flash
+  'gemini-3-flash',   // Fallback 1: Gemini 3 Flash
+];
+
+// Collect all OpenRouter API keys from environment variables
+const OPENROUTER_API_KEYS = discoverApiKeys('OPENROUTER_API_KEY');
+
+console.log(`🤖 LLM Service initialized with: ${USE_GEMINI ? 'GEMINI (with OpenRouter fallback)' : 'OPENROUTER'}`);
+console.log(`   📊 Gemini API Keys: ${GEMINI_API_KEYS.length} found`);
+console.log(`   📊 OpenRouter API Keys: ${OPENROUTER_API_KEYS.length} found`);
+
+let currentOpenRouterKeyIndex = 0; // Track which OpenRouter key we're using
 
 const OPENROUTER_URL = 'https://openrouter.ai/api/v1/chat/completions';
 // Try different free models if one is rate-limited
-const MODELS = [
+const OPENROUTER_MODELS = [
   "nvidia/nemotron-3-nano-30b-a3b:free",
   "arcee-ai/trinity-large-preview:free",
   "arcee-ai/trinity-mini:free",
   "tngtech/deepseek-r1t2-chimera:free",
   "tngtech/deepseek-r1t-chimera:free",
-  "stepfun/step-3.5-flash:free",
   "stepfun/step-3.5-flash:free",
   "liquid/lfm-2.5-1.2b-thinking:free",
   "meta-llama/llama-3.3-70b-instruct:free",
@@ -34,29 +74,223 @@ const MODELS = [
   "mistralai/mistral-small-3.2-24b-instruct:free",
   "mistralai/mistral-7b-instruct:free",
   "meta-llama/llama-4-maverick:free",
-  // "google/gemini-2.0-flash-exp:free",
-  // "meta-llama/llama-3.1-8b-instruct:free",
-  // "deepseek/deepseek-chat-v3.1:free",
-  // "google/gemini-flash-1.5:free"
 ];
-const MODEL = process.env.OPENROUTER_MODEL || MODELS[0];
+
+// For backward compatibility
+const MODELS = OPENROUTER_MODELS;
 
 class LLMService {
+  constructor() {
+    this.useGemini = USE_GEMINI;
+  }
+
   /**
-   * Get the next available API key (with rotation)
+   * Get the next available OpenRouter API key (with rotation)
    */
-  getNextApiKey() {
+  getNextOpenRouterApiKey() {
     if (OPENROUTER_API_KEYS.length === 0) {
       throw new Error('No OpenRouter API keys configured in environment variables');
     }
 
-    const key = OPENROUTER_API_KEYS[currentKeyIndex];
-    currentKeyIndex = (currentKeyIndex + 1) % OPENROUTER_API_KEYS.length;
+    const key = OPENROUTER_API_KEYS[currentOpenRouterKeyIndex];
+    currentOpenRouterKeyIndex = (currentOpenRouterKeyIndex + 1) % OPENROUTER_API_KEYS.length;
     return key;
+  }
+
+  // Alias for backward compatibility
+  getNextApiKey() {
+    return this.getNextOpenRouterApiKey();
+  }
+
+  /**
+   * Call a specific Gemini model with a specific API key
+   * @param {string} model - The Gemini model name
+   * @param {string} apiKey - The Gemini API key to use
+   * @param {Array} filteredContents - Formatted contents for Gemini API
+   * @param {number} temperature - Temperature for generation
+   * @param {number} maxTokens - Maximum tokens to generate
+   * @returns {Promise<string>} - Generated text
+   */
+  async callSingleGeminiModel(model, apiKey, filteredContents, temperature, maxTokens) {
+    const url = `${GEMINI_BASE_URL}/${model}:generateContent?key=${apiKey}`;
+
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        contents: filteredContents,
+        generationConfig: {
+          temperature,
+          maxOutputTokens: maxTokens,
+        }
+      }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      throw new Error(data.error?.message || `Gemini ${model} error: ${JSON.stringify(data)}`);
+    }
+
+    return data.candidates?.[0]?.content?.parts?.[0]?.text || 'No response generated';
+  }
+
+  /**
+   * Call Gemini API with model and API key fallback chain
+   * Priority: For each model, try all API keys before moving to next model
+   * Model 1 + Key 1 → Model 1 + Key 2 → ... → Model 2 + Key 1 → Model 2 + Key 2 → ...
+   * @param {Array} messages - Array of message objects with role and content
+   * @param {number} temperature - Temperature for generation
+   * @param {number} maxTokens - Maximum tokens to generate
+   * @returns {Promise<string>} - Generated text
+   */
+  async callGeminiAPI(messages, temperature = 0.7, maxTokens = 2048) {
+    if (GEMINI_API_KEYS.length === 0) {
+      throw new Error('No Gemini API keys configured in environment variables');
+    }
+
+    // Convert messages to Gemini format
+    const contents = messages.map(msg => ({
+      role: msg.role === 'assistant' ? 'model' : 'user',
+      parts: [{ text: msg.content }]
+    }));
+
+    // Handle system message by prepending it to the first user message
+    const systemMessage = messages.find(m => m.role === 'system');
+    if (systemMessage) {
+      const firstUserIdx = contents.findIndex(c => c.role === 'user');
+      if (firstUserIdx !== -1) {
+        contents[firstUserIdx].parts[0].text = `${systemMessage.content}\n\n${contents[firstUserIdx].parts[0].text}`;
+      }
+    }
+
+    // Filter out system messages and ensure alternating user/model roles
+    const filteredContents = contents.filter(c => {
+      const originalMsg = messages.find(m => m.content === c.parts[0].text || c.parts[0].text.includes(m.content));
+      return originalMsg?.role !== 'system';
+    });
+
+    // Try each Gemini model with all API keys before moving to next model
+    const errors = [];
+    for (let modelIndex = 0; modelIndex < GEMINI_MODELS.length; modelIndex++) {
+      const model = GEMINI_MODELS[modelIndex];
+      console.log(`🔮 Trying Gemini model ${modelIndex + 1}/${GEMINI_MODELS.length}: ${model}`);
+
+      for (let keyIndex = 0; keyIndex < GEMINI_API_KEYS.length; keyIndex++) {
+        const apiKey = GEMINI_API_KEYS[keyIndex];
+
+        try {
+          console.log(`   🔑 Using Gemini API Key ${keyIndex + 1}/${GEMINI_API_KEYS.length}...`);
+          const result = await this.callSingleGeminiModel(model, apiKey, filteredContents, temperature, maxTokens);
+          console.log(`✅ Successfully generated response with ${model} (Key ${keyIndex + 1})`);
+          return result;
+        } catch (error) {
+          const errorMsg = error.message;
+          console.log(`   ⚠️ Key ${keyIndex + 1} failed: ${errorMsg.substring(0, 100)}...`);
+          errors.push({ model, keyIndex: keyIndex + 1, error: errorMsg });
+
+          // Check if it's a rate limit error - try next key
+          if (errorMsg.includes('quota') || errorMsg.includes('rate') || errorMsg.includes('429')) {
+            if (keyIndex < GEMINI_API_KEYS.length - 1) {
+              console.log(`   🔄 Rate limited, trying next Gemini API key...`);
+              continue;
+            }
+          }
+
+          // For model not found errors, skip to next model immediately
+          if (errorMsg.includes('not found') || errorMsg.includes('not supported')) {
+            console.log(`   ⚠️ Model ${model} not available, skipping to next model...`);
+            break;
+          }
+
+          // For other errors, try next key
+          if (keyIndex < GEMINI_API_KEYS.length - 1) {
+            console.log(`   🔄 Trying next Gemini API key...`);
+          }
+        }
+      }
+
+      if (modelIndex < GEMINI_MODELS.length - 1) {
+        console.log(`🔄 All keys exhausted for ${model}, trying next model...`);
+      }
+    }
+
+    // All Gemini models and keys failed - throw error to trigger OpenRouter fallback
+    throw new Error(`All Gemini models and API keys failed. Tried ${GEMINI_MODELS.length} models × ${GEMINI_API_KEYS.length} keys`);
+  }
+
+  /**
+   * Call OpenRouter API with model fallback and key rotation
+   * @param {Array} messages - Array of message objects with role and content  
+   * @param {number} temperature - Temperature for generation (unused, for compatibility)
+   * @param {number} maxTokens - Maximum tokens to generate (unused, for compatibility)
+   * @returns {Promise<string>} - Generated text
+   */
+  async callOpenRouterAPI(messages, temperature = 0.7, maxTokens = 2048) {
+    if (OPENROUTER_API_KEYS.length === 0) {
+      throw new Error('No OpenRouter API keys configured in environment variables');
+    }
+
+    // Try each model with all API keys before moving to next model
+    for (let modelIndex = 0; modelIndex < MODELS.length; modelIndex++) {
+      const model = MODELS[modelIndex];
+      console.log(`🔄 Trying OpenRouter Model ${modelIndex + 1}/${MODELS.length}: ${model}`);
+
+      for (let keyIndex = 0; keyIndex < OPENROUTER_API_KEYS.length; keyIndex++) {
+        const apiKey = OPENROUTER_API_KEYS[keyIndex];
+
+        try {
+          console.log(`🔑 Using API Key ${keyIndex + 1}/${OPENROUTER_API_KEYS.length}`);
+
+          const response = await fetch(OPENROUTER_URL, {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${apiKey}`,
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              model: model,
+              messages: messages,
+            }),
+          });
+
+          const data = await response.json();
+
+          if (!response.ok) {
+            if (data.error?.code === 429) {
+              if (keyIndex < OPENROUTER_API_KEYS.length - 1) {
+                console.log(`⚠️ API key ${keyIndex + 1} rate-limited, trying next key...`);
+                continue;
+              } else if (modelIndex < MODELS.length - 1) {
+                console.log(`⚠️ All keys rate-limited for ${model}, trying next model...`);
+                break;
+              }
+            }
+
+            if (keyIndex < OPENROUTER_API_KEYS.length - 1) continue;
+            if (modelIndex < MODELS.length - 1) break;
+            throw new Error(data.error?.message || 'OpenRouter API failed');
+          }
+
+          const generatedText = data.choices[0]?.message?.content || 'No response generated';
+          console.log(`✅ Successfully generated response with OpenRouter (${model})`);
+          return generatedText;
+        } catch (error) {
+          if (modelIndex === MODELS.length - 1 && keyIndex === OPENROUTER_API_KEYS.length - 1) {
+            throw error;
+          }
+        }
+      }
+    }
+
+    throw new Error('All OpenRouter models and API keys exhausted');
   }
 
   /**
    * Translate Urdu query to English for vector search
+   * Fallback chain: Gemini 2.5 Flash → Gemini 3 Flash → OpenRouter
    * @param {string} query - The user's question (possibly in Urdu)
    * @returns {Promise<Object>} - Object containing {translatedQuery, isUrdu, originalQuery}
    */
@@ -93,68 +327,57 @@ class LLMService {
 
       console.log(`🔄 Query detected as ${hasUrduScript ? 'Urdu Script' : 'Roman Urdu'}, translating...`);
 
-      // Try translation with API key rotation
-      for (let attempt = 0; attempt < OPENROUTER_API_KEYS.length; attempt++) {
-        const apiKey = this.getNextApiKey();
-
-        try {
-          const translationPrompt = `Translate this ${hasUrduScript ? 'Urdu' : 'Roman Urdu'} legal query to English. Preserve legal terminology. Return ONLY the English translation, no extra text.
+      const translationPrompt = `Translate this ${hasUrduScript ? 'Urdu' : 'Roman Urdu'} legal query to English. Preserve legal terminology. Return ONLY the English translation, no extra text.
 
 Query: ${query}
 
 English:`;
 
-          const response = await fetch(OPENROUTER_URL, {
-            method: 'POST',
-            headers: {
-              'Authorization': `Bearer ${apiKey}`,
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              model: MODELS[0],
-              messages: [{ role: 'user', content: translationPrompt }],
-              temperature: 0.3,
-              max_tokens: 200,
-            }),
-          });
+      const messages = [{ role: 'user', content: translationPrompt }];
 
-          const data = await response.json();
+      // Try Gemini first if toggle is set
+      if (this.useGemini) {
+        try {
+          console.log('🔮 Trying Gemini for translation...');
+          const translatedQuery = await this.callGeminiAPI(messages, 0.3, 200);
 
-          if (!response.ok) {
-            // If rate limited and we have more keys, try next key
-            if (data.error?.code === 429 && attempt < OPENROUTER_API_KEYS.length - 1) {
-              console.log(`⚠️ API key ${attempt + 1} rate-limited for translation, trying next key...`);
-              continue;
-            }
-            throw new Error(data.error?.message || 'Translation API failed');
-          }
-
-          const translatedQuery = data.choices[0]?.message?.content?.trim() || query;
-
-          console.log(`✅ Translation complete (using key ${attempt + 1}):`);
+          console.log('✅ Translation complete (using Gemini):');
           console.log(`   Original: ${query}`);
-          console.log(`   Translated: ${translatedQuery}`);
+          console.log(`   Translated: ${translatedQuery.trim()}`);
 
           return {
-            translatedQuery,
+            translatedQuery: translatedQuery.trim(),
             isUrdu: true,
             originalQuery: query,
           };
-        } catch (error) {
-          if (attempt === OPENROUTER_API_KEYS.length - 1) {
-            throw error;
-          }
-          console.log(`⚠️ Translation attempt ${attempt + 1} failed, trying next key...`);
+        } catch (geminiError) {
+          console.log(`⚠️ All Gemini models failed for translation: ${geminiError.message}`);
+          console.log('🔄 Falling back to OpenRouter for translation...');
         }
       }
 
-      // Fallback if all attempts failed
-      console.log('⚠️ All translation attempts failed, using original query');
-      return {
-        translatedQuery: query,
-        isUrdu: true,
-        originalQuery: query,
-      };
+      // Fallback to OpenRouter (or use directly if toggle not set)
+      try {
+        const translatedQuery = await this.callOpenRouterAPI(messages, 0.3, 200);
+
+        console.log('✅ Translation complete (using OpenRouter):');
+        console.log(`   Original: ${query}`);
+        console.log(`   Translated: ${translatedQuery.trim()}`);
+
+        return {
+          translatedQuery: translatedQuery.trim(),
+          isUrdu: true,
+          originalQuery: query,
+        };
+      } catch (openRouterError) {
+        console.error('❌ OpenRouter translation also failed:', openRouterError.message);
+        console.log('⚠️ Using original query as fallback');
+        return {
+          translatedQuery: query,
+          isUrdu: true,
+          originalQuery: query,
+        };
+      }
     } catch (error) {
       console.error('⚠️ Translation error:', error.message);
       return {
@@ -166,115 +389,70 @@ English:`;
   }
 
   /**
-   * Generate a response using OpenRouter with fallback models and API key rotation
+   * Generate a response using Gemini with fallback to OpenRouter
+   * Fallback chain: Gemini 2.5 Flash → Gemini 3 Flash → OpenRouter
    * @param {string} userQuery - The user's question
    * @param {Array<Object>} context - Retrieved context chunks from vector DB
    * @returns {Promise<Object>} - The generated response and used source indices
    */
   async generateResponse(userQuery, context) {
-    if (OPENROUTER_API_KEYS.length === 0) {
-      throw new Error('No OpenRouter API keys configured in environment variables');
-    }
-
     // Build context string from retrieved chunks
     const contextString = this.buildContextString(context);
 
     // Create the prompt with context and query
     const prompt = this.createPrompt(userQuery, contextString);
 
-    // Try each model with all API keys before moving to next model
-    for (let modelIndex = 0; modelIndex < MODELS.length; modelIndex++) {
-      const model = MODELS[modelIndex];
-      console.log(`🔄 Trying Model ${modelIndex + 1}/${MODELS.length}: ${model}`);
+    const systemMessage = 'You are an expert legal assistant specializing in Pakistani law. You provide accurate, helpful answers based on legal documents and precedents. CRITICAL: You MUST cite your sources using the format [Source 1], [Source 2], etc. whenever you reference information from the provided context. Always include source citations in your response. IMPORTANT: Always complete your response fully - never leave sentences or sections unfinished.';
 
-      // For each model, try all available API keys
-      for (let keyIndex = 0; keyIndex < OPENROUTER_API_KEYS.length; keyIndex++) {
-        const apiKey = OPENROUTER_API_KEYS[keyIndex];
+    const messages = [
+      { role: 'system', content: systemMessage },
+      { role: 'user', content: prompt }
+    ];
 
-        try {
-          console.log(`🔑 Using API Key ${keyIndex + 1}/${OPENROUTER_API_KEYS.length} with ${model}`);
+    // Try Gemini first if toggle is set
+    if (this.useGemini) {
+      try {
+        console.log('🔮 Trying Gemini for response generation...');
+        let generatedText = await this.callGeminiAPI(messages, 0.7, 8192);
 
-          // Call OpenRouter API
-          const response = await fetch(OPENROUTER_URL, {
-            method: 'POST',
-            headers: {
-              'Authorization': `Bearer ${apiKey}`,
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              model: model,
-              messages: [
-                {
-                  role: 'system',
-                  content: 'You are an expert legal assistant specializing in Pakistani law. You provide accurate, helpful answers based on legal documents and precedents. CRITICAL: You MUST cite your sources using the format [Source 1], [Source 2], etc. whenever you reference information from the provided context. Always include source citations in your response.',
-                },
-                {
-                  role: 'user',
-                  content: prompt,
-                },
-              ],
-            }),
-          });
+        // Check for truncated response and add graceful ending if needed
+        // generatedText = this.handleTruncatedResponse(generatedText);
 
-          const data = await response.json();
+        console.log('✅ Successfully generated response with Gemini');
 
-          if (!response.ok) {
-            // If rate limited, try next API key for this model
-            if (data.error?.code === 429) {
-              if (keyIndex < OPENROUTER_API_KEYS.length - 1) {
-                console.log(`⚠️ API key ${keyIndex + 1} rate-limited for ${model}, trying next key...`);
-                continue;
-              } else if (modelIndex < MODELS.length - 1) {
-                console.log(`⚠️ All API keys rate-limited for ${model}, moving to next model...`);
-                break; // Break out of key loop to try next model
-              } else {
-                throw new Error(`All models and API keys exhausted due to rate limits`);
-              }
-            }
+        // Extract which sources were actually used in the response
+        const usedSources = this.extractUsedSources(generatedText, context.length);
 
-            // For other errors
-            if (keyIndex < OPENROUTER_API_KEYS.length - 1) {
-              console.log(`⚠️ Error with ${model} (key ${keyIndex + 1}): ${data.error?.message || 'Unknown error'}, trying next key...`);
-              continue;
-            } else if (modelIndex < MODELS.length - 1) {
-              console.log(`⚠️ All keys failed for ${model}, moving to next model...`);
-              break;
-            } else {
-              throw new Error(`OpenRouter API error: ${data.error?.message || JSON.stringify(data)}`);
-            }
-          }
-
-          // Extract the generated text
-          const generatedText = data.choices[0]?.message?.content || 'No response generated';
-          console.log(`✅ Successfully generated response with ${model} (API Key ${keyIndex + 1})`);
-
-          // Extract which sources were actually used in the response
-          const usedSources = this.extractUsedSources(generatedText, context.length);
-
-          return {
-            answer: generatedText,
-            usedSources: usedSources
-          };
-        } catch (error) {
-          // If this is the last key for the last model, throw the error
-          if (modelIndex === MODELS.length - 1 && keyIndex === OPENROUTER_API_KEYS.length - 1) {
-            console.error('❌ Error generating LLM response:', error);
-            throw new Error(`LLM generation failed: ${error.message}`);
-          }
-
-          // Otherwise, try next key or model
-          if (keyIndex < OPENROUTER_API_KEYS.length - 1) {
-            console.log(`⚠️ Error with ${model} (key ${keyIndex + 1}): ${error.message}, trying next key...`);
-          } else {
-            console.log(`⚠️ All keys failed for ${model}, moving to next model...`);
-            break;
-          }
-        }
+        return {
+          answer: generatedText,
+          usedSources: usedSources
+        };
+      } catch (geminiError) {
+        console.log(`⚠️ All Gemini models failed: ${geminiError.message}`);
+        console.log('🔄 Falling back to OpenRouter for response generation...');
       }
     }
 
-    // If we get here, all models and keys failed
-    throw new Error('All models and API keys exhausted without successful response');
+    // Fallback to OpenRouter (or use directly if toggle not set)
+    try {
+      let generatedText = await this.callOpenRouterAPI(messages, 0.7, 8192);
+
+      // Check for truncated response and add graceful ending if needed
+      generatedText = this.handleTruncatedResponse(generatedText);
+
+      console.log('✅ Successfully generated response with OpenRouter');
+
+      // Extract which sources were actually used in the response
+      const usedSources = this.extractUsedSources(generatedText, context.length);
+
+      return {
+        answer: generatedText,
+        usedSources: usedSources
+      };
+    } catch (openRouterError) {
+      console.error('❌ OpenRouter also failed:', openRouterError.message);
+      throw new Error(`All LLM providers failed. Gemini and OpenRouter both exhausted: ${openRouterError.message}`);
+    }
   }
 
   /**
@@ -312,6 +490,41 @@ English:`;
   }
 
   /**
+   * Detect and handle truncated LLM responses
+   * Adds a graceful ending if the response appears to be cut off
+   * @param {string} response - The LLM's generated response
+   * @returns {string} - The response with graceful ending if needed
+   */
+  handleTruncatedResponse(response) {
+    if (!response) return response;
+
+    const trimmed = response.trim();
+
+    // Check for signs of truncation
+    const truncationIndicators = [
+      // Ends mid-sentence (no proper punctuation)
+      /[a-zA-Z,]\s*$/,
+      // Ends with opening bracket/asterisk/etc
+      /[\[\(\*]\s*$/,
+      // Ends with "Important" or similar incomplete sections
+      /\*\*\s*(Important|Note|Warning|Disclaimer)\s*$/i,
+      // Ends with colon (about to list something)
+      /:\s*$/,
+      // Ends with bullet point marker
+      /^[\-\*•]\s*$/m,
+    ];
+
+    const isTruncated = truncationIndicators.some(pattern => pattern.test(trimmed));
+
+    if (isTruncated) {
+      console.log('⚠️ Detected potentially truncated response, adding graceful ending');
+      return trimmed + '\n\n---\n\n*⚠️ Note: This response may have been truncated due to length limits. For a complete answer, please try asking a more specific question or break down your query into smaller parts.*';
+    }
+
+    return response;
+  }
+
+  /**
    * Build context string from retrieved chunks
    * @param {Array<Object>} context - Retrieved context chunks
    * @returns {string} - Formatted context string
@@ -342,73 +555,217 @@ Content: ${item.chunk}
    * @returns {string} - Complete prompt
    */
   createPrompt(userQuery, contextString) {
-    return `You are an expert (responding to end-user) AI Legal Advisor specializing in Pakistani law, with deep knowledge across multiple jurisdictions including Federal, Punjab, Sindh, Balochistan, and KPK legislation, as well as Supreme Court judgments and case law.
+    return `You are Civil Lawyer AI, an expert AI Legal Advisor with specialized expertise in Pakistani civillaw. You serve as a trusted legal guide for citizens, students, professionals, and businesses seeking to understand Pakistani civil law.
 
 ═══════════════════════════════════════════════════════════════
-LEGAL DATABASE CONTEXT:
+🔐 YOUR EXPERTISE & KNOWLEDGE BASE
+═══════════════════════════════════════════════════════════════
+• Federal Legislation: Constitution of Pakistan, Acts of Parliament, Ordinances
+• Provincial Laws: Punjab, Sindh, Balochistan, KPK, Gilgit-Baltistan, AJK
+• Case Law: Supreme Court, Federal Shariat Court, High Courts (LHC, SHC, PHC, BHC)
+• Legal Domains: Contract Law, Property Law, Family Law, Labor Law, Civil Procedure, Corporate Law, Tax Law, Constitutional Law
+
+═══════════════════════════════════════════════════════════════
+📚 RETRIEVED LEGAL DOCUMENTS (Your Primary Knowledge Source)
 ═══════════════════════════════════════════════════════════════
 ${contextString}
 
 ═══════════════════════════════════════════════════════════════
-CLIENT'S LEGAL QUERY:
+❓ USER'S LEGAL QUESTION
 ═══════════════════════════════════════════════════════════════
 ${userQuery}
 
 ═══════════════════════════════════════════════════════════════
-YOUR EXPERT ANALYSIS FRAMEWORK:
+🧠 REASONING PROCESS (Follow This Mental Framework)
 ═══════════════════════════════════════════════════════════════
-
-🎯 RESPONSE GUIDELINES:
-
-1. **LANGUAGE MATCHING - CRITICAL**
-   - DETECT the language of the user's query first
-   - If query is in ENGLISH → Respond ONLY in English
-   - If query is in ROMAN URDU (Urdu written in English script like "kya", "hai", "aap", "mujhe", "chahiye") → Respond ONLY in Roman Urdu
-   - If query is in URDU SCRIPT (اردو) → Respond ONLY in Urdu script
-   - NEVER mix languages in your response - maintain consistency throughout
-   - Examples of Roman Urdu: "qanoon kya kehta hai?", "mujhe employee rights ke baare mein bataye", "yeh act kis saal mein bana tha?"
-
-2. **COMPREHENSIVE ANALYSIS**
-   - Start with a actual concise answer to the core question
-   - Provide detailed legal reasoning with step-by-step explanation
-   - Reference specific sections, articles, or clauses from the provided sources
-   - Explain the practical implications and real-world applications
-
-3. **STRUCTURED PRESENTATION**
-   - Use clear headings and bullet points for readability
-   - Break down complex legal concepts into digestible parts
-   - Present information in logical flow: Issue → Rule → Application → Conclusion
-
-4. **AUTHORITATIVE CITATIONS - MANDATORY**
-   - **CRITICAL**: You MUST cite sources using the exact format [Source 1], [Source 2], etc.
-   - When referencing information from the context, always include the source number
-   - Example: "According to the law [Source 1], employees are entitled to..."
-   - Example: "The maximum working hours are specified [Source 3] as 48 hours per week."
-   - You can provide additional details like Act name and section, but MUST include [Source X]
-   - Quote exact legal text when it strengthens your answer
-   - If you reference multiple sources in one statement, cite all: [Source 1] [Source 2]
-
-5. **PRACTICAL GUIDANCE**
-   - Explain how the law applies to the specific situation
-   - Mention any exceptions, limitations, or special circumstances
-   - Provide actionable insights where appropriate
-   - Highlight important legal procedures or requirements
-
-6. **TRANSPARENCY & LIMITATIONS**
-   - If the provided context is insufficient, clearly state what additional information would be needed
-   - Acknowledge any ambiguities in the law or interpretation
-   - Recommend consulting a qualified lawyer for complex cases or final legal decisions
-   - Never fabricate information not present in the context
-
-7. **ENHANCED READABILITY**
-   - Use emojis sparingly for section markers (⚖️ 📋 ⚠️ 💡) to improve visual organization
-   - Employ bold and formatting for key terms and important points
-   - Keep paragraphs concise and focused
+Before responding, internally process:
+1. IDENTIFY: What specific legal issue(s) is the user asking about?
+2. LOCATE: Which sources from the context directly address this issue?
+3. EXTRACT: What are the exact legal provisions, sections, or precedents?
+4. ANALYZE: How do these laws apply to the user's specific situation?
+5. SYNTHESIZE: What is the clear, actionable answer?
 
 ═══════════════════════════════════════════════════════════════
-YOUR EXPERT LEGAL RESPONSE:
+📋 RESPONSE GUIDELINES (STRICTLY FOLLOW)
+═══════════════════════════════════════════════════════════════
+
+🌐 **1. LANGUAGE DETECTION & MATCHING (MANDATORY)**
+┌─────────────────────────────────────────────────────────────┐
+│ DETECT the query language FIRST, then respond ONLY in that │
+│ same language throughout your ENTIRE response.             │
+├─────────────────────────────────────────────────────────────┤
+│ • ENGLISH query → Respond fully in English                 │
+│ • ROMAN URDU query → Respond fully in Roman Urdu           │
+│   (e.g., "kya", "hai", "aap", "mujhe", "bataye", "haq")    │
+│ • URDU SCRIPT query (اردو) → Respond fully in Urdu script  │
+├─────────────────────────────────────────────────────────────┤
+│ ⚠️ NEVER mix languages. Stay consistent throughout.        │
+└─────────────────────────────────────────────────────────────┘
+
+📝 **2. RESPONSE STRUCTURE (Use This Format)**
+
+**📌 Quick Answer**
+→ Provide a direct 1-3 sentence answer to the core question upfront.
+→ Include the most critical legal provision with citation.
+
+**⚖️ Legal Analysis**
+→ Break down the relevant law(s) systematically.
+→ Quote exact legal text from sources when available.
+→ Explain legal terminology in simple terms.
+
+**📋 Key Provisions**
+→ List specific sections, articles, or clauses that apply.
+→ Use bullet points for clarity.
+→ Always cite: [Source X]
+
+**🔍 Application to Your Situation**
+→ Explain how the law specifically applies to the user's case.
+→ Cover any conditions, exceptions, or prerequisites.
+
+**⚠️ Important Considerations** (if applicable)
+→ Time limitations, deadlines, or statutes of limitation.
+→ Procedural requirements or formalities.
+→ Potential penalties or consequences.
+
+**💡 Practical Next Steps** (if applicable)
+→ What the user should do next.
+→ Which authority, court, or office to approach.
+→ Documents or evidence typically needed.
+
+
+
+🔗 **3. CITATION RULES (STRICTLY ENFORCED)**
+┌─────────────────────────────────────────────────────────────┐
+│ • EVERY legal claim MUST have a citation: [Source X]       │
+│ • Place citation IMMEDIATELY after the relevant statement  │
+│ • Multiple sources for one claim: [Source 1] [Source 2]    │
+│ • Include Act name + Section when quoting: "Under Section  │
+│   10 of the Contract Act, 1872 [Source 2]..."              │
+│ • NO citation = Statement NOT allowed (anti-hallucination) │
+└─────────────────────────────────────────────────────────────┘
+
+✅ GOOD: "The limitation period for filing a civil suit is 3 years [Source 4]."
+✅ GOOD: "According to Section 9 of the CPC [Source 1], civil courts have jurisdiction..."
+❌ BAD: "Generally, contracts require consideration." (No source cited)
+
+🚫 **4. ANTI-HALLUCINATION SAFEGUARDS (CRITICAL)**
+┌─────────────────────────────────────────────────────────────┐
+│ • ONLY use information present in the provided sources     │
+│ • If sources don't cover the topic → Say so explicitly     │
+│ • NEVER invent section numbers, case names, or dates       │
+│ • NEVER assume laws from other countries apply             │
+│ • If unsure → Recommend consulting a lawyer                │
+│ • Distinguish between: "The law states..." vs "Generally   │
+│   speaking..." (latter needs explicit uncertainty marker)  │
+└─────────────────────────────────────────────────────────────┘
+
+When context is insufficient, say:
+"The provided legal documents do not contain specific information about [topic]. I recommend consulting a qualified lawyer or referring to [relevant authority] for accurate guidance on this matter."
+
+📖 **5. LEGAL COMMUNICATION STYLE**
+• Be authoritative yet accessible
+• Avoid unnecessary legal jargon; explain terms when used
+• Be empathetic - users often face stressful legal situations
+• Be thorough but concise - respect the user's time
+• Use examples to illustrate complex concepts
+• Maintain professional tone throughout
+
+🎨 **6. FORMATTING FOR READABILITY**
+• Use **bold** for key legal terms and important points
+• Use bullet points for lists of requirements or conditions
+• Use section headers with emojis for visual organization
+• Keep paragraphs short (3-4 sentences max)
+• Use tables for comparing options when relevant
+• Include horizontal dividers between major sections
+
+⚠️ **7. MANDATORY DISCLAIMER**
+End every response with a brief disclaimer in the same language as your response:
+
+[English]: "⚠️ *This information is for educational purposes only and does not constitute legal advice. For matters requiring legal action, please consult a qualified lawyer or advocate.*"
+
+[Roman Urdu]: "⚠️ *Yeh information sirf ilmi maqsad ke liye hai aur legal advice nahi hai. Qanooni karwai ke liye kisi lawyer se mushwara karein.*"
+
+[Urdu Script]: "⚠️ *یہ معلومات صرف تعلیمی مقصد کے لیے ہیں اور قانونی مشورہ نہیں ہیں۔ قانونی کارروائی کے لیے کسی وکیل سے مشورہ کریں۔*"
+
+═══════════════════════════════════════════════════════════════
+✨ BEGIN YOUR EXPERT LEGAL RESPONSE
 ═══════════════════════════════════════════════════════════════`;
   }
+
+
+
+  // =================================================================
+
+  //     createPrompt(userQuery, contextString) {
+  //     return `You are an expert (responding to end-user) AI Legal Advisor specializing in Pakistani law, with deep knowledge across multiple jurisdictions including Federal, Punjab, Sindh, Balochistan, and KPK legislation, as well as Supreme Court judgments and case law.
+
+  // ═══════════════════════════════════════════════════════════════
+  // LEGAL DATABASE CONTEXT:
+  // ═══════════════════════════════════════════════════════════════
+  // ${contextString}
+
+  // ═══════════════════════════════════════════════════════════════
+  // CLIENT'S LEGAL QUERY:
+  // ═══════════════════════════════════════════════════════════════
+  // ${userQuery}
+
+  // ═══════════════════════════════════════════════════════════════
+  // YOUR EXPERT ANALYSIS FRAMEWORK:
+  // ═══════════════════════════════════════════════════════════════
+
+  // 🎯 RESPONSE GUIDELINES:
+
+  // 1. **LANGUAGE MATCHING - CRITICAL**
+  //    - DETECT the language of the user's query first
+  //    - If query is in ENGLISH → Respond ONLY in English
+  //    - If query is in ROMAN URDU (Urdu written in English script like "kya", "hai", "aap", "mujhe", "chahiye") → Respond ONLY in Roman Urdu
+  //    - If query is in URDU SCRIPT (اردو) → Respond ONLY in Urdu script
+  //    - NEVER mix languages in your response - maintain consistency throughout
+  //    - Examples of Roman Urdu: "qanoon kya kehta hai?", "mujhe employee rights ke baare mein bataye", "yeh act kis saal mein bana tha?"
+
+  // 2. **COMPREHENSIVE ANALYSIS**
+  //    - Start with a actual concise answer to the core question
+  //    - Provide detailed legal reasoning with step-by-step explanation
+  //    - Reference specific sections, articles, or clauses from the provided sources
+  //    - Explain the practical implications and real-world applications
+
+  // 3. **STRUCTURED PRESENTATION**
+  //    - Use clear headings and bullet points for readability
+  //    - Break down complex legal concepts into digestible parts
+  //    - Present information in logical flow: Issue → Rule → Application → Conclusion
+
+  // 4. **AUTHORITATIVE CITATIONS - MANDATORY**
+  //    - **CRITICAL**: You MUST cite sources using the exact format [Source 1], [Source 2], etc.
+  //    - When referencing information from the context, always include the source number
+  //    - Example: "According to the law [Source 1], employees are entitled to..."
+  //    - Example: "The maximum working hours are specified [Source 3] as 48 hours per week."
+  //    - You can provide additional details like Act name and section, but MUST include [Source X]
+  //    - Quote exact legal text when it strengthens your answer
+  //    - If you reference multiple sources in one statement, cite all: [Source 1] [Source 2]
+
+  // 5. **PRACTICAL GUIDANCE**
+  //    - Explain how the law applies to the specific situation
+  //    - Mention any exceptions, limitations, or special circumstances
+  //    - Provide actionable insights where appropriate
+  //    - Highlight important legal procedures or requirements
+
+  // 6. **TRANSPARENCY & LIMITATIONS**
+  //    - If the provided context is insufficient, clearly state what additional information would be needed
+  //    - Acknowledge any ambiguities in the law or interpretation
+  //    - Recommend consulting a qualified lawyer for complex cases or final legal decisions
+  //    - Never fabricate information not present in the context
+
+  // 7. **ENHANCED READABILITY**
+  //    - Use emojis sparingly for section markers (⚖️ 📋 ⚠️ 💡) to improve visual organization
+  //    - Employ bold and formatting for key terms and important points
+  //    - Keep paragraphs concise and focused
+
+  // ═══════════════════════════════════════════════════════════════
+  // YOUR EXPERT LEGAL RESPONSE:
+  // ═══════════════════════════════════════════════════════════════`;
+  //   }
+
+  // =================================================================
 
   //   createPrompt(userQuery, contextString) {
   //     return `You are a bilingual (English and Urdu) AI legal assistant. Based on the following legal documents and context, please answer the user's question accurately and professionally.
@@ -430,15 +787,12 @@ YOUR EXPERT LEGAL RESPONSE:
   //   }
   /**
    * Generate a summary for a given text (judgment or contract)
+   * Fallback chain: Gemini 2.5 Flash → Gemini 3 Flash → OpenRouter
    * @param {string} text - The text to summarize
    * @param {string} type - 'judgment' or 'contract'
    * @returns {Promise<string>} - The generated summary
    */
   async generateSummary(text, type = 'judgment') {
-    if (OPENROUTER_API_KEYS.length === 0) {
-      throw new Error('No OpenRouter API keys configured in environment variables');
-    }
-
     let prompt;
     if (type === 'judgment') {
       prompt = `Please provide a complete, detailed, and self-explanatory summary of the following legal judgment. 
@@ -471,53 +825,37 @@ YOUR EXPERT LEGAL RESPONSE:
       ${text.substring(0, 15000)}... (truncated if too long)`;
     }
 
-    // Try each model with all API keys
-    for (let modelIndex = 0; modelIndex < MODELS.length; modelIndex++) {
-      const model = MODELS[modelIndex];
+    const systemMessage = 'You are an expert legal assistant specializing in summarizing complex legal documents.';
 
-      for (let keyIndex = 0; keyIndex < OPENROUTER_API_KEYS.length; keyIndex++) {
-        const apiKey = OPENROUTER_API_KEYS[keyIndex];
+    const messages = [
+      { role: 'system', content: systemMessage },
+      { role: 'user', content: prompt }
+    ];
 
-        try {
-          const response = await fetch(OPENROUTER_URL, {
-            method: 'POST',
-            headers: {
-              'Authorization': `Bearer ${apiKey}`,
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-              model: model,
-              messages: [
-                {
-                  role: 'system',
-                  content: 'You are an expert legal assistant specializing in summarizing complex legal documents.',
-                },
-                {
-                  role: 'user',
-                  content: prompt,
-                },
-              ],
-            }),
-          });
+    // Try Gemini first if toggle is set
+    if (this.useGemini) {
+      try {
+        console.log('🔮 Trying Gemini for summary generation...');
+        const summary = await this.callGeminiAPI(messages, 0.7, 4096);
 
-          const data = await response.json();
-
-          if (!response.ok) {
-            if (data.error?.code === 429 && keyIndex < OPENROUTER_API_KEYS.length - 1) continue;
-            if (keyIndex < OPENROUTER_API_KEYS.length - 1) continue;
-            if (modelIndex < MODELS.length - 1) break;
-            throw new Error(data.error?.message || 'Summarization failed');
-          }
-
-          return data.choices[0]?.message?.content || 'No summary generated';
-        } catch (error) {
-          if (modelIndex === MODELS.length - 1 && keyIndex === OPENROUTER_API_KEYS.length - 1) {
-            throw error;
-          }
-        }
+        console.log('✅ Successfully generated summary with Gemini');
+        return summary;
+      } catch (geminiError) {
+        console.log(`⚠️ All Gemini models failed for summarization: ${geminiError.message}`);
+        console.log('🔄 Falling back to OpenRouter for summary generation...');
       }
     }
-    throw new Error('Failed to generate summary');
+
+    // Fallback to OpenRouter (or use directly if toggle not set)
+    try {
+      const summary = await this.callOpenRouterAPI(messages, 0.7, 4096);
+
+      console.log('✅ Successfully generated summary with OpenRouter');
+      return summary;
+    } catch (openRouterError) {
+      console.error('❌ OpenRouter summarization also failed:', openRouterError.message);
+      throw new Error(`All LLM providers failed for summarization: ${openRouterError.message}`);
+    }
   }
 }
 

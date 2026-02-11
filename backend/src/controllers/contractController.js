@@ -1,36 +1,70 @@
-import fs from 'fs';
-import { createRequire } from 'module';
-const require = createRequire(import.meta.url);
-const pdf = require('pdf-parse');
+import fs from 'fs/promises';
+import { existsSync } from 'fs';
+import { PDFParse } from 'pdf-parse';
 import llmService from '../services/llmService.js';
+
+/**
+ * Helper function to safely delete a file with retry logic
+ * Handles EBUSY errors on Windows when file handles aren't released immediately
+ */
+const safeUnlink = async (filePath, retries = 3, delay = 100) => {
+    for (let i = 0; i < retries; i++) {
+        try {
+            await fs.unlink(filePath);
+            return true;
+        } catch (error) {
+            if (error.code === 'EBUSY' && i < retries - 1) {
+                // Wait and retry if file is busy
+                await new Promise(resolve => setTimeout(resolve, delay));
+            } else if (error.code !== 'ENOENT') {
+                // Log error but don't throw (file might already be deleted)
+                console.warn(`Warning: Could not delete file ${filePath}:`, error.message);
+            }
+        }
+    }
+    return false;
+};
 
 /**
  * Analyze and summarize a contract
  * POST /api/contracts/analyze
  */
 export const analyzeContract = async (req, res) => {
+    let filePath = null;
+
     try {
         if (!req.file) {
             return res.status(400).json({ success: false, error: 'No file uploaded' });
         }
 
+        filePath = req.file.path;
         let text = '';
 
         // Extract text based on file type
         if (req.file.mimetype === 'application/pdf') {
-            const dataBuffer = fs.readFileSync(req.file.path);
-            const data = await pdf(dataBuffer);
-            text = data.text;
+            // Read file into buffer
+            const dataBuffer = await fs.readFile(filePath);
+
+            // Using pdf-parse v2 API with PDFParse class
+            const parser = new PDFParse({ data: dataBuffer });
+            try {
+                const result = await parser.getText();
+                text = result.text;
+            } finally {
+                // Always destroy parser to release resources
+                await parser.destroy();
+            }
         } else if (req.file.mimetype === 'text/plain') {
-            text = fs.readFileSync(req.file.path, 'utf8');
+            text = await fs.readFile(filePath, 'utf8');
         } else {
-            // Clean up file
-            fs.unlinkSync(req.file.path);
+            // Clean up file for unsupported types
+            await safeUnlink(filePath);
             return res.status(400).json({ success: false, error: 'Unsupported file type. Please upload PDF or TXT.' });
         }
 
-        // Clean up file immediately after reading
-        fs.unlinkSync(req.file.path);
+        // Clean up file after reading
+        await safeUnlink(filePath);
+        filePath = null; // Mark as cleaned up
 
         if (!text || text.trim().length === 0) {
             return res.status(400).json({ success: false, error: 'Could not extract text from file' });
@@ -47,8 +81,8 @@ export const analyzeContract = async (req, res) => {
     } catch (error) {
         console.error('Error analyzing contract:', error);
         // Ensure file is cleaned up in case of error
-        if (req.file && fs.existsSync(req.file.path)) {
-            fs.unlinkSync(req.file.path);
+        if (filePath && existsSync(filePath)) {
+            await safeUnlink(filePath);
         }
         res.status(500).json({ success: false, error: 'Failed to analyze contract' });
     }
