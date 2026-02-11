@@ -113,12 +113,12 @@ const Landing = () => {
             <span>Powered by Advanced AI Technology</span>
           </div>
           <h1 className="hero-title">
-            AI-Powered Legal Research
-            <span className="gradient-text"> for Everyone</span>
+            AI-Powered <span className="gradient-text">Civil Law</span> Research
+            <span className="gradient-text"> for Pakistan</span>
           </h1>
           <p className="hero-subtitle">
-            Democratizing access to Pakistani legal knowledge through cutting-edge artificial intelligence. 
-            Get instant answers, analyze judgments, and understand contracts in seconds.
+            Your comprehensive guide to Pakistani Civil Law. Specializing in Contract Law, Property Law, 
+            Family Law, Tort Law, and more. Get instant access to legal knowledge with AI-powered precision.
           </p>
           <div className="hero-buttons">
             <button className="btn-hero-primary" onClick={() => navigate('/auth?mode=register')}>
@@ -156,6 +156,111 @@ const Landing = () => {
           <div className="floating-card card-3">
             <Languages size={24} />
             <span>Bilingual Support</span>
+          </div>
+        </div>
+      </section>
+
+      {/* Civil Law Coverage Section */}
+      <section className="civil-law-section">
+        <div className="container">
+          <div className="civil-law-header">
+            <div className="civil-law-badge">
+              <Shield size={18} />
+              <span>Comprehensive Civil Law Coverage</span>
+            </div>
+            <h2 className="section-title">Specialized in Pakistani Civil Law</h2>
+            <p className="section-subtitle">
+              Our AI-powered platform covers all major areas of Civil Law in Pakistan, 
+              providing you with accurate legal information and expert guidance
+            </p>
+          </div>
+
+          <div className="civil-law-grid">
+            <div className="civil-law-card">
+              <div className="law-icon">
+                <FileText size={28} />
+              </div>
+              <h3>Contract Law</h3>
+              <ul className="law-topics">
+                <li>Contract Act, 1872</li>
+                <li>Sale of Goods Act, 1930</li>
+                <li>Partnership Act, 1932</li>
+                <li>Specific Relief Act, 1877</li>
+              </ul>
+            </div>
+
+            <div className="civil-law-card">
+              <div className="law-icon">
+                <Gavel size={28} />
+              </div>
+              <h3>Property Law</h3>
+              <ul className="law-topics">
+                <li>Transfer of Property Act, 1882</li>
+                <li>Registration Act, 1908</li>
+                <li>Mortgage Laws</li>
+                <li>Lease & Tenancy Rights</li>
+              </ul>
+            </div>
+
+            <div className="civil-law-card">
+              <div className="law-icon">
+                <Shield size={28} />
+              </div>
+              <h3>Family Law</h3>
+              <ul className="law-topics">
+                <li>Muslim Family Laws Ordinance</li>
+                <li>Guardians and Wards Act</li>
+                <li>Succession & Inheritance</li>
+                <li>Marriage & Divorce Laws</li>
+              </ul>
+            </div>
+
+            <div className="civil-law-card">
+              <div className="law-icon">
+                <Scale size={28} />
+              </div>
+              <h3>Tort Law</h3>
+              <ul className="law-topics">
+                <li>Negligence Claims</li>
+                <li>Defamation Laws</li>
+                <li>Personal Injury</li>
+                <li>Damages & Compensation</li>
+              </ul>
+            </div>
+
+            <div className="civil-law-card">
+              <div className="law-icon">
+                <BookOpen size={28} />
+              </div>
+              <h3>Civil Procedure</h3>
+              <ul className="law-topics">
+                <li>Civil Procedure Code, 1908</li>
+                <li>Limitation Act, 1908</li>
+                <li>Court Fees Act, 1870</li>
+                <li>Evidence Act, 1984</li>
+              </ul>
+            </div>
+
+            <div className="civil-law-card">
+              <div className="law-icon">
+                <Sparkles size={28} />
+              </div>
+              <h3>Consumer Rights</h3>
+              <ul className="law-topics">
+                <li>Consumer Protection Laws</li>
+                <li>Product Liability</li>
+                <li>Service Contracts</li>
+                <li>Dispute Resolution</li>
+              </ul>
+            </div>
+          </div>
+
+          <div className="civil-law-cta">
+            <p>Access comprehensive information on all Pakistani Civil Laws</p>
+            <button className="btn-primary" onClick={() => navigate('/auth?mode=register')}>
+              Start Exploring Now
+              <ChevronRight size={18} />
+            </button>
           </div>
         </div>
       </section>

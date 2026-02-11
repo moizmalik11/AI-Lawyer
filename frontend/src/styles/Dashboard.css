@@ -7,33 +7,105 @@
 }
 
 .dashboard-hero {
+    position: relative;
     background: linear-gradient(135deg, 
-        rgba(34, 197, 94, 0.15) 0%, 
-        transparent 50%
+        rgba(160, 82, 45, 0.2) 0%,
+        rgba(139, 69, 19, 0.15) 30%,
+        transparent 60%
     );
-    padding: 3rem 2rem;
+    padding: 4rem 2rem 3rem;
     text-align: center;
     border-bottom: 1px solid var(--border-color);
+    overflow: hidden;
+}
+
+.hero-background-pattern {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: 
+        radial-gradient(circle at 20% 50%, rgba(160, 82, 45, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 50%, rgba(212, 175, 55, 0.08) 0%, transparent 50%);
+    pointer-events: none;
 }
 
 .hero-content {
-    max-width: 800px;
+    max-width: 900px;
     margin: 0 auto;
+    position: relative;
+    z-index: 1;
+}
+
+.hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background: rgba(160, 82, 45, 0.15);
+    border: 1px solid rgba(160, 82, 45, 0.3);
+    border-radius: 50px;
+    font-size: 0.875rem;
+    color: var(--accent-light);
+    margin-bottom: 1.5rem;
+    backdrop-filter: blur(10px);
 }
 
 .hero-title {
-    font-size: 2.5rem;
+    font-size: 3rem;
     margin-bottom: 1rem;
     color: var(--text-color);
+    font-weight: 700;
+    line-height: 1.2;
 }
 
 .hero-title .highlight {
-    color: var(--accent-color);
-    font-weight: 700;
+    background: linear-gradient(135deg, var(--accent-color), var(--accent-light));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 800;
 }
 
 .hero-subtitle {
     font-size: 1.25rem;
+    color: var(--text-muted);
+    margin-bottom: 2rem;
+    line-height: 1.6;
+}
+
+.hero-stats {
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    margin-top: 2.5rem;
+    flex-wrap: wrap;
+}
+
+.hero-stat-item {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.5rem;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+}
+
+.hero-stat-item svg {
+    color: var(--accent-color);
+}
+
+.stat-number {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--accent-light);
+}
+
+.stat-label {
+    font-size: 0.875rem;
     color: var(--text-muted);
 }
 
@@ -46,14 +118,26 @@
 .features-section,
 .guide-section,
 .stats-section {
-    padding: 4rem 0;
+    padding: 5rem 0;
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: 3.5rem;
 }
 
 .section-title {
-    font-size: 2rem;
-    text-align: center;
-    margin-bottom: 1rem;
+    font-size: 2.5rem;
+    margin-bottom: 0.75rem;
     color: var(--text-color);
+    font-weight: 700;
+}
+
+.section-description {
+    color: var(--text-muted);
+    font-size: 1.125rem;
+    max-width: 600px;
+    margin: 0 auto;
 }
 
 .section-subtitle {
@@ -65,18 +149,19 @@
 
 .dashboard-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     gap: 2rem;
 }
 
 .feature-card {
-    padding: 2rem;
+    position: relative;
+    padding: 2.5rem;
     text-align: center;
-    transition: all 0.4s ease;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     cursor: pointer;
     text-decoration: none;
-    position: relative;
     overflow: hidden;
+    border: 1px solid var(--border-color);
 }
 
 .feature-card::before {
@@ -85,55 +170,121 @@
     top: 0;
     left: 0;
     right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, var(--accent-color), transparent);
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent-color), var(--accent-light));
     transform: scaleX(0);
     transition: transform 0.4s ease;
+}
+
+.feature-card-gradient {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 120px;
+    opacity: 0.08;
+    transition: opacity 0.4s ease;
+    border-radius: 1rem 1rem 0 0;
+}
+
+.feature-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 60px rgba(160, 82, 45, 0.3);
+    border-color: var(--accent-color);
 }
 
 .feature-card:hover::before {
     transform: scaleX(1);
 }
 
-.feature-card:hover {
-    transform: translateY(-8px);
-    box-shadow: var(--shadow-accent);
+.feature-card:hover .feature-card-gradient {
+    opacity: 0.15;
 }
 
 .feature-icon {
-    width: 64px;
-    height: 64px;
+    width: 80px;
+    height: 80px;
     margin: 0 auto 1.5rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 16px;
-    background: rgba(34, 197, 94, 0.15);
-    box-shadow: 0 0 20px rgba(34, 197, 94, 0.2);
+    border-radius: 20px;
+    background: rgba(160, 82, 45, 0.12);
+    box-shadow: 0 8px 32px rgba(160, 82, 45, 0.25);
+    transition: all 0.4s ease;
+    position: relative;
+    z-index: 1;
+}
+
+.feature-card:hover .feature-icon {
+    transform: scale(1.1) rotateY(10deg);
+    box-shadow: 0 12px 40px rgba(160, 82, 45, 0.4);
 }
 
 .feature-card h3 {
     font-size: 1.5rem;
     margin-bottom: 1rem;
     color: var(--text-color);
+    font-weight: 600;
 }
 
 .feature-card p {
     color: var(--text-muted);
-    line-height: 1.6;
-    margin-bottom: 1rem;
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+    font-size: 0.975rem;
 }
 
-.feature-arrow {
+.feature-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+}
+
+.feature-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.4rem 0.75rem;
+    background: rgba(160, 82, 45, 0.1);
+    border: 1px solid rgba(160, 82, 45, 0.2);
+    border-radius: 20px;
+    font-size: 0.8rem;
+    color: var(--accent-light);
+}
+
+.feature-tag svg {
     color: var(--accent-color);
-    opacity: 0;
-    transform: translateX(-10px);
+}
+
+.feature-footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    color: var(--accent-color);
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.feature-link-text {
     transition: all 0.3s ease;
 }
 
+.feature-arrow {
+    transition: all 0.3s ease;
+    opacity: 0.7;
+}
+
 .feature-card:hover .feature-arrow {
+    transform: translateX(5px);
     opacity: 1;
-    transform: translateX(0);
+}
+
+.feature-card:hover .feature-link-text {
+    color: var(--accent-light);
 }
 
 /* Guide Section */
@@ -188,7 +339,7 @@
     top: 0;
     width: 2rem;
     height: 2rem;
-    background: linear-gradient(135deg, #22c55e, #15803d);
+    background: linear-gradient(135deg, #A0522D, #8B4513);
     color: #ffffff;
     border-radius: 50%;
     display: flex;
@@ -196,38 +347,93 @@
     justify-content: center;
     font-weight: 700;
     font-size: 0.875rem;
-    box-shadow: 0 2px 8px rgba(34, 197, 94, 0.4);
+    box-shadow: 0 2px 8px rgba(160, 82, 45, 0.5);
 }
 
 /* Stats Section */
 .stats-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     gap: 2rem;
 }
 
 .stat-card {
-    padding: 2rem;
+    padding: 2.5rem 2rem;
     text-align: center;
-    transition: all 0.3s ease;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(135deg, rgba(160, 82, 45, 0.05) 0%, transparent 100%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+}
+
+.stat-card:hover::before {
+    opacity: 1;
 }
 
 .stat-card:hover {
-    transform: translateY(-5px);
-    box-shadow: var(--shadow-accent);
+    transform: translateY(-8px);
+    box-shadow: 0 20px 60px rgba(160, 82, 45, 0.25);
+}
+
+.stat-icon {
+    width: 60px;
+    height: 60px;
+    margin: 0 auto 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 16px;
+    color: white;
+    transition: all 0.4s ease;
+}
+
+.stat-card:hover .stat-icon {
+    transform: scale(1.1) rotate(5deg);
 }
 
 .stat-value {
     font-size: 3rem;
-    font-weight: 700;
-    color: var(--accent-color);
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--accent-color), var(--accent-light));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
     margin-bottom: 0.5rem;
     font-family: var(--font-heading);
 }
 
 .stat-label {
-    color: var(--text-muted);
-    font-size: 1rem;
+    color: var(--text-color);
+    font-size: 1.05rem;
+    font-weight: 500;
+    margin-bottom: 0.75rem;
+}
+
+.stat-growth {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.4rem 0.9rem;
+    background: rgba(160, 82, 45, 0.1);
+    border-radius: 20px;
+    font-size: 0.85rem;
+    color: var(--accent-light);
+    margin-top: 0.5rem;
+}
+
+.stat-growth svg {
+    color: var(--accent-color);
 }
 
 /* Responsive Design */
@@ -244,19 +450,43 @@
     .stats-grid {
         grid-template-columns: repeat(2, 1fr);
     }
+
+    .hero-stats {
+        gap: 1.5rem;
+    }
+
+    .section-title {
+        font-size: 2rem;
+    }
 }
 
 @media (max-width: 768px) {
     .dashboard-hero {
-        padding: 2rem 1rem;
+        padding: 3rem 1.5rem 2rem;
     }
     
     .hero-title {
-        font-size: 1.75rem;
+        font-size: 2rem;
     }
     
     .hero-subtitle {
-        font-size: 1rem;
+        font-size: 1.05rem;
+    }
+
+    .hero-stats {
+        gap: 1rem;
+    }
+
+    .hero-stat-item {
+        padding: 0.75rem 1rem;
+    }
+
+    .stat-number {
+        font-size: 1.25rem;
+    }
+
+    .stat-label {
+        font-size: 0.8rem;
     }
     
     .dashboard-container {
@@ -266,11 +496,15 @@
     .features-section,
     .guide-section,
     .stats-section {
-        padding: 2rem 0;
+        padding: 3rem 0;
     }
     
     .section-title {
-        font-size: 1.5rem;
+        font-size: 1.75rem;
+    }
+
+    .section-description {
+        font-size: 1rem;
     }
 
     .section-subtitle {
@@ -282,17 +516,22 @@
     .guide-grid,
     .stats-grid {
         grid-template-columns: 1fr;
-        gap: 1rem;
+        gap: 1.25rem;
     }
     
     .feature-card,
     .guide-card,
     .stat-card {
-        padding: 1.5rem;
+        padding: 2rem 1.5rem;
+    }
+
+    .feature-icon {
+        width: 70px;
+        height: 70px;
     }
 
     .feature-card h3 {
-        font-size: 1.25rem;
+        font-size: 1.35rem;
     }
 
     .feature-card p {
@@ -321,40 +560,91 @@
     .stat-label {
         font-size: 0.95rem;
     }
+
+    .stat-icon {
+        width: 50px;
+        height: 50px;
+    }
 }
 
 @media (max-width: 480px) {
     .hero-title {
-        font-size: 1.5rem;
+        font-size: 1.75rem;
     }
 
     .hero-subtitle {
         font-size: 0.95rem;
     }
 
+    .hero-badge {
+        font-size: 0.8rem;
+        padding: 0.4rem 0.8rem;
+    }
+
+    .hero-stats {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .hero-stat-item {
+        width: 100%;
+        justify-content: center;
+    }
+
     .dashboard-container {
         padding: 0 0.75rem;
+    }
+
+    .section-title {
+        font-size: 1.5rem;
+    }
+
+    .section-description {
+        font-size: 0.95rem;
     }
 
     .feature-card,
     .guide-card,
     .stat-card {
-        padding: 1.25rem;
+        padding: 1.5rem 1.25rem;
     }
 
     .feature-icon {
-        width: 48px;
-        height: 48px;
-        margin-bottom: 1rem;
+        width: 60px;
+        height: 60px;
+        border-radius: 16px;
     }
 
     .feature-icon svg {
-        width: 20px;
-        height: 20px;
+        width: 28px;
+        height: 28px;
+    }
+
+    .feature-card h3 {
+        font-size: 1.25rem;
+    }
+
+    .feature-tags {
+        gap: 0.4rem;
+    }
+
+    .feature-tag {
+        font-size: 0.75rem;
+        padding: 0.35rem 0.65rem;
     }
 
     .stat-value {
-        font-size: 2rem;
+        font-size: 2.25rem;
+    }
+
+    .stat-icon {
+        width: 48px;
+        height: 48px;
+    }
+
+    .stat-icon svg {
+        width: 20px;
+        height: 20px;
     }
 }
 

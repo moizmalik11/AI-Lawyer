@@ -96,38 +96,29 @@ export default function Settings() {
                 <h2 className="section-title">Appearance</h2>
                 <p className="section-description">Customize how the application looks</p>
 
-                <div className="theme-selector">
-                  <div className="theme-option">
-                    <div className="theme-preview light-theme">
-                      <Sun size={32} />
+                <div className="theme-toggle-container">
+                  <div className="theme-toggle-info">
+                    <div className="theme-icon">
+                      {theme === 'dark' ? <Moon size={24} /> : <Sun size={24} />}
                     </div>
-                    <div className="theme-details">
-                      <h3>Light Mode</h3>
-                      <p>Clean and bright interface</p>
+                    <div>
+                      <h3>{theme === 'dark' ? 'Dark Mode' : 'Light Mode'}</h3>
+                      <p>{theme === 'dark' ? 'Easy on the eyes in low light' : 'Clean and bright interface'}</p>
                     </div>
-                    <button 
-                      className={`theme-btn ${theme === 'light' ? 'active' : ''}`}
-                      onClick={() => theme === 'dark' && toggleTheme()}
-                    >
-                      {theme === 'light' ? 'Active' : 'Select'}
-                    </button>
                   </div>
-
-                  <div className="theme-option">
-                    <div className="theme-preview dark-theme">
-                      <Moon size={32} />
-                    </div>
-                    <div className="theme-details">
-                      <h3>Dark Mode</h3>
-                      <p>Easy on the eyes</p>
-                    </div>
-                    <button 
-                      className={`theme-btn ${theme === 'dark' ? 'active' : ''}`}
-                      onClick={() => theme === 'light' && toggleTheme()}
-                    >
-                      {theme === 'dark' ? 'Active' : 'Select'}
-                    </button>
-                  </div>
+                  
+                  <label className="theme-toggle-switch">
+                    <input 
+                      type="checkbox" 
+                      checked={theme === 'dark'} 
+                      onChange={toggleTheme}
+                    />
+                    <span className="toggle-slider">
+                      <span className="toggle-icon">
+                        {theme === 'dark' ? <Moon size={14} /> : <Sun size={14} />}
+                      </span>
+                    </span>
+                  </label>
                 </div>
               </div>
             )}
@@ -254,7 +245,7 @@ export default function Settings() {
         }
 
         .settings-tab.active {
-          background: linear-gradient(135deg, rgba(13, 110, 31, 0.2), rgba(10, 85, 24, 0.1));
+          background: linear-gradient(135deg, rgba(160, 82, 45, 0.2), rgba(139, 69, 19, 0.1));
           color: var(--accent-color);
           border-left: 3px solid var(--accent-color);
         }
@@ -355,7 +346,7 @@ export default function Settings() {
         .input-with-icon input:focus {
           outline: none;
           border-color: var(--accent-color);
-          box-shadow: 0 0 0 3px rgba(13, 110, 31, 0.1);
+          box-shadow: 0 0 0 3px rgba(160, 82, 45, 0.15);
         }
 
         .input-with-icon input:disabled {
@@ -383,85 +374,124 @@ export default function Settings() {
 
         .btn-primary:hover {
           transform: translateY(-2px);
-          box-shadow: 0 4px 12px rgba(13, 110, 31, 0.3);
+          box-shadow: 0 4px 12px rgba(160, 82, 45, 0.4);
         }
 
-        .theme-selector {
-          display: flex;
-          flex-direction: column;
-          gap: 1rem;
-        }
-
-        .theme-option {
+        .theme-toggle-container {
           display: flex;
           align-items: center;
-          gap: 1.5rem;
-          padding: 1.5rem;
+          justify-content: space-between;
+          padding: 2rem;
           background: var(--glass-bg);
           border: 2px solid var(--border-color);
-          border-radius: 12px;
+          border-radius: 16px;
           transition: all 0.3s ease;
         }
 
-        .theme-option:hover {
+        .theme-toggle-container:hover {
           border-color: var(--accent-color);
+          box-shadow: 0 4px 16px rgba(160, 82, 45, 0.15);
         }
 
-        .theme-preview {
-          width: 60px;
-          height: 60px;
-          border-radius: 12px;
+        .theme-toggle-info {
+          display: flex;
+          align-items: center;
+          gap: 1.25rem;
+        }
+
+        .theme-icon {
+          width: 56px;
+          height: 56px;
+          border-radius: 14px;
+          background: linear-gradient(135deg, var(--accent-color), var(--accent-dark));
           display: flex;
           align-items: center;
           justify-content: center;
-          flex-shrink: 0;
-        }
-
-        .theme-preview.light-theme {
-          background: linear-gradient(135deg, #ffffff, #f8fafc);
-          color: #1e293b;
-        }
-
-        .theme-preview.dark-theme {
-          background: linear-gradient(135deg, #0a0f1e, #1a2332);
           color: #ffffff;
+          box-shadow: 0 4px 12px rgba(160, 82, 45, 0.3);
         }
 
-        .theme-details {
-          flex: 1;
-        }
-
-        .theme-details h3 {
-          font-size: 1.1rem;
+        .theme-toggle-info h3 {
+          font-size: 1.15rem;
+          font-weight: 600;
           margin-bottom: 0.25rem;
           color: var(--text-color);
         }
 
-        .theme-details p {
+        .theme-toggle-info p {
           color: var(--text-muted);
           font-size: 0.9rem;
         }
 
-        .theme-btn {
-          padding: 0.625rem 1.5rem;
-          border-radius: 8px;
-          border: 2px solid var(--border-color);
-          background: transparent;
-          color: var(--text-color);
-          font-weight: 600;
+        .theme-toggle-switch {
+          position: relative;
+          display: inline-block;
+          width: 68px;
+          height: 36px;
           cursor: pointer;
-          transition: all 0.3s ease;
         }
 
-        .theme-btn:hover {
+        .theme-toggle-switch input {
+          opacity: 0;
+          width: 0;
+          height: 0;
+        }
+
+        .toggle-slider {
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: rgba(160, 82, 45, 0.2);
+          border: 2px solid var(--border-color);
+          border-radius: 34px;
+          transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .toggle-slider::before {
+          content: '';
+          position: absolute;
+          height: 28px;
+          width: 28px;
+          left: 2px;
+          bottom: 2px;
+          background: linear-gradient(135deg, #f8fafc, #e2e8f0);
+          border-radius: 50%;
+          transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+          box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .toggle-icon {
+          position: absolute;
+          top: 50%;
+          left: 8px;
+          transform: translateY(-50%);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: #64748b;
+          transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+          z-index: 1;
+        }
+
+        .theme-toggle-switch input:checked + .toggle-slider {
+          background: linear-gradient(135deg, var(--accent-color), var(--accent-dark));
           border-color: var(--accent-color);
-          background: var(--glass-bg);
         }
 
-        .theme-btn.active {
-          background: var(--accent-color);
+        .theme-toggle-switch input:checked + .toggle-slider::before {
+          transform: translateX(32px);
+          background: linear-gradient(135deg, #ffffff, #f8fafc);
+        }
+
+        .theme-toggle-switch input:checked + .toggle-slider .toggle-icon {
+          left: 42px;
           color: #ffffff;
-          border-color: var(--accent-color);
+        }
+
+        .theme-toggle-switch:hover .toggle-slider {
+          box-shadow: 0 0 16px rgba(160, 82, 45, 0.3);
         }
 
         .settings-footer {
