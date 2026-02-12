@@ -199,13 +199,72 @@ body {
   padding: 0.5rem;
 }
 
+/* Animated Feature Banner */
+.animated-feature-banner {
+  position: relative;
+  z-index: 900;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0.5rem 2rem;
+  margin-top: 90px;
+  margin-bottom: 0;
+  pointer-events: none;
+}
+
+.feature-text-container {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: 'Manrope', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: var(--text-color);
+  background: transparent;
+  padding: 0.5rem 1.5rem;
+  border-radius: 50px;
+}
+
+.feature-static-text {
+  white-space: nowrap;
+}
+
+.feature-dynamic-wrapper {
+  position: relative;
+  min-width: 220px;
+  height: 1.5em;
+  overflow: hidden;
+}
+
+.feature-dynamic-text {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  font-weight: 700;
+  color: var(--accent-color);
+  white-space: nowrap;
+  animation: swipeUp 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes swipeUp {
+  0% {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
 /* Hero Section */
 .hero-section {
   min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 10rem 2rem 6rem;
+  padding: 0rem 2rem 2rem;
   max-width: 1400px;
   margin: 0 auto;
   position: relative;
@@ -1693,7 +1752,22 @@ body {
   .hero-section {
     flex-direction: column;
     text-align: center;
-    padding-top: 6rem;
+    padding-top: 3rem;
+  }
+
+  .animated-feature-banner {
+    margin-top: 85px;
+    padding: 0.25rem 1rem;
+  }
+
+  .feature-text-container {
+    font-size: 1rem;
+    padding: 0.4rem 1.25rem;
+    gap: 0.6rem;
+  }
+
+  .feature-dynamic-wrapper {
+    min-width: 200px;
   }
 
   .hero-content {
@@ -1873,8 +1947,29 @@ body {
     display: block;
   }
 
+  .animated-feature-banner {
+    padding: 0.75rem 1rem;
+  }
+
+  .feature-text-container {
+    font-size: 0.9rem;
+    padding: 0.5rem 1.25rem;
+    gap: 0.5rem;
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .feature-dynamic-wrapper {
+    min-width: auto;
+    width: 100%;
+  }
+
+  .animated-feature-banner {
+    margin-top: 80px;
+  }
+
   .hero-section {
-    padding: 6rem 1rem 3rem;
+    padding: 3rem 1rem 3rem;
   }
 
   .hero-title {
@@ -2127,6 +2222,21 @@ body {
 }
 
 @media (max-width: 480px) {
+  .animated-feature-banner {
+    margin-top: 75px;
+    padding: 0.25rem 0.5rem;
+  }
+
+  .feature-text-container {
+    font-size: 0.8rem;
+    padding: 0.3rem 0.875rem;
+    gap: 0.4rem;
+  }
+
+  .feature-dynamic-wrapper {
+    font-size: 0.85rem;
+  }
+
   .hero-title {
     font-size: 1.875rem;
   }

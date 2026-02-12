@@ -23,10 +23,18 @@ import {
 import ThemeToggle from '../components/ThemeToggle';
 import '../styles/Landing.css';
 
+const dynamicFeatures = [
+  'Legal Search',
+  'Judgement Summarization',
+  'Contract Analysis',
+  'Search Legal'
+];
+
 const Landing = () => {
   const navigate = useNavigate();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [currentFeature, setCurrentFeature] = useState(0);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -34,6 +42,13 @@ const Landing = () => {
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentFeature((prev) => (prev + 1) % dynamicFeatures.length);
+    }, 3000);
+    return () => clearInterval(interval);
   }, []);
 
   const scrollToSection = (sectionId) => {
@@ -112,7 +127,18 @@ const Landing = () => {
         </div>
       </nav>
 
-      {/* Hero Section */}
+      {/* Animated Feature Text */}
+      <div className="animated-feature-banner">
+        <div className="feature-text-container">
+          <span className="feature-static-text">Now you will do</span>
+          <div className="feature-dynamic-wrapper">
+            <span key={currentFeature} className="feature-dynamic-text">
+              {dynamicFeatures[currentFeature]}
+            </span>
+          </div>
+        </div>
+      </div>
+    {/* Hero Section */}
       <section id="home" className="hero-section">
         <div className="hero-content">
           <div className="hero-badge">
@@ -153,20 +179,6 @@ const Landing = () => {
         </div>
         <div className="hero-visual">
           <div className="hero-image-wrapper">
-            <div className="floating-elements">
-              <div className="float-card float-1">
-                <Scale size={24} />
-                <span>AI Legal Search</span>
-              </div>
-              <div className="float-card float-2">
-                <Gavel size={24} />
-                <span>Case Analysis</span>
-              </div>
-              <div className="float-card float-3">
-                <FileText size={24} />
-                <span>Document Review</span>
-              </div>
-            </div>
             <div className="hero-image-container">
               <div className="image-frame">
                 <img 
