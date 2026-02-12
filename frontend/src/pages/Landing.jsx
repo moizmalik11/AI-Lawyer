@@ -23,19 +23,10 @@ import {
 import ThemeToggle from '../components/ThemeToggle';
 import '../styles/Landing.css';
 
-const animatedFeatures = [
-  'Search Legal Database',
-  'Analyze Judgments',
-  'Review Contracts',
-  'Find Case Laws',
-  'Research Family Law'
-];
-
 const Landing = () => {
   const navigate = useNavigate();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [currentFeatureIndex, setCurrentFeatureIndex] = useState(0);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -43,13 +34,6 @@ const Landing = () => {
     };
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentFeatureIndex((prev) => (prev + 1) % animatedFeatures.length);
-    }, 2500);
-    return () => clearInterval(interval);
   }, []);
 
   const scrollToSection = (sectionId) => {
@@ -168,12 +152,30 @@ const Landing = () => {
           </div>
         </div>
         <div className="hero-visual">
-          <div className="animated-text-container">
-            <h2 className="static-text">Now you can</h2>
-            <div className="animated-text-wrapper">
-              <h2 className="animated-text" key={currentFeatureIndex}>
-                {animatedFeatures[currentFeatureIndex]}
-              </h2>
+          <div className="hero-image-wrapper">
+            <div className="floating-elements">
+              <div className="float-card float-1">
+                <Scale size={24} />
+                <span>AI Legal Search</span>
+              </div>
+              <div className="float-card float-2">
+                <Gavel size={24} />
+                <span>Case Analysis</span>
+              </div>
+              <div className="float-card float-3">
+                <FileText size={24} />
+                <span>Document Review</span>
+              </div>
+            </div>
+            <div className="hero-image-container">
+              <div className="image-frame">
+                <img 
+                  src="/legal-techwith-AI.png" 
+                  alt="AI-Powered Legal Platform" 
+                  className="hero-cover-image"
+                />
+                <div className="image-glow"></div>
+              </div>
             </div>
           </div>
         </div>
@@ -331,9 +333,11 @@ const Landing = () => {
               </div>
             </div>
             <div className="about-image">
-              <div className="about-image-placeholder">
-                <Scale size={80} className="placeholder-icon" />
-                <p>AI-Powered Legal Intelligence</p>
+              <div className="about-image-container">
+                <div className="about-image-frame">
+                  <img src="/aboutAI.png" alt="AI-Powered Legal Intelligence" className="about-ai-image" />
+                  <div className="about-image-glow"></div>
+                </div>
               </div>
             </div>
           </div>
@@ -398,9 +402,8 @@ const Landing = () => {
                 </button>
               </div>
               <div className="step-visual">
-                <div className="visual-card animate-float">
+                <div className="visual-card">
                   <UserPlus size={64} />
-                  <div className="pulse-ring"></div>
                 </div>
               </div>
             </div>
@@ -427,9 +430,8 @@ const Landing = () => {
                 </button>
               </div>
               <div className="step-visual">
-                <div className="visual-card animate-float" style={{ animationDelay: '0.5s' }}>
+                <div className="visual-card">
                   <LogIn size={64} />
-                  <div className="pulse-ring"></div>
                 </div>
               </div>
             </div>
@@ -456,9 +458,8 @@ const Landing = () => {
                 </button>
               </div>
               <div className="step-visual">
-                <div className="visual-card animate-float" style={{ animationDelay: '1s' }}>
+                <div className="visual-card">
                   <MessageSquare size={64} />
-                  <div className="pulse-ring"></div>
                 </div>
               </div>
             </div>
