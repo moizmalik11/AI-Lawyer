@@ -1,4 +1,5 @@
 import { Link, useLocation } from 'react-router-dom';
+import { useState, useRef } from 'react';
 import { 
   Home, 
   MessageSquare, 
@@ -13,21 +14,35 @@ import { useSidebar } from '../context/SidebarContext';
 export default function Sidebar() {
   const location = useLocation();
   const { setIsExpanded, isMobileOpen, closeMobileSidebar } = useSidebar();
+  const hoverTimeoutRef = useRef(null);
   
   const isActive = (path) => location.pathname === path;
   
   const handleMouseEnter = () => {
-    setIsExpanded(true);
-    document.querySelector('.app-layout')?.classList.add('sidebar-hover');
+    if (hoverTimeoutRef.current) {
+      clearTimeout(hoverTimeoutRef.current);
+    }
+    hoverTimeoutRef.current = setTimeout(() => {
+      setIsExpanded(true);
+      document.querySelector('.app-layout')?.classList.add('sidebar-hover');
+    }, 100);
   };
 
   const handleMouseLeave = () => {
-    setIsExpanded(false);
-    document.querySelector('.app-layout')?.classList.remove('sidebar-hover');
+    if (hoverTimeoutRef.current) {
+      clearTimeout(hoverTimeoutRef.current);
+    }
+    hoverTimeoutRef.current = setTimeout(() => {
+      setIsExpanded(false);
+      document.querySelector('.app-layout')?.classList.remove('sidebar-hover');
+    }, 100);
   };
 
   const handleNavClick = () => {
     closeMobileSidebar();
+    if (hoverTimeoutRef.current) {
+      clearTimeout(hoverTimeoutRef.current);
+    }
   };
   
   const navItems = [

@@ -516,11 +516,13 @@ a:hover {
     display: flex;
     flex-direction: column;
     z-index: 100;
-    transition: width 0.3s ease, transform 0.3s ease;
+    transition: width 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: width;
 }
 
 .sidebar:hover {
     width: 280px;
+    transition-delay: 0.1s;
 }
 
 /* Mobile Sidebar Overlay */
@@ -592,12 +594,13 @@ a:hover {
     opacity: 0;
     width: 0;
     overflow: hidden;
-    transition: opacity 0.3s ease, width 0.3s ease;
+    transition: opacity 0.2s ease 0.1s, width 0.2s ease 0.1s;
 }
 
 .sidebar:hover .logo-text {
     opacity: 1;
     width: auto;
+    transition-delay: 0.15s;
 }
 
 .sidebar-nav {
@@ -659,12 +662,13 @@ a:hover {
     opacity: 0;
     width: 0;
     overflow: hidden;
-    transition: opacity 0.3s ease, width 0.3s ease;
+    transition: opacity 0.2s ease 0.1s, width 0.2s ease 0.1s;
 }
 
 .sidebar:hover .nav-label {
     opacity: 1;
     width: auto;
+    transition-delay: 0.15s;
 }
 
 /* Sidebar Settings */

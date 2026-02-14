@@ -258,7 +258,7 @@ export default function Chatbot() {
                                 </svg>
                             </div>
                             <h1 className="welcome-title">Your AI Legal Assistant is here</h1>
-                            <p className="welcome-subtitle">How can I help you today?</p>
+                            <p className="welcome-hint" style={{ fontSize: '1rem', color: 'var(--text-muted)', marginTop: '0.5rem' }}>Ask questions about Civil law</p>
                         </div>
                         <div className="input-area-centered">
                             <div className="input-wrapper">

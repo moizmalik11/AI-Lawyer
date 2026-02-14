@@ -115,6 +115,261 @@
     padding: 0 2rem;
 }
 
+/* Auto-Sliding Feature Carousel */
+.feature-slider-section {
+    padding: 5rem 0;
+    background: var(--background-primary);
+    overflow: hidden;
+    position: relative;
+}
+
+.feature-slider-wrapper {
+    margin-top: 2rem;
+    overflow: hidden;
+    position: relative;
+    padding: 1rem 0;
+}
+
+.feature-slider {
+    display: flex;
+    gap: 2rem;
+    animation: autoSlide 30s linear infinite;
+    width: fit-content;
+}
+
+/* Pause animation on hover */
+.feature-slider-wrapper:hover .feature-slider {
+    animation-play-state: paused;
+}
+
+@keyframes autoSlide {
+    0% {
+        transform: translateX(0);
+    }
+    100% {
+        transform: translateX(-50%);
+    }
+}
+
+.feature-slide-card {
+    min-width: 380px;
+    max-width: 380px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    padding: 2rem 1.5rem;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+    flex-shrink: 0;
+}
+
+.feature-slide-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent-color), var(--accent-light));
+    transform: scaleX(0);
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.slide-card-gradient {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100px;
+    opacity: 0.06;
+    transition: opacity 0.4s ease;
+    border-radius: 16px 16px 0 0;
+    pointer-events: none;
+}
+
+.feature-slide-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 20px 50px rgba(160, 82, 45, 0.25);
+    border-color: var(--accent-color);
+}
+
+.feature-slide-card:hover::before {
+    transform: scaleX(1);
+}
+
+.feature-slide-card:hover .slide-card-gradient {
+    opacity: 0.12;
+}
+
+.slide-icon {
+    width: 64px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 14px;
+    background: rgba(160, 82, 45, 0.1);
+    margin-bottom: 1.25rem;
+    position: relative;
+    z-index: 1;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 16px rgba(160, 82, 45, 0.15);
+}
+
+.feature-slide-card:hover .slide-icon {
+    transform: scale(1.1) rotate(-5deg);
+    box-shadow: 0 8px 24px rgba(160, 82, 45, 0.3);
+}
+
+.slide-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--text-color);
+    margin-bottom: 0.75rem;
+    position: relative;
+    z-index: 1;
+    line-height: 1.4;
+}
+
+.slide-description {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin-bottom: 1.25rem;
+    flex-grow: 1;
+    position: relative;
+    z-index: 1;
+}
+
+.slide-features {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1.25rem;
+    position: relative;
+    z-index: 1;
+}
+
+.slide-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.4rem 0.75rem;
+    background: rgba(160, 82, 45, 0.08);
+    border: 1px solid rgba(160, 82, 45, 0.15);
+    border-radius: 8px;
+    font-size: 0.75rem;
+    color: var(--accent-light);
+    transition: all 0.3s ease;
+    width: fit-content;
+}
+
+.feature-slide-card:hover .slide-tag {
+    background: rgba(160, 82, 45, 0.12);
+    border-color: rgba(160, 82, 45, 0.25);
+}
+
+.slide-tag svg {
+    color: var(--accent-color);
+    flex-shrink: 0;
+}
+
+.slide-footer {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--accent-color);
+    font-weight: 600;
+    font-size: 0.875rem;
+    margin-top: auto;
+    position: relative;
+    z-index: 1;
+}
+
+.slide-link-text {
+    transition: all 0.3s ease;
+}
+
+.slide-arrow {
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    opacity: 0.7;
+}
+
+.feature-slide-card:hover .slide-arrow {
+    transform: translateX(4px);
+    opacity: 1;
+}
+
+.feature-slide-card:hover .slide-link-text {
+    color: var(--accent-light);
+}
+
+/* Responsive Design for Feature Slider */
+@media (max-width: 1024px) {
+    .feature-slide-card {
+        min-width: 340px;
+        max-width: 340px;
+    }
+    
+    .feature-slider {
+        gap: 1.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .feature-slider-section {
+        padding: 3rem 0;
+    }
+    
+    .feature-slide-card {
+        min-width: 260px;
+        max-width: 260px;
+        padding: 1.5rem 1.25rem;
+    }
+    
+    .slide-icon {
+        width: 56px;
+        height: 56px;
+    }
+    
+    .slide-title {
+        font-size: 1.125rem;
+    }
+    
+    .slide-description {
+        font-size: 0.85rem;
+    }
+    
+    .feature-slider {
+        gap: 1.25rem;
+        animation: autoSlide 25s linear infinite;
+    }
+}
+
+@media (max-width: 480px) {
+    .feature-slide-card {
+        min-width: 240px;
+        max-width: 240px;
+        padding: 1.25rem 1rem;
+    }
+    
+    .slide-icon {
+        width: 48px;
+        height: 48px;
+    }
+    
+    .slide-icon svg {
+        width: 24px;
+        height: 24px;
+    }
+}
+
 .features-section,
 .guide-section,
 .stats-section {
@@ -288,6 +543,651 @@
 }
 
 /* Guide Section */
+.guide-section {
+    padding: 5rem 0;
+    background: var(--background-primary);
+}
+
+/* Vertical Features Section - Modern Educational Layout */
+.vertical-features-section {
+    padding: 5rem 0;
+    background: var(--background-primary);
+    position: relative;
+}
+
+.vertical-features-container {
+    display: flex;
+    flex-direction: column;
+    gap: 6rem;
+    margin-top: 3rem;
+}
+
+.vertical-feature-section {
+    width: 100%;
+    opacity: 0;
+    transform: translateY(50px);
+    animation: slideInView 0.8s ease forwards;
+    animation-play-state: paused;
+    scroll-margin-top: 100px;
+}
+
+.vertical-feature-section[data-index="0"] {
+    animation-delay: 0.1s;
+    animation-play-state: running;
+}
+
+.vertical-feature-section[data-index="1"] {
+    animation-delay: 0.2s;
+}
+
+.vertical-feature-section[data-index="2"] {
+    animation-delay: 0.3s;
+}
+
+.vertical-feature-section[data-index="3"] {
+    animation-delay: 0.4s;
+}
+
+@keyframes slideInView {
+    from {
+        opacity: 0;
+        transform: translateY(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.feature-content-wrapper {
+    max-width: 900px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+/* Feature Header Section */
+.feature-header-section {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    margin-bottom: 1rem;
+}
+
+.feature-icon-large {
+    width: 100px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 24px;
+    color: white;
+    flex-shrink: 0;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.feature-icon-large:hover {
+    transform: scale(1.05) rotate(-5deg);
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.25);
+}
+
+.feature-header-text {
+    flex: 1;
+}
+
+.feature-category {
+    font-size: 0.95rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 0.5rem;
+    opacity: 0.9;
+}
+
+.feature-main-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--text-color);
+    margin: 0;
+    line-height: 1.2;
+}
+
+/* Feature Explanation Card */
+.feature-explanation-card {
+    padding: 2.5rem;
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    transition: all 0.4s ease;
+}
+
+.feature-explanation-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(160, 82, 45, 0.15);
+    border-color: var(--accent-color);
+}
+
+.card-heading {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--text-color);
+    margin: 0 0 1.25rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.card-heading::before {
+    content: '';
+    width: 4px;
+    height: 24px;
+    background: linear-gradient(135deg, var(--accent-color), var(--accent-light));
+    border-radius: 4px;
+}
+
+.feature-description-text {
+    font-size: 1.05rem;
+    line-height: 1.8;
+    color: var(--text-muted);
+    margin-bottom: 2rem;
+}
+
+/* Key Capabilities */
+.key-capabilities {
+    margin-top: 2rem;
+}
+
+.capabilities-heading {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-color);
+    margin: 0 0 1.25rem 0;
+}
+
+.capabilities-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.capabilities-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    background: rgba(160, 82, 45, 0.05);
+    border-radius: 10px;
+    transition: all 0.3s ease;
+}
+
+.capabilities-list li:hover {
+    background: rgba(160, 82, 45, 0.1);
+    transform: translateX(5px);
+}
+
+.capabilities-list li svg {
+    color: var(--accent-color);
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.capabilities-list li span {
+    color: var(--text-muted);
+    line-height: 1.6;
+    font-size: 0.95rem;
+}
+
+/* Feature Steps Card */
+.feature-steps-card {
+    padding: 2.5rem;
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    border-left: 4px solid var(--accent-color);
+    transition: all 0.4s ease;
+}
+
+.feature-steps-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 40px rgba(160, 82, 45, 0.15);
+}
+
+.feature-steps-list {
+    list-style: none;
+    counter-reset: step-counter;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.feature-steps-list li {
+    counter-increment: step-counter;
+    position: relative;
+    padding-left: 4rem;
+    color: var(--text-muted);
+    line-height: 1.8;
+    font-size: 1rem;
+}
+
+.feature-steps-list li::before {
+    content: counter(step-counter);
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--accent-color), var(--accent-light));
+    color: white;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 1.1rem;
+    box-shadow: 0 4px 16px rgba(160, 82, 45, 0.3);
+    transition: all 0.3s ease;
+}
+
+.feature-steps-list li:hover::before {
+    transform: scale(1.15) rotate(-10deg);
+    box-shadow: 0 6px 20px rgba(160, 82, 45, 0.4);
+}
+
+.step-content {
+    display: block;
+    padding-top: 0.25rem;
+}
+
+/* Feature Guidance Card */
+.feature-guidance-card {
+    padding: 2rem;
+    background: linear-gradient(135deg, rgba(160, 82, 45, 0.08) 0%, rgba(212, 175, 55, 0.05) 100%);
+    border: 1px solid rgba(160, 82, 45, 0.2);
+    border-radius: 16px;
+    display: flex;
+    gap: 1.5rem;
+    align-items: flex-start;
+    transition: all 0.4s ease;
+}
+
+.feature-guidance-card:hover {
+    background: linear-gradient(135deg, rgba(160, 82, 45, 0.12) 0%, rgba(212, 175, 55, 0.08) 100%);
+    border-color: var(--accent-color);
+    transform: translateY(-3px);
+}
+
+.guidance-icon {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--accent-color), var(--accent-light));
+    border-radius: 12px;
+    color: white;
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(160, 82, 45, 0.25);
+}
+
+.guidance-content {
+    flex: 1;
+}
+
+.guidance-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--accent-light);
+    margin: 0 0 0.5rem 0;
+}
+
+.guidance-text {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: var(--text-muted);
+    margin: 0;
+}
+
+/* CTA Button */
+.feature-cta-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 1rem 2.5rem;
+    background: var(--accent-color);
+    color: white;
+    text-decoration: none;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 1.05rem;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 8px 24px rgba(160, 82, 45, 0.3);
+    align-self: center;
+    margin-top: 1rem;
+}
+
+.feature-cta-btn:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 12px 32px rgba(160, 82, 45, 0.4);
+}
+
+.feature-cta-btn svg {
+    transition: transform 0.3s ease;
+}
+
+.feature-cta-btn:hover svg {
+    transform: translateX(5px);
+}
+
+/* Responsive Design for Vertical Features */
+@media (max-width: 1024px) {
+    .feature-content-wrapper {
+        max-width: 100%;
+    }
+    
+    .feature-main-title {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .vertical-features-section {
+        padding: 3rem 0;
+    }
+    
+    .vertical-features-container {
+        gap: 4rem;
+    }
+    
+    .feature-header-section {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1.5rem;
+    }
+    
+    .feature-icon-large {
+        width: 80px;
+        height: 80px;
+    }
+    
+    .feature-main-title {
+        font-size: 1.75rem;
+    }
+    
+    .feature-explanation-card,
+    .feature-steps-card,
+    .feature-guidance-card {
+        padding: 1.75rem;
+    }
+    
+    .card-heading {
+        font-size: 1.25rem;
+    }
+    
+    .feature-steps-list li {
+        padding-left: 3.5rem;
+    }
+    
+    .feature-steps-list li::before {
+        width: 38px;
+        height: 38px;
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .feature-main-title {
+        font-size: 1.5rem;
+    }
+    
+    .feature-icon-large {
+        width: 70px;
+        height: 70px;
+    }
+    
+    .feature-guidance-card {
+        flex-direction: column;
+    }
+    
+    .feature-cta-btn {
+        width: 100%;
+        padding: 0.875rem 2rem;
+        font-size: 1rem;
+    }
+}
+
+/* Feature Guide Container - Feature on Left, Guide on Right */
+.feature-guide-container {
+    display: flex;
+    flex-direction: column;
+    gap: 4rem;
+}
+
+.feature-guide-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 3rem;
+    align-items: start;
+    opacity: 0;
+    animation: fadeInUp 0.6s ease forwards;
+}
+
+.feature-guide-row.reverse {
+    direction: rtl;
+}
+
+.feature-guide-row.reverse > * {
+    direction: ltr;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Feature Guide Card (Left Side) */
+.feature-guide-card {
+    position: relative;
+    padding: 2.5rem;
+    text-align: center;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    cursor: pointer;
+    text-decoration: none;
+    overflow: hidden;
+    border: 1px solid var(--border-color);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.feature-guide-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent-color), var(--accent-light));
+    transform: scaleX(0);
+    transition: transform 0.4s ease;
+}
+
+.feature-guide-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 60px rgba(160, 82, 45, 0.3);
+    border-color: var(--accent-color);
+}
+
+.feature-guide-card:hover::before {
+    transform: scaleX(1);
+}
+
+.feature-guide-card:hover .feature-card-gradient {
+    opacity: 0.15;
+}
+
+.feature-guide-card:hover .feature-icon {
+    transform: scale(1.1) rotateY(10deg);
+    box-shadow: 0 12px 40px rgba(160, 82, 45, 0.4);
+}
+
+.feature-guide-card h3 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--text-color);
+    font-weight: 600;
+}
+
+.feature-guide-card p {
+    color: var(--text-muted);
+    line-height: 1.7;
+    margin-bottom: 1.5rem;
+    font-size: 0.975rem;
+    flex-grow: 1;
+}
+
+/* Guide Instructions Card (Right Side) */
+.guide-instructions-card {
+    padding: 2.5rem;
+    border: 1px solid var(--border-color);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.guide-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 2px solid var(--border-color);
+}
+
+.guide-icon-wrapper {
+    width: 56px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 14px;
+    background: rgba(160, 82, 45, 0.1);
+    flex-shrink: 0;
+    transition: all 0.3s ease;
+}
+
+.guide-instructions-card:hover .guide-icon-wrapper {
+    transform: scale(1.05);
+    background: rgba(160, 82, 45, 0.15);
+}
+
+.guide-title {
+    font-size: 1.35rem;
+    font-weight: 600;
+    color: var(--text-color);
+    margin: 0;
+    line-height: 1.3;
+}
+
+.guide-steps {
+    list-style: none;
+    counter-reset: step-counter;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.guide-steps li {
+    counter-increment: step-counter;
+    position: relative;
+    padding-left: 3.5rem;
+    color: var(--text-muted);
+    line-height: 1.7;
+    font-size: 0.975rem;
+}
+
+.guide-steps li::before {
+    content: counter(step-counter);
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--accent-color), var(--accent-light));
+    color: white;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 0.875rem;
+    box-shadow: 0 4px 12px rgba(160, 82, 45, 0.25);
+}
+
+.guide-steps li:hover::before {
+    transform: scale(1.1);
+    box-shadow: 0 6px 16px rgba(160, 82, 45, 0.35);
+}
+
+/* Responsive Design for Feature-Guide Layout */
+@media (max-width: 1024px) {
+    .feature-guide-row {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    
+    .feature-guide-row.reverse {
+        direction: ltr;
+    }
+}
+
+@media (max-width: 768px) {
+    .feature-guide-container {
+        gap: 3rem;
+    }
+    
+    .feature-guide-card,
+    .guide-instructions-card {
+        padding: 2rem;
+    }
+    
+    .guide-title {
+        font-size: 1.2rem;
+    }
+    
+    .guide-icon-wrapper {
+        width: 48px;
+        height: 48px;
+    }
+    
+    .guide-steps li {
+        padding-left: 3rem;
+    }
+    
+    .guide-steps li::before {
+        width: 32px;
+        height: 32px;
+        font-size: 0.8rem;
+    }
+}
+
 .guide-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));

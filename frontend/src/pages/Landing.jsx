@@ -151,7 +151,8 @@ const Landing = () => {
           </h1>
           <p className="hero-subtitle">
             Your comprehensive guide to Pakistani Civil Law. Specializing in Contract Law, Property Law, 
-            Family Law, Tort Law, and more. Get instant access to legal knowledge with AI-powered precision.
+            Family Law, Tort Law, and more. Navigate easily through our dashboard to access Chat, Search, 
+            Judgments, and Contract Analysis - all powered by AI for instant, accurate legal guidance.
           </p>
           <div className="hero-buttons">
             <button className="btn-hero-primary" onClick={() => navigate('/auth?mode=register')}>
@@ -426,15 +427,16 @@ const Landing = () => {
                 <span className="step-badge">Step 2</span>
               </div>
               <div className="step-content">
-                <h3>Explore the Dashboard</h3>
+                <h3>Navigate Your Dashboard</h3>
                 <p>
-                  Access your personalized dashboard with all features at your fingertips. Choose from 
-                  legal search, judgment analysis, contract review, or start a chat with our AI assistant.
+                  Once logged in, your dashboard provides instant access to all Civil Law features. 
+                  Navigate through our powerful tools designed specifically for Pakistani Civil Law:
                 </p>
                 <ul className="step-features">
-                  <li><CheckCircle2 size={16} /> Intuitive interface</li>
-                  <li><CheckCircle2 size={16} /> Multiple tools</li>
-                  <li><CheckCircle2 size={16} /> Easy navigation</li>
+                  <li><CheckCircle2 size={16} /> <strong>Chatbot:</strong> Ask questions about Civil Law - Contract Law, Property Law, Family Law</li>
+                  <li><CheckCircle2 size={16} /> <strong>Search:</strong> Find specific civil law provisions and statutes instantly</li>
+                  <li><CheckCircle2 size={16} /> <strong>Judgments:</strong> Explore Supreme Court & High Court civil case decisions</li>
+                  <li><CheckCircle2 size={16} /> <strong>Contracts:</strong> Analyze and summarize legal contracts with AI</li>
                 </ul>
                 <button className="btn-step" onClick={() => navigate('/auth?mode=login')}>
                   Login to Dashboard
@@ -454,15 +456,16 @@ const Landing = () => {
                 <span className="step-badge">Step 3</span>
               </div>
               <div className="step-content">
-                <h3>Start Your Research</h3>
+                <h3>Start Your Civil Law Research</h3>
                 <p>
-                  Ask any legal question in plain English or Urdu. Our AI analyzes thousands of legal documents 
-                  instantly and provides accurate, citation-backed answers from Pakistani civil law.
+                  Ask any Civil Law question about contracts, property rights, family matters, or torts in plain 
+                  English or Urdu. Our AI analyzes thousands of civil law documents and judgments instantly, 
+                  providing accurate, citation-backed answers from Pakistani Civil Law statutes.
                 </p>
                 <ul className="step-features">
-                  <li><CheckCircle2 size={16} /> Instant results</li>
-                  <li><CheckCircle2 size={16} /> Bilingual support</li>
-                  <li><CheckCircle2 size={16} /> Accurate citations</li>
+                  <li><CheckCircle2 size={16} /> Instant Civil Law results</li>
+                  <li><CheckCircle2 size={16} /> Bilingual support (English/Urdu)</li>
+                  <li><CheckCircle2 size={16} /> Supreme Court & High Court citations</li>
                 </ul>
                 <button className="btn-step btn-step-primary" onClick={() => navigate('/auth?mode=register')}>
                   Get Started Free
