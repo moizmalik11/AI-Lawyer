@@ -705,6 +705,62 @@ a:hover {
     color: var(--text-color);
 }
 
+/* App Layout Structure */
+.app-layout {
+    display: flex;
+    min-height: 100vh;
+    width: 100%;
+    position: relative;
+    overflow-x: hidden;
+}
+
+/* Main Content Area */
+.main-content {
+    flex: 1;
+    margin-left: 80px;
+    min-height: 100vh;
+    width: calc(100% - 80px);
+    transition: margin-left 0.25s cubic-bezier(0.4, 0, 0.2, 1), width 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    background: var(--background-primary);
+    position: relative;
+    z-index: 1;
+}
+
+.sidebar-hover .main-content {
+    margin-left: 280px;
+    width: calc(100% - 280px);
+}
+
+.page-content {
+    width: 100%;
+    min-height: 100vh;
+}
+
+/* Mobile Navbar */
+.mobile-nav-menu-btn {
+    display: none;
+    width: 40px;
+    height: 40px;
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    color: var(--text-color);
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.mobile-nav-menu-btn:hover {
+    background: var(--accent-color);
+    color: white;
+    border-color: var(--accent-color);
+}
+
+.mobile-nav-menu-btn:active {
+    transform: scale(0.95);
+}
+
 /* Tooltip for collapsed sidebar */
 .sidebar:not(:hover) .sidebar-nav-item,
 .sidebar:not(:hover) .sidebar-settings-btn {
@@ -1548,6 +1604,159 @@ select {
                 box-shadow 0.3s ease;
 }
 
+/* ========================================
+   RESPONSIVE DESIGN - Mobile & Tablet
+   ======================================== */
+
+/* Tablet Devices (768px - 1024px) */
+@media screen and (max-width: 1024px) {
+    .main-content {
+        margin-left: 80px;
+        width: calc(100% - 80px);
+    }
+    
+    .sidebar:hover {
+        width: 240px;
+    }
+}
+
+/* Mobile Devices (max-width: 768px) */
+@media screen and (max-width: 768px) {
+    /* Show mobile menu button */
+    .mobile-nav-menu-btn {
+        display: flex;
+    }
+    
+    /* Hide desktop sidebar by default */
+    .sidebar {
+        transform: translateX(-100%);
+        width: 280px;
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        box-shadow: 4px 0 20px rgba(0, 0, 0, 0.3);
+    }
+    
+    /* Show sidebar when mobile-open class is added */
+    .sidebar.mobile-open {
+        transform: translateX(0);
+    }
+    
+    /* Show overlay when sidebar is open */
+    .sidebar.mobile-open ~ .sidebar-overlay-main,
+    .sidebar-overlay-main {
+        display: block;
+    }
+    
+    /* Show close button on mobile */
+    .sidebar-close-btn {
+        display: flex;
+    }
+    
+    /* Expand sidebar by default on mobile */
+    .sidebar .logo-text,
+    .sidebar .nav-label {
+        opacity: 1;
+        width: auto;
+    }
+    
+    .sidebar-nav-item,
+    .sidebar-settings-btn {
+        justify-content: flex-start;
+        padding: 0.875rem 1rem;
+    }
+    
+    /* Remove margin for main content on mobile */
+    .main-content {
+        margin-left: 0;
+        width: 100%;
+    }
+    
+    .sidebar-hover .main-content {
+        margin-left: 0;
+        width: 100%;
+    }
+    
+    /* Disable hover expand on mobile */
+    .sidebar:hover {
+        width: 280px;
+    }
+    
+    /* Hide tooltips on mobile */
+    .sidebar:not(:hover) .sidebar-nav-item:hover::after,
+    .sidebar:not(:hover) .sidebar-settings-btn:hover::after {
+        display: none;
+    }
+}
+
+/* Small Mobile Devices (max-width: 480px) */
+@media screen and (max-width: 480px) {
+    .sidebar {
+        width: 85%;
+        max-width: 280px;
+    }
+    
+    .navbar-content {
+        padding: 0.75rem 0.75rem;
+    }
+    
+    .navbar-title {
+        font-size: 0.95rem;
+    }
+    
+    .user-info {
+        padding: 0.4rem 0.6rem;
+        gap: 0.35rem;
+    }
+    
+    .user-info span {
+        display: none;
+    }
+    
+    .icon-btn {
+        width: 34px;
+        height: 34px;
+    }
+    
+    .mobile-nav-menu-btn {
+        width: 36px;
+        height: 36px;
+    }
+    
+    .professional-back-btn {
+        padding: 0.4rem 0.6rem;
+    }
+    
+    .dashboard-hero {
+        padding: 1.5rem 0.75rem;
+    }
+    
+    .hero-title {
+        font-size: 1.5rem;
+    }
+    
+    .section-title {
+        font-size: 1.5rem;
+    }
+}
+
+/* Animations for Mobile */
+@keyframes slideInFromLeft {
+    from {
+        transform: translateX(-100%);
+    }
+    to {
+        transform: translateX(0);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
 /* Markdown Content Styling */
 .markdown-content h1, .markdown-content h2 { 
     margin-top: 1.5rem; 
@@ -1598,3 +1807,86 @@ select {
 .markdown-content code { background: rgba(255,255,255,0.1); padding: 0.2rem 0.4rem; border-radius: 4px; font-family: monospace; }
 .markdown-content pre { background: rgba(0,0,0,0.3); padding: 1rem; border-radius: 8px; overflow-x: auto; margin-bottom: 1rem; }
 .markdown-content blockquote { border-left: 4px solid var(--accent-color); padding-left: 1rem; color: var(--text-muted); margin-bottom: 1rem; }
+
+/* ========================================
+   ADDITIONAL MOBILE RESPONSIVE FIXES
+   ======================================== */
+
+/* Small Mobile Devices (max-width: 480px) */
+@media screen and (max-width: 480px) {
+    .sidebar {
+        width: 85%;
+        max-width: 280px;
+    }
+    
+    .navbar-content {
+        padding: 0.65rem;
+        gap: 0.4rem;
+    }
+    
+    .navbar-title {
+        font-size: 0.95rem;
+    }
+    
+    .user-info {
+        padding: 0.4rem 0.6rem;
+        gap: 0.35rem;
+    }
+    
+    .user-info span {
+        display: none;
+    }
+    
+    .icon-btn {
+        width: 34px;
+        height: 34px;
+    }
+    
+    .mobile-nav-menu-btn {
+        width: 36px;
+        height: 36px;
+    }
+    
+    .professional-back-btn {
+        padding: 0.4rem 0.6rem;
+    }
+    
+    .dashboard-hero {
+        padding: 1.5rem 0.75rem;
+    }
+    
+    .hero-title {
+        font-size: 1.5rem;
+    }
+    
+    .hero-subtitle {
+        font-size: 0.9rem;
+    }
+    
+    .section-title {
+        font-size: 1.5rem;
+    }
+    
+    .section-description {
+        font-size: 0.9rem;
+    }
+    
+    .dashboard-container {
+        padding: 0 0.75rem;
+    }
+}
+
+/* Extra Small Devices (max-width: 360px) */
+@media screen and (max-width: 360px) {
+    .navbar-title {
+        font-size: 0.85rem;
+    }
+    
+    .hero-title {
+        font-size: 1.25rem;
+    }
+    
+    .section-title {
+        font-size: 1.35rem;
+    }
+}

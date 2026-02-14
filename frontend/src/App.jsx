@@ -12,6 +12,7 @@ import Judgments from './pages/Judgments';
 import Contracts from './pages/Contracts';
 import Search from './pages/Search';
 import Settings from './pages/Settings';
+import './styles/Layout.css';
 
 const PrivateRoute = ({ children }) => {
   const { user } = useAuth();
@@ -20,7 +21,6 @@ const PrivateRoute = ({ children }) => {
 
 const MainLayout = ({ children }) => {
   const { user } = useAuth();
-  const { isExpanded } = useSidebar();
   
   if (!user) {
     return children;
@@ -29,7 +29,8 @@ const MainLayout = ({ children }) => {
   return (
     <div className="app-layout">
       <Sidebar />
-      <div className={`main-content ${isExpanded ? 'sidebar-expanded' : ''}`}>
+      <div className="main-content">
+        <Navbar />
         <div className="page-content">
           {children}
         </div>

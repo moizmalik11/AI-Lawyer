@@ -21,7 +21,7 @@ export default function Navbar() {
     };
 
     return (
-        <nav className="navbar">
+        <nav className="app-navbar">
             <div className="navbar-content">
                 <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                     {/* Mobile Menu Button */}
