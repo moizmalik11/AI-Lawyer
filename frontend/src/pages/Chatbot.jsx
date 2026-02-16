@@ -245,52 +245,27 @@ export default function Chatbot() {
             </aside>
 
             <div className="main-chat-area">
-                {!hasMessages ? (
-                    <div className="welcome-screen">
-                        <div className="welcome-content">
-                            <div className="welcome-icon">
-                                <div className="icon-glow-layer"></div>
-                                <div className="icon-glow-layer icon-glow-2"></div>
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                                    <circle cx="12" cy="12" r="10" />
-                                    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
-                                    <circle cx="12" cy="17" r="0.5" fill="currentColor" />
-                                </svg>
-                            </div>
-                            <h1 className="welcome-title">Your AI Legal Assistant is here</h1>
-                            <p className="welcome-hint" style={{ fontSize: '1rem', color: 'var(--text-muted)', marginTop: '0.5rem' }}>Ask questions about Civil law</p>
+                {/* Welcome Content - Fades out when messages appear */}
+                <div className={`welcome-content-wrapper ${hasMessages ? 'fade-out' : ''}`}>
+                    <div className="welcome-content">
+                        <div className="welcome-icon">
+                            <div className="icon-glow-layer"></div>
+                            <div className="icon-glow-layer icon-glow-2"></div>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                                <circle cx="12" cy="12" r="10" />
+                                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+                                <circle cx="12" cy="17" r="0.5" fill="currentColor" />
+                            </svg>
                         </div>
-                        <div className="input-area-centered">
-                            <div className="input-wrapper">
-                                <textarea
-                                    value={input}
-                                    onChange={(e) => setInput(e.target.value)}
-                                    onKeyDown={(e) => { 
-                                        if (e.key === 'Enter' && !e.shiftKey) { 
-                                            e.preventDefault(); 
-                                            sendMessage(); 
-                                        } 
-                                    }}
-                                    className="chat-input-centered"
-                                    placeholder="Ask your legal question..."
-                                    rows="1"
-                                />
-                                <button 
-                                    className="send-btn-centered" 
-                                    onClick={sendMessage}
-                                    disabled={!input.trim() || loading}
-                                >
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                        <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" />
-                                    </svg>
-                                </button>
-                            </div>
-                        </div>
+                        <h1 className="welcome-title">Your AI Legal Assistant is here</h1>
+                        <p className="welcome-hint" style={{ fontSize: '1rem', color: 'var(--text-muted)', marginTop: '0.5rem' }}>Ask questions about Civil law</p>
                     </div>
-                ) : (
-                    <>
-                        <div className="chat-messages">
-                            {messages.map((msg, idx) => (
+                </div>
+
+                {/* Chat Messages - Fades in when messages appear */}
+                {hasMessages && (
+                    <div className="chat-messages fade-in">
+                        {messages.map((msg, idx) => (
                                 <div key={idx} className={`message-wrapper ${msg.role}`}>
                                     <div className={`message ${msg.role}`}>
                                         <div className="message-content">
@@ -337,36 +312,36 @@ export default function Chatbot() {
                             )}
                             <div ref={messagesEndRef} />
                         </div>
-
-                        <div className="input-area">
-                            <div className="input-wrapper">
-                                <textarea
-                                    value={input}
-                                    onChange={(e) => setInput(e.target.value)}
-                                    onKeyDown={(e) => { 
-                                        if (e.key === 'Enter' && !e.shiftKey) { 
-                                            e.preventDefault(); 
-                                            sendMessage(); 
-                                        } 
-                                    }}
-                                    className="chat-input"
-                                    placeholder="Type your legal question..."
-                                    rows="1"
-                                />
-                                <button 
-                                    className="send-btn" 
-                                    onClick={sendMessage}
-                                    disabled={!input.trim() || loading}
-                                >
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                        <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" />
-                                    </svg>
-                                </button>
-                            </div>
-                        </div>
-                    </>
                 )}
+
+                {/* Unified Input Area - Transitions from center to bottom */}
+                <div className={`input-area-unified ${hasMessages ? 'at-bottom' : 'at-center'}`}>
+                    <div className="input-wrapper">
+                        <textarea
+                            value={input}
+                            onChange={(e) => setInput(e.target.value)}
+                            onKeyDown={(e) => { 
+                                if (e.key === 'Enter' && !e.shiftKey) { 
+                                    e.preventDefault(); 
+                                    sendMessage(); 
+                                } 
+                            }}
+                            className="chat-input"
+                            placeholder={hasMessages ? "Type your legal question..." : "Ask your legal question..."}
+                            rows="1"
+                        />
+                        <button 
+                            className="send-btn" 
+                            onClick={sendMessage}
+                            disabled={!input.trim() || loading}
+                        >
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" />
+                            </svg>
+                        </button>
+                    </div>
                 </div>
+            </div>
 
             {modalSource && (
                 <div className="modal active" onClick={() => setModalSource(null)}>
@@ -539,10 +514,12 @@ export default function Chatbot() {
             width: 44px;
             height: 44px;
             background: ${theme === 'dark' 
-                ? 'var(--glass-bg)' 
+                ? 'rgba(15, 20, 30, 0.98)' 
                 : 'rgba(255, 255, 255, 0.98)'};
             backdrop-filter: blur(12px);
-            border: 1px solid var(--border-color);
+            border: 2px solid ${theme === 'dark'
+                ? 'rgba(160, 82, 45, 0.4)'
+                : 'rgba(15, 23, 42, 0.2)'};
             border-radius: 10px;
             color: var(--text-color);
             cursor: pointer;
@@ -550,15 +527,16 @@ export default function Chatbot() {
             justify-content: center;
             transition: all 0.3s ease;
             box-shadow: ${theme === 'dark' 
-                ? '0 4px 12px rgba(0, 0, 0, 0.3)' 
+                ? '0 4px 20px rgba(160, 82, 45, 0.3)' 
                 : '0 4px 12px rgba(15, 23, 42, 0.1)'};
         }
 
         .mobile-menu-btn:hover {
             background: linear-gradient(135deg, #A0522D 0%, #8B4513 100%);
             color: white;
-            transform: scale(1.05);
-            box-shadow: 0 0 20px rgba(160, 82, 45, 0.6);
+            transform: scale(1.08);
+            box-shadow: 0 0 25px rgba(160, 82, 45, 0.7);
+            border-color: #A0522D;
         }
 
         .mobile-menu-btn:active {
@@ -592,31 +570,36 @@ export default function Chatbot() {
             width: 260px;
             height: 100vh;
             background: ${theme === 'dark' 
-                ? 'var(--glass-bg)' 
+                ? 'rgba(15, 20, 30, 0.98)' 
                 : 'rgba(255, 255, 255, 0.98)'};
-            backdrop-filter: blur(12px);
-            border-right: 1px solid var(--border-color);
+            backdrop-filter: blur(20px);
+            border-right: 2px solid ${theme === 'dark'
+                ? 'rgba(160, 82, 45, 0.3)'
+                : 'rgba(15, 23, 42, 0.1)'};
             display: flex;
             flex-direction: column;
             padding: 0;
             overflow: hidden;
-            z-index: 100;
+            z-index: 1000;
             flex-shrink: 0;
             box-shadow: ${theme === 'dark' 
-                ? '2px 0 12px rgba(0, 0, 0, 0.2)' 
+                ? '2px 0 20px rgba(160, 82, 45, 0.3), inset 0 0 80px rgba(160, 82, 45, 0.05)' 
                 : '2px 0 12px rgba(15, 23, 42, 0.06)'};
             transition: transform 0.3s ease;
         }
         
         .chat-sidebar-header {
             padding: 1.5rem 1.5rem 1rem;
-            border-bottom: 1px solid var(--glass-border);
+            border-bottom: 2px solid ${theme === 'dark'
+                ? 'rgba(160, 82, 45, 0.2)'
+                : 'rgba(15, 23, 42, 0.1)'};
             background: ${theme === 'dark' 
-                ? 'rgba(10, 15, 30, 0.9)' 
-                : 'rgba(255, 255, 255, 0.9)'};
+                ? 'rgba(10, 15, 30, 0.95)' 
+                : 'rgba(255, 255, 255, 0.95)'};
             position: sticky;
             top: 0;
             z-index: 20;
+            backdrop-filter: blur(10px);
         }
 
         .header-content {
@@ -768,14 +751,14 @@ export default function Chatbot() {
 
         #chat-history-list::-webkit-scrollbar-thumb {
             background: ${theme === 'dark' 
-                ? 'rgba(255, 255, 255, 0.2)' 
+                ? 'rgba(160, 82, 45, 0.4)' 
                 : 'rgba(0, 0, 0, 0.2)'};
             border-radius: 3px;
         }
 
         #chat-history-list::-webkit-scrollbar-thumb:hover {
             background: ${theme === 'dark' 
-                ? 'rgba(255, 255, 255, 0.3)' 
+                ? 'rgba(160, 82, 45, 0.6)' 
                 : 'rgba(0, 0, 0, 0.3)'};
         }
 
@@ -811,16 +794,20 @@ export default function Chatbot() {
             align-items: center;
             gap: 0.75rem;
             background: ${theme === 'dark' 
-                ? 'rgba(255, 255, 255, 0.03)' 
-                : 'rgba(15, 23, 42, 0.03)'};
-            border: 1px solid transparent;
+                ? 'rgba(160, 82, 45, 0.08)' 
+                : 'rgba(15, 23, 42, 0.05)'};
+            border: 1px solid ${theme === 'dark'
+                ? 'rgba(160, 82, 45, 0.15)'
+                : 'transparent'};
         }
 
         .chat-history-item:hover {
-            background: rgba(160, 82, 45, 0.15);
-            border-color: rgba(160, 82, 45, 0.4);
+            background: ${theme === 'dark'
+                ? 'rgba(160, 82, 45, 0.2)'
+                : 'rgba(160, 82, 45, 0.15)'};
+            border-color: rgba(160, 82, 45, 0.5);
             transform: translateX(4px);
-            box-shadow: 0 2px 12px rgba(160, 82, 45, 0.2);
+            box-shadow: 0 4px 15px rgba(160, 82, 45, 0.3);
         }
 
         .chat-history-item.active {
@@ -880,15 +867,42 @@ export default function Chatbot() {
 
         /* Main Chat Area - Clean Single Container */
         .main-chat-area {
-            margin-left: 260px;
+            margin-left: 250px;
             height: 100vh;
             display: flex;
             flex-direction: column;
             position: relative;
             overflow: hidden;
             background: ${theme === 'dark'
-                ? 'var(--background-primary)'
+                ? 'linear-gradient(135deg, #0a0f1e 0%, #0f1419 50%, #0a0f1e 100%)'
                 : 'var(--background-secondary)'};
+        }
+
+        /* Welcome Content Wrapper - Fades out when messages appear */
+        .welcome-content-wrapper {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            padding: 8rem 2rem 3rem;
+            z-index: 1;
+            opacity: 1;
+            visibility: visible;
+            transition: opacity 0.5s ease, visibility 0.5s ease, transform 0.5s ease;
+            pointer-events: all;
+            overflow: hidden;
+        }
+
+        .welcome-content-wrapper.fade-out {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-30px);
+            pointer-events: none;
         }
 
         /* Welcome Screen */
@@ -910,8 +924,8 @@ export default function Chatbot() {
             align-items: center;
             justify-content: center;
             text-align: center;
-            flex: 1;
             animation: fadeInUp 0.6s ease-out;
+            margin-bottom: 2rem;
         }
 
         @keyframes fadeInUp {
@@ -1025,7 +1039,7 @@ export default function Chatbot() {
             max-width: 700px;
             padding: 2rem 0;
             background: ${theme === 'dark'
-                ? 'linear-gradient(to top, var(--background-primary) 80%, transparent)'
+                ? 'linear-gradient(to top, #0a0f1e 80%, transparent)'
                 : 'linear-gradient(to top, var(--background-secondary) 80%, transparent)'};
             backdrop-filter: blur(10px);
             animation: fadeIn 0.5s ease-out;
@@ -1048,9 +1062,11 @@ export default function Chatbot() {
         .chat-input {
             flex: 1;
             background: ${theme === 'dark'
-                ? 'rgba(26, 35, 50, 0.7)'
+                ? 'rgba(15, 20, 30, 0.95)'
                 : 'rgba(255, 255, 255, 0.95)'};
-            border: 2px solid rgba(160, 82, 45, 0.3);
+            border: 2px solid ${theme === 'dark'
+                ? 'rgba(160, 82, 45, 0.4)'
+                : 'rgba(160, 82, 45, 0.3)'};
             border-radius: 16px;
             padding: 0.875rem 1.25rem;
             color: var(--text-color);
@@ -1060,7 +1076,9 @@ export default function Chatbot() {
             max-height: 120px;
             min-height: 48px;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(160, 82, 45, 0.1);
+            box-shadow: ${theme === 'dark'
+                ? '0 4px 20px rgba(160, 82, 45, 0.2)'
+                : '0 4px 15px rgba(160, 82, 45, 0.1)'};
             backdrop-filter: blur(10px);
             position: relative;
         }
@@ -1068,9 +1086,11 @@ export default function Chatbot() {
         .chat-input-centered:hover,
         .chat-input:hover {
             background: ${theme === 'dark'
-                ? 'rgba(26, 35, 50, 0.85)'
+                ? 'rgba(15, 20, 30, 1)'
                 : 'rgba(255, 255, 255, 1)'};
-            border-color: rgba(160, 82, 45, 0.5);
+            border-color: ${theme === 'dark'
+                ? 'rgba(160, 82, 45, 0.6)'
+                : 'rgba(160, 82, 45, 0.5)'};
         }
 
         .chat-input-centered:focus,
@@ -1162,11 +1182,17 @@ export default function Chatbot() {
             flex: 1;
             overflow-y: auto;
             overflow-x: hidden;
-            padding: 2.5rem 2rem 1.5rem;
+            padding: 2.5rem 0 0rem;
             scroll-behavior: smooth;
             display: flex;
             flex-direction: column;
             min-height: 0;
+            opacity: 0;
+            transition: opacity 0.6s ease;
+        }
+
+        .chat-messages.fade-in {
+            opacity: 1;
         }
 
         .chat-messages::-webkit-scrollbar {
@@ -1179,7 +1205,7 @@ export default function Chatbot() {
 
         .chat-messages::-webkit-scrollbar-thumb {
             background: ${theme === 'dark'
-                ? 'rgba(255, 255, 255, 0.2)'
+                ? 'rgba(160, 82, 45, 0.4)'
                 : 'rgba(0, 0, 0, 0.2)'};
             border-radius: 4px;
         }
@@ -1262,18 +1288,21 @@ export default function Chatbot() {
             background: linear-gradient(135deg, #A0522D 0%, #8B4513 50%, #654321 100%);
             color: #ffffff;
             border-bottom-right-radius: 4px;
-            box-shadow: 0 4px 15px rgba(160, 82, 45, 0.5);
+            box-shadow: 0 4px 20px rgba(160, 82, 45, 0.6);
+            border: 1px solid rgba(160, 82, 45, 0.5);
         }
 
         .message.assistant .message-content {
             background: ${theme === 'dark'
-                ? 'rgba(26, 35, 50, 0.8)'
+                ? 'rgba(15, 20, 30, 0.95)'
                 : 'rgba(255, 255, 255, 0.95)'};
-            border: 1px solid rgba(160, 82, 45, 0.2);
+            border: 2px solid ${theme === 'dark'
+                ? 'rgba(160, 82, 45, 0.3)'
+                : 'rgba(160, 82, 45, 0.2)'};
             border-bottom-left-radius: 4px;
-            box-shadow: 0 4px 12px ${theme === 'dark'
-                ? 'rgba(0, 0, 0, 0.3)'
-                : 'rgba(15, 23, 42, 0.08)'};
+            box-shadow: ${theme === 'dark'
+                ? '0 4px 20px rgba(160, 82, 45, 0.2)'
+                : '0 4px 12px rgba(15, 23, 42, 0.08)'};
             backdrop-filter: blur(10px);
         }
 
@@ -1446,20 +1475,61 @@ export default function Chatbot() {
             font-weight: 500;
         }
 
-        /* Input Area - Sticky at Bottom */
-        .input-area {
-            position: sticky;
-            bottom: 0;
+        /* Fade-in animation for chat messages */
+        .chat-messages.fade-in {
+            animation: messagesFadeIn 0.6s ease-out;
+        }
+
+        @keyframes messagesFadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Unified Input Area - Transitions from center to bottom */
+        .input-area-unified {
+            position: fixed;
+            left: 260px;
+            right: 0;
             padding: 1.5rem 2rem;
+            max-width: 700px;
+            margin: 0 auto;
+            z-index: 100;
+            transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Input at center (welcome screen) */
+        .input-area-unified.at-center {
+            top: 55%;
+            bottom: auto;
+            transform: translateY(0);
+            background: transparent;
+            border-top: none;
+            box-shadow: none;
+        }
+
+        /* Input at bottom (chat mode) */
+        .input-area-unified.at-bottom {
+            top: auto;
+            bottom: 0;
+            transform: translateY(0);
+            left: 260px;
+            right: 0;
+            max-width: 100%;
             background: ${theme === 'dark'
                 ? 'rgba(10, 15, 30, 0.98)'
                 : 'rgba(255, 255, 255, 0.98)'};
-            border-top: 1px solid var(--glass-border);
-            flex-shrink: 0;
+            border-top: 2px solid ${theme === 'dark'
+                ? 'rgba(160, 82, 45, 0.25)'
+                : 'rgba(15, 23, 42, 0.1)'};
             backdrop-filter: blur(20px);
-            z-index: 10;
             box-shadow: 0 -4px 20px ${theme === 'dark'
-                ? 'rgba(0, 0, 0, 0.3)'
+                ? 'rgba(160, 82, 45, 0.2)'
                 : 'rgba(15, 23, 42, 0.08)'};
         }
 
@@ -1624,6 +1694,10 @@ export default function Chatbot() {
                 padding: 0.875rem;
             }
 
+            .welcome-content-wrapper {
+                padding: 5rem 1rem 2rem;
+            }
+
             .welcome-screen {
                 padding: 2rem 1rem 0;
             }
@@ -1675,12 +1749,20 @@ export default function Chatbot() {
             }
 
             .chat-messages {
-                padding: 2rem 1rem 1rem;
+                padding: 2rem 0 8rem;
             }
             
-            .input-area,
-            .input-area-centered {
+            .input-area-unified {
                 padding: 1rem;
+                left: 0;
+            }
+
+            .input-area-unified.at-center {
+                padding: 1rem;
+            }
+
+            .input-area-unified.at-bottom {
+                left: 0;
             }
             
             .chat-input,
@@ -1735,6 +1817,10 @@ export default function Chatbot() {
                 font-size: 1rem;
             }
 
+            .welcome-content-wrapper {
+                padding: 4rem 0.75rem 2rem;
+            }
+
             .welcome-title {
                 font-size: 1.5rem;
             }
@@ -1749,15 +1835,14 @@ export default function Chatbot() {
             }
 
             .chat-messages {
-                padding: 1.5rem 0.75rem 0.75rem;
+                padding: 1.5rem 0 8rem;
             }
 
             .message-content {
                 padding: 0.875rem 1rem;
             }
 
-            .input-area,
-            .input-area-centered {
+            .input-area-unified {
                 padding: 0.75rem;
             }
 
