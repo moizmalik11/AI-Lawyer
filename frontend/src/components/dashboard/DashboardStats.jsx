@@ -9,10 +9,10 @@ import {
 
 export const DashboardStats = ({ stats, itemVariants }) => {
     const statCards = [
-        { label: "AI Consultations", value: stats.aiConsultations, trend: "Live updates", icon: <IconRobot size={18} stroke={1.5} className="text-[var(--text-soft)] group-hover:text-[var(--brand-500)] transition-colors" /> },
-        { label: "Contracts Analyzed", value: stats.contractsAnalyzed, trend: "Secure logs", icon: <IconFileText size={18} stroke={1.5} className="text-[var(--text-soft)] group-hover:text-[var(--brand-500)] transition-colors" /> },
-        { label: "Judgments Viewed", value: stats.judgmentsViewed, trend: "Auto-synced", icon: <IconGavel size={18} stroke={1.5} className="text-[var(--text-soft)] group-hover:text-[var(--brand-500)] transition-colors" /> },
-        { label: "Hours Saved", value: stats.hoursSaved, trend: "Estimated total", icon: <IconClock size={18} stroke={1.5} className="text-[var(--text-soft)] group-hover:text-[var(--brand-500)] transition-colors" /> }
+        { label: "AI Consultations", value: stats.aiConsultations, trend: "Total AI Consultations", icon: <IconRobot size={18} stroke={1.5} className="text-[var(--text-soft)] group-hover:text-[var(--brand-500)] transition-colors" /> },
+        { label: "Contracts Analyzed", value: stats.contractsAnalyzed, trend: "Total Contracts Analyzed", icon: <IconFileText size={18} stroke={1.5} className="text-[var(--text-soft)] group-hover:text-[var(--brand-500)] transition-colors" /> },
+        { label: "Judgments Viewed", value: stats.judgmentsViewed, trend: "Total Judgments Summarized", icon: <IconGavel size={18} stroke={1.5} className="text-[var(--text-soft)] group-hover:text-[var(--brand-500)] transition-colors" /> },
+        { label: "Hours Saved", value: stats.hoursSaved, trend: "Estimated Total", icon: <IconClock size={18} stroke={1.5} className="text-[var(--text-soft)] group-hover:text-[var(--brand-500)] transition-colors" /> }
     ];
 
     return (

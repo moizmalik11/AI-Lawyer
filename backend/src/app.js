@@ -70,20 +70,24 @@ app.use('/api/contracts', contractRoutes);
 app.use('/api/search', searchRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 
-// Root endpoint
-app.get('/', (req, res) => {
-  res.json({
-    success: true,
-    message: 'Welcome to AI Lawyer API',
-    version: '1.0.0',
-    endpoints: {
-      health: '/health',
-      chat: {
-        ask: 'POST /api/chat/ask',
-        health: 'GET /api/chat/health',
-      },
-    },
-  });
+// // Root endpoint
+// app.get('/', (req, res) => {
+//   res.json({
+//     success: true,
+//     message: 'Welcome to AI Lawyer API',
+//     version: '1.0.0',
+//     endpoints: {
+//       health: '/health',
+//       chat: {
+//         ask: 'POST /api/chat/ask',
+//         health: 'GET /api/chat/health',
+//       },
+//     },
+//   });
+
+// Serve frontend application for any other route not caught by API
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '..', 'public', 'index.html'));
 });
 
 // =========================
