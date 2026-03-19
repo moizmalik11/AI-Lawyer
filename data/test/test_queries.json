@@ -1,0 +1,1061 @@
+{
+  "test_queries": [
+    {
+      "id": "query_001_prof",
+      "query": "What are the legal remedies available to an aggrieved person under the Balochistan Domestic Violence Act 2014, and how do courts enforce protection orders against breach?",
+      "query_type": "professional",
+      "document_title": "Balochistan Domestic Violence (Prevention and Protection) Act, 2014",
+      "source_url": "http://balochistancode.gob.pk/lawdir/a009844f-d396-433d-a3b7-716e69f6e53a.pdf",
+      "category": "balochistan-code",
+      "expected_context": "Sections 8-10 covering protection orders, residence orders, and monetary relief mechanisms"
+    },
+    {
+      "id": "query_001_lay",
+      "query": "If I am experiencing domestic abuse from a family member, what steps can I take to get legal protection under Balochistan law?",
+      "query_type": "layman",
+      "document_title": "Balochistan Domestic Violence (Prevention and Protection) Act, 2014",
+      "source_url": "http://balochistancode.gob.pk/lawdir/a009844f-d396-433d-a3b7-716e69f6e53a.pdf",
+      "category": "balochistan-code",
+      "expected_context": "Section 5 - Application to Court procedures and Section 2 - Definitions of domestic violence and aggrieved person"
+    },
+    {
+      "id": "query_001_civ",
+      "query": "My husband is preventing me from leaving home and controlling my finances - can I get a court order to protect my household rights?",
+      "query_type": "civilian",
+      "document_title": "Balochistan Domestic Violence (Prevention and Protection) Act, 2014",
+      "source_url": "http://balochistancode.gob.pk/lawdir/a009844f-d396-433d-a3b7-716e69f6e53a.pdf",
+      "category": "balochistan-code",
+      "expected_context": "Sections 4, 7 - Definition of economic abuse and right to reside in household"
+    },
+    {
+      "id": "query_001_stu",
+      "query": "How does the Balochistan Domestic Violence Act define different forms of abuse, and what is the role of Protection Officers in implementing the law?",
+      "query_type": "student",
+      "document_title": "Balochistan Domestic Violence (Prevention and Protection) Act, 2014",
+      "source_url": "http://balochistancode.gob.pk/lawdir/a009844f-d396-433d-a3b7-716e69f6e53a.pdf",
+      "category": "balochistan-code",
+      "expected_context": "Sections 2-4 definitions and Sections 18-19 Protection Officer duties"
+    },
+    {
+      "id": "query_001_content",
+      "query": "Which sections of the Balochistan Domestic Violence Act 2014 specifically address the penalty for breach of protection orders and the punishment quantum?",
+      "query_type": "content",
+      "document_title": "Balochistan Domestic Violence (Prevention and Protection) Act, 2014",
+      "source_url": "http://balochistancode.gob.pk/lawdir/a009844f-d396-433d-a3b7-716e69f6e53a.pdf",
+      "category": "balochistan-code",
+      "expected_context": "Section 13 - Penalty for Breach of protection order"
+    },
+    {
+      "id": "query_002_prof",
+      "query": "What constitutes child trafficking under the KP Child Protection and Welfare Act 2010, and what are the legal consequences for perpetrators?",
+      "query_type": "professional",
+      "document_title": "THE KHYBER PAKHTUNKHWA CHILD PROTECTION AND WELFARE ACT, 2010.",
+      "source_url": "https://kpcode.kp.gov.pk/uploads/THE_KHYBER_PAKHTUNKHWA_CHILD_PROTECTION_AND_WELFARE_ACT_2010.pdf",
+      "category": "kp-code",
+      "expected_context": "Definition in section 2 and Section 52 regarding child trafficking"
+    },
+    {
+      "id": "query_002_lay",
+      "query": "What should I do if I suspect a child in my neighborhood is being abused or exploited? What is the procedure under KP law?",
+      "query_type": "layman",
+      "document_title": "THE KHYBER PAKHTUNKHWA CHILD PROTECTION AND WELFARE ACT, 2010.",
+      "source_url": "https://kpcode.kp.gov.pk/uploads/THE_KHYBER_PAKHTUNKHWA_CHILD_PROTECTION_AND_WELFARE_ACT_2010.pdf",
+      "category": "kp-code",
+      "expected_context": "Part VI - Sections 19-20 on Rescue and protection of children at risk"
+    },
+    {
+      "id": "query_002_civ",
+      "query": "Can a child be imprisoned with their mother under the KP Child Protection Act, and what are the rights of such children?",
+      "query_type": "civilian",
+      "document_title": "THE KHYBER PAKHTUNKHWA CHILD PROTECTION AND WELFARE ACT, 2010.",
+      "source_url": "https://kpcode.kp.gov.pk/uploads/THE_KHYBER_PAKHTUNKHWA_CHILD_PROTECTION_AND_WELFARE_ACT_2010.pdf",
+      "category": "kp-code",
+      "expected_context": "Section 2 definition - 'child at risk' including clauses (viii) and (ix)"
+    },
+    {
+      "id": "query_002_stu",
+      "query": "What institutional frameworks does the KP Act establish for child protection, including the role of Child Protection Commissions and Courts?",
+      "query_type": "student",
+      "document_title": "THE KHYBER PAKHTUNKHWA CHILD PROTECTION AND WELFARE ACT, 2010.",
+      "source_url": "https://kpcode.kp.gov.pk/uploads/THE_KHYBER_PAKHTUNKHWA_CHILD_PROTECTION_AND_WELFARE_ACT_2010.pdf",
+      "category": "kp-code",
+      "expected_context": "Part II - Sections 3-8 on Commission establishment and Part V - Sections 15-18 on Child Protection Courts"
+    },
+    {
+      "id": "query_002_content",
+      "query": "What is the definition of 'corporal punishment' in the KP Act and which sections specifically prohibit it?",
+      "query_type": "content",
+      "document_title": "THE KHYBER PAKHTUNKHWA CHILD PROTECTION AND WELFARE ACT, 2010.",
+      "source_url": "https://kpcode.kp.gov.pk/uploads/THE_KHYBER_PAKHTUNKHWA_CHILD_PROTECTION_AND_WELFARE_ACT_2010.pdf",
+      "category": "kp-code",
+      "expected_context": "Section 2(m) definition and Section 33 prohibition and Section 34 penalties"
+    },
+    {
+      "id": "query_003_prof",
+      "query": "Under the Contract Act 1872, what are the legal distinctions between coercion, undue influence, and fraud, and how do they affect contract validity?",
+      "query_type": "professional",
+      "document_title": "Contract Act, 1872",
+      "source_url": "https://pakistancode.gov.pk/pdffiles/administrator8332a6df32386960ac7d81a5cf7aade2.pdf",
+      "category": "pakistan-code",
+      "expected_context": "Sections 15-18 defining coercion, undue influence, fraud, and misrepresentation"
+    },
+    {
+      "id": "query_003_lay",
+      "query": "I agreed to a business contract under pressure. Can I cancel it? What does the law say about contracts made under coercion?",
+      "query_type": "layman",
+      "document_title": "Contract Act, 1872",
+      "source_url": "https://pakistancode.gov.pk/pdffiles/administrator8332a6df32386960ac7d81a5cf7aade2.pdf",
+      "category": "pakistan-code",
+      "expected_context": "Sections 15, 19 on coercion and voidability of agreements"
+    },
+    {
+      "id": "query_003_civ",
+      "query": "If a seller misrepresented the condition of property when I bought it, what legal recourse do I have under the Contract Act?",
+      "query_type": "civilian",
+      "document_title": "Contract Act, 1872",
+      "source_url": "https://pakistancode.gov.pk/pdffiles/administrator8332a6df32386960ac7d81a5cf7aade2.pdf",
+      "category": "pakistan-code",
+      "expected_context": "Section 18 on misrepresentation and Section 64 on consequences of rescission"
+    },
+    {
+      "id": "query_003_stu",
+      "query": "Explain the doctrine of free consent in contract law and how the Contract Act 1872 protects both parties from deceptive practices.",
+      "query_type": "student",
+      "document_title": "Contract Act, 1872",
+      "source_url": "https://pakistancode.gov.pk/pdffiles/administrator8332a6df32386960ac7d81a5cf7aade2.pdf",
+      "category": "pakistan-code",
+      "expected_context": "Sections 13-14 defining consent and free consent; Sections 15-18 on grounds that vitiate consent"
+    },
+    {
+      "id": "query_003_content",
+      "query": "What are the requirements for a valid guarantee contract under the Contract Act 1872, and what is the surety's liability?",
+      "query_type": "content",
+      "document_title": "Contract Act, 1872",
+      "source_url": "https://pakistancode.gov.pk/pdffiles/administrator8332a6df32386960ac7d81a5cf7aade2.pdf",
+      "category": "pakistan-code",
+      "expected_context": "Chapter VIII - Sections 126-147 on indemnity and guarantee contracts"
+    },
+    {
+      "id": "query_004_prof",
+      "query": "What are the specific tax provisions imposed by the Punjab Finance Act 1968 on cinema establishments and motor vehicles, and how are they assessed?",
+      "query_type": "professional",
+      "document_title": "PUNJAB FINANCE ACT, 1968",
+      "source_url": "https://punjabcode.punjab.gov.pk/uploads/articles/PUNJAB_FINANCE_ACT%2C_1968.doc.pdf",
+      "category": "punjab-code",
+      "expected_context": "Sections 3-4 describing cinema tax brackets and the motor vehicles surcharge provisions"
+    },
+    {
+      "id": "query_004_lay",
+      "query": "If I own a cinema hall in Punjab, what annual tax am I required to pay according to the 1968 Finance Act?",
+      "query_type": "layman",
+      "document_title": "PUNJAB FINANCE ACT, 1968",
+      "source_url": "https://punjabcode.punjab.gov.pk/uploads/articles/PUNJAB_FINANCE_ACT%2C_1968.doc.pdf",
+      "category": "punjab-code",
+      "expected_context": "Section 3 - Tax on cinemas with rate schedules for different classes"
+    },
+    {
+      "id": "query_004_civ",
+      "query": "I have a goods transport vehicle in Punjab - what surcharge taxes apply to my motor vehicle license?",
+      "query_type": "civilian",
+      "document_title": "PUNJAB FINANCE ACT, 1968",
+      "source_url": "https://punjabcode.punjab.gov.pk/uploads/articles/PUNJAB_FINANCE_ACT%2C_1968.doc.pdf",
+      "category": "punjab-code",
+      "expected_context": "Section 4 - Surcharge on motor vehicles tax with specific rates for transport vehicles"
+    },
+    {
+      "id": "query_004_stu",
+      "query": "What is the historical context and purpose of the Punjab Finance Act 1968 in establishing tax regimes for regional development?",
+      "query_type": "student",
+      "document_title": "PUNJAB FINANCE ACT, 1968",
+      "source_url": "https://punjabcode.punjab.gov.pk/uploads/articles/PUNJAB_FINANCE_ACT%2C_1968.doc.pdf",
+      "category": "punjab-code",
+      "expected_context": "Preamble and Section 1-2 on commencement and agricultural income-tax surcharge"
+    },
+    {
+      "id": "query_004_content",
+      "query": "Which sections of the Punjab Finance Act 1968 deal with railway fares and freights taxation, and what are the applicable schedules?",
+      "query_type": "content",
+      "document_title": "PUNJAB FINANCE ACT, 1968",
+      "source_url": "https://punjabcode.punjab.gov.pk/uploads/articles/PUNJAB_FINANCE_ACT%2C_1968.doc.pdf",
+      "category": "punjab-code",
+      "expected_context": "Section 5 - Tax on railway fares and freights with reference to Second Schedule"
+    },
+    {
+      "id": "query_005_prof",
+      "query": "What are the legal mechanisms for obtaining protection orders against domestic violence under the Sindh Act 2013, and what enforcement procedures exist?",
+      "query_type": "professional",
+      "document_title": "Sindh Domestic Violence (Prevention and Protection) Act 2013",
+      "source_url": "https://www.shrc.org.pk/downloads/laws/Sindh/25-Sindh-Domestic-Violence-(Prevention-and-Protection)-Act-2013.pdf",
+      "category": "shrc-sindh",
+      "expected_context": "Sections 7-11 detailing petition procedures, interim orders, and protection mechanisms"
+    },
+    {
+      "id": "query_005_lay",
+      "query": "I am a woman facing psychological abuse from my spouse in Sindh - what is my first step to seek legal protection?",
+      "query_type": "layman",
+      "document_title": "Sindh Domestic Violence (Prevention and Protection) Act 2013",
+      "source_url": "https://www.shrc.org.pk/downloads/laws/Sindh/25-Sindh-Domestic-Violence-(Prevention-and-Protection)-Act-2013.pdf",
+      "category": "shrc-sindh",
+      "expected_context": "Sections 2, 5 defining domestic violence and psychological abuse; Section 7 petition procedure"
+    },
+    {
+      "id": "query_005_civ",
+      "query": "My landlord is threatening to evict me and I have an abusive spouse - what are my housing rights under the Sindh Domestic Violence Act?",
+      "query_type": "civilian",
+      "document_title": "Sindh Domestic Violence (Prevention and Protection) Act 2013",
+      "source_url": "https://www.shrc.org.pk/downloads/laws/Sindh/25-Sindh-Domestic-Violence-(Prevention-and-Protection)-Act-2013.pdf",
+      "category": "shrc-sindh",
+      "expected_context": "Section 9 on right to reside in household and protection from eviction"
+    },
+    {
+      "id": "query_005_stu",
+      "query": "Compare the legal definitions of domestic violence under the Sindh Act 2013 versus the Balochistan Act 2014. What are the key differences?",
+      "query_type": "student",
+      "document_title": "Sindh Domestic Violence (Prevention and Protection) Act 2013",
+      "source_url": "https://www.shrc.org.pk/downloads/laws/Sindh/25-Sindh-Domestic-Violence-(Prevention-and-Protection)-Act-2013.pdf",
+      "category": "shrc-sindh",
+      "expected_context": "Section 5 comprehensive definition of domestic violence including multiple forms of abuse"
+    },
+    {
+      "id": "query_005_content",
+      "query": "What is the specific punishment prescribed under the Sindh Domestic Violence Act 2013 for sexual abuse, and which section outlines this?",
+      "query_type": "content",
+      "document_title": "Sindh Domestic Violence (Prevention and Protection) Act 2013",
+      "source_url": "https://www.shrc.org.pk/downloads/laws/Sindh/25-Sindh-Domestic-Violence-(Prevention-and-Protection)-Act-2013.pdf",
+      "category": "shrc-sindh",
+      "expected_context": "Section 5(l) definition of sexual abuse and Section 6 punishment provisions"
+    },
+    {
+      "id": "query_006_prof",
+      "query": "Under the Balochistan Subordinate Judiciary Service Tribunal Act, 1989, what is the scope of the Tribunal's exclusive jurisdiction and what appellate prerequisites must be satisfied before filing?",
+      "query_type": "professional",
+      "document_title": "Balochistan Subordinate Judiciary Service Tribunal Act, 1989",
+      "source_url": "http://balochistancode.gob.pk/lawdir/4aad3baa-e00e-41f4-ba32-5466267368e6.pdf",
+      "category": "balochistan-code",
+      "expected_context": "Sections 3 and 5 on exclusive jurisdiction, appeal timelines, and pre-condition of departmental remedies"
+    },
+    {
+      "id": "query_006_lay",
+      "query": "I work in subordinate judiciary and got an unfair final departmental order. How many days do I have to appeal, and where should I file it?",
+      "query_type": "layman",
+      "document_title": "Balochistan Subordinate Judiciary Service Tribunal Act, 1989",
+      "source_url": "http://balochistancode.gob.pk/lawdir/4aad3baa-e00e-41f4-ba32-5466267368e6.pdf",
+      "category": "balochistan-code",
+      "expected_context": "Section 5 appeal period of thirty days and forum as Service Tribunal"
+    },
+    {
+      "id": "query_006_civ",
+      "query": "Can the Service Tribunal force witnesses to appear and order documents to be produced in a service appeal case?",
+      "query_type": "civilian",
+      "document_title": "Balochistan Subordinate Judiciary Service Tribunal Act, 1989",
+      "source_url": "http://balochistancode.gob.pk/lawdir/4aad3baa-e00e-41f4-ba32-5466267368e6.pdf",
+      "category": "balochistan-code",
+      "expected_context": "Section 6(2) civil court powers including attendance, oath examination, and document production"
+    },
+    {
+      "id": "query_006_stu",
+      "query": "How is bench constitution handled under the 1989 Tribunal Act, and what happens when members of a bench disagree on an appeal?",
+      "query_type": "student",
+      "document_title": "Balochistan Subordinate Judiciary Service Tribunal Act, 1989",
+      "source_url": "http://balochistancode.gob.pk/lawdir/4aad3baa-e00e-41f4-ba32-5466267368e6.pdf",
+      "category": "balochistan-code",
+      "expected_context": "Section 4 on single/member benches, reference to Full Tribunal, and majority opinion rule"
+    },
+    {
+      "id": "query_006_content",
+      "query": "Which provisions of the Balochistan Subordinate Judiciary Service Tribunal Act, 1989 deal with limitation, transfer of pending appeals, and repeal?",
+      "query_type": "content",
+      "document_title": "Balochistan Subordinate Judiciary Service Tribunal Act, 1989",
+      "source_url": "http://balochistancode.gob.pk/lawdir/4aad3baa-e00e-41f4-ba32-5466267368e6.pdf",
+      "category": "balochistan-code",
+      "expected_context": "Sections 7, 8 and 10 covering limitation, transfer of appeals, and repeal clause"
+    },
+    {
+      "id": "query_007_prof",
+      "query": "Under the Khyber Pakhtunkhwa Employees of Health Department (Regularization of Services) Act, 2017, what statutory conditions govern regularization and how is conflict with existing rules resolved?",
+      "query_type": "professional",
+      "document_title": "Employees of Health Department (Regularization of Services) Act, 2017",
+      "source_url": "https://kpcode.kp.gov.pk/uploads/2017_07_THE_KHYBER_PAKHTUNKHWA_EMPLOYEES_OF_HEALTH_DEPARTMENT_REGULARIZATION_OF_SERVICES_ACT_2017.pdf",
+      "category": "kp-code",
+      "expected_context": "Sections 3 and 6 on deemed regularization criteria and overriding effect over inconsistent laws/rules"
+    },
+    {
+      "id": "query_007_lay",
+      "query": "I was hired on contract in KP Health Department and was still serving when this law started. Does this Act automatically make my job regular?",
+      "query_type": "layman",
+      "document_title": "Employees of Health Department (Regularization of Services) Act, 2017",
+      "source_url": "https://kpcode.kp.gov.pk/uploads/2017_07_THE_KHYBER_PAKHTUNKHWA_EMPLOYEES_OF_HEALTH_DEPARTMENT_REGULARIZATION_OF_SERVICES_ACT_2017.pdf",
+      "category": "kp-code",
+      "expected_context": "Section 3(1) deeming employees in service at commencement as regularly appointed, subject to provisos"
+    },
+    {
+      "id": "query_007_civ",
+      "query": "If two employees are regularized in the same cadre, how is seniority decided and who ranks junior to whom?",
+      "query_type": "civilian",
+      "document_title": "Employees of Health Department (Regularization of Services) Act, 2017",
+      "source_url": "https://kpcode.kp.gov.pk/uploads/2017_07_THE_KHYBER_PAKHTUNKHWA_EMPLOYEES_OF_HEALTH_DEPARTMENT_REGULARIZATION_OF_SERVICES_ACT_2017.pdf",
+      "category": "kp-code",
+      "expected_context": "Section 4 on placement below existing regular civil servants and inter se seniority by continuous affiliation and age"
+    },
+    {
+      "id": "query_007_stu",
+      "query": "What categories of employees and projects are specifically covered by the definitions clause in the KP Health Department Regularization Act, 2017?",
+      "query_type": "student",
+      "document_title": "Employees of Health Department (Regularization of Services) Act, 2017",
+      "source_url": "https://kpcode.kp.gov.pk/uploads/2017_07_THE_KHYBER_PAKHTUNKHWA_EMPLOYEES_OF_HEALTH_DEPARTMENT_REGULARIZATION_OF_SERVICES_ACT_2017.pdf",
+      "category": "kp-code",
+      "expected_context": "Section 2 definitions of employee, project list, posts, and reference to adhoc/contract meanings in Civil Servants Act 1973"
+    },
+    {
+      "id": "query_007_content",
+      "query": "Which clause requires publication in the Official Gazette for regularization to take effect under the 2017 KP Act?",
+      "query_type": "content",
+      "document_title": "Employees of Health Department (Regularization of Services) Act, 2017",
+      "source_url": "https://kpcode.kp.gov.pk/uploads/2017_07_THE_KHYBER_PAKHTUNKHWA_EMPLOYEES_OF_HEALTH_DEPARTMENT_REGULARIZATION_OF_SERVICES_ACT_2017.pdf",
+      "category": "kp-code",
+      "expected_context": "Section 3 proviso (iii) on regularization becoming effective upon publication of names in the Official Gazette"
+    },
+    {
+      "id": "query_008_prof",
+      "query": "In civil litigation, what evidentiary weight do certified copies of bankers' book entries carry under the Bankers' Books Evidence Act, 1891, and what are the limits of admissibility?",
+      "query_type": "professional",
+      "document_title": "Bankers' Books Evidence Act, 1891",
+      "source_url": "https://pakistancode.gov.pk/pdffiles/administratorf2659375fe49533f79b277d9a770c645.pdf",
+      "category": "pakistan-code",
+      "expected_context": "Section 4 on prima facie admissibility and evidentiary scope of certified copies"
+    },
+    {
+      "id": "query_008_lay",
+      "query": "Do I need the original bank ledger in court, or can a certified copy from the bank be used as evidence?",
+      "query_type": "layman",
+      "document_title": "Bankers' Books Evidence Act, 1891",
+      "source_url": "https://pakistancode.gov.pk/pdffiles/administratorf2659375fe49533f79b277d9a770c645.pdf",
+      "category": "pakistan-code",
+      "expected_context": "Sections 2(8) and 4 defining certified copy and allowing it as evidence in legal proceedings"
+    },
+    {
+      "id": "query_008_civ",
+      "query": "Can a court force a bank officer to appear and produce books when the bank itself is not a party to the case?",
+      "query_type": "civilian",
+      "document_title": "Bankers' Books Evidence Act, 1891",
+      "source_url": "https://pakistancode.gov.pk/pdffiles/administratorf2659375fe49533f79b277d9a770c645.pdf",
+      "category": "pakistan-code",
+      "expected_context": "Section 5 limiting compulsion unless a Court/Judge orders production for special cause"
+    },
+    {
+      "id": "query_008_stu",
+      "query": "How does the 1891 Act define bank, legal proceeding, and certified copy, and why are these definitions central to procedural evidence law?",
+      "query_type": "student",
+      "document_title": "Bankers' Books Evidence Act, 1891",
+      "source_url": "https://pakistancode.gov.pk/pdffiles/administratorf2659375fe49533f79b277d9a770c645.pdf",
+      "category": "pakistan-code",
+      "expected_context": "Section 2 definitions including bank/banker, legal proceeding, trial, and certified copy"
+    },
+    {
+      "id": "query_008_content",
+      "query": "Which section governs court-ordered inspection of bankers' books and what notice period applies before the order is obeyed?",
+      "query_type": "content",
+      "document_title": "Bankers' Books Evidence Act, 1891",
+      "source_url": "https://pakistancode.gov.pk/pdffiles/administratorf2659375fe49533f79b277d9a770c645.pdf",
+      "category": "pakistan-code",
+      "expected_context": "Section 6 on inspection orders and service of order three clear days before compliance unless otherwise directed"
+    },
+    {
+      "id": "query_009_prof",
+      "query": "Under the West Pakistan Finance Act, 1962, how are surcharges and tolls structured across land revenue, motor vehicles, and transport sectors, and what compliance risks arise for collectors?",
+      "query_type": "professional",
+      "document_title": "WEST PAKISTAN FINANCE ACT, 1962",
+      "source_url": "https://punjabcode.punjab.gov.pk/uploads/articles/THE_WEST_PAKISTAN_FINANCE_ACT%2C_1962.doc.pdf",
+      "category": "punjab-code",
+      "expected_context": "Sections 3, 11, 13-15 and 17 with schedule-linked rates and penalty for non-collection/non-payment"
+    },
+    {
+      "id": "query_009_lay",
+      "query": "I own a second-class cinema. How much tax was payable under the West Pakistan Finance Act, 1962 for the 1962-63 year?",
+      "query_type": "layman",
+      "document_title": "WEST PAKISTAN FINANCE ACT, 1962",
+      "source_url": "https://punjabcode.punjab.gov.pk/uploads/articles/THE_WEST_PAKISTAN_FINANCE_ACT%2C_1962.doc.pdf",
+      "category": "punjab-code",
+      "expected_context": "Section 7 cinema tax rates by class including second-class category"
+    },
+    {
+      "id": "query_009_civ",
+      "query": "If I run passenger vehicles for hire, what motor vehicle surcharge applied under this Act based on seating capacity?",
+      "query_type": "civilian",
+      "document_title": "WEST PAKISTAN FINANCE ACT, 1962",
+      "source_url": "https://punjabcode.punjab.gov.pk/uploads/articles/THE_WEST_PAKISTAN_FINANCE_ACT%2C_1962.doc.pdf",
+      "category": "punjab-code",
+      "expected_context": "Section 11 rate slabs for hire vehicles carrying not more than eight persons and more than eight persons"
+    },
+    {
+      "id": "query_009_stu",
+      "query": "How did the West Pakistan Finance Act, 1962 use schedules to operationalize fiscal policy across trade licenses, railway transport, and inland traffic?",
+      "query_type": "student",
+      "document_title": "WEST PAKISTAN FINANCE ACT, 1962",
+      "source_url": "https://punjabcode.punjab.gov.pk/uploads/articles/THE_WEST_PAKISTAN_FINANCE_ACT%2C_1962.doc.pdf",
+      "category": "punjab-code",
+      "expected_context": "Sections 10, 12 and 15 with Third, Fourth and Fifth Schedules for tax and toll scales"
+    },
+    {
+      "id": "query_009_content",
+      "query": "Which provisions of the West Pakistan Finance Act, 1962 prescribe tax on callings and professions and what examples of taxable classes are listed?",
+      "query_type": "content",
+      "document_title": "WEST PAKISTAN FINANCE ACT, 1962",
+      "source_url": "https://punjabcode.punjab.gov.pk/uploads/articles/THE_WEST_PAKISTAN_FINANCE_ACT%2C_1962.doc.pdf",
+      "category": "punjab-code",
+      "expected_context": "Section 9 listing classes such as legal practitioners, income-tax practitioners, clearing agents, and government contractors"
+    },
+    {
+      "id": "query_010_prof",
+      "query": "What legal test does the Sindh (Regularization of Adhoc and Contract Employees) Act, 2013 establish for deeming appointments validly regularized, and what posts are covered?",
+      "query_type": "professional",
+      "document_title": "Sindh Regularization of Adhoc & Contract Employees Act, 2013",
+      "source_url": "https://www.shrc.org.pk/downloads/laws/Sindh/24-Sindh-Regularization-of-Adhoc-&-Contract-Employees Act, 2013.pdf",
+      "category": "shrc-sindh",
+      "expected_context": "Section 3 read with definitions in Section 2 on eligible appointments, exclusion of daily-wage/work-charged staff, and BS-1 to BS-18 coverage"
+    },
+    {
+      "id": "query_010_lay",
+      "query": "I am a contract employee in a Sindh government project and was already in service when this Act started. Does it make me permanent?",
+      "query_type": "layman",
+      "document_title": "Sindh Regularization of Adhoc & Contract Employees Act, 2013",
+      "source_url": "https://www.shrc.org.pk/downloads/laws/Sindh/24-Sindh-Regularization-of-Adhoc-&-Contract-Employees Act, 2013.pdf",
+      "category": "shrc-sindh",
+      "expected_context": "Section 3 deeming in-service eligible adhoc/contract employees as validly appointed on regular basis"
+    },
+    {
+      "id": "query_010_civ",
+      "query": "Are daily-wage or work-charged workers included in the Sindh regularization law?",
+      "query_type": "civilian",
+      "document_title": "Sindh Regularization of Adhoc & Contract Employees Act, 2013",
+      "source_url": "https://www.shrc.org.pk/downloads/laws/Sindh/24-Sindh-Regularization-of-Adhoc-&-Contract-Employees Act, 2013.pdf",
+      "category": "shrc-sindh",
+      "expected_context": "Preamble and Section 2(b)/(d) expressly excluding daily-wages and work-charged appointments"
+    },
+    {
+      "id": "query_010_stu",
+      "query": "How does the Sindh Act, 2013 define employee, appointment, and post, and how do these definitions shape the statute's remedial scope?",
+      "query_type": "student",
+      "document_title": "Sindh Regularization of Adhoc & Contract Employees Act, 2013",
+      "source_url": "https://www.shrc.org.pk/downloads/laws/Sindh/24-Sindh-Regularization-of-Adhoc-&-Contract-Employees Act, 2013.pdf",
+      "category": "shrc-sindh",
+      "expected_context": "Section 2 clauses (b), (d), and (e) defining appointment, employee, and post including project posts"
+    },
+    {
+      "id": "query_010_content",
+      "query": "Which pay-scale range is explicitly covered for regularization under the Sindh Act, and where is it stated?",
+      "query_type": "content",
+      "document_title": "Sindh Regularization of Adhoc & Contract Employees Act, 2013",
+      "source_url": "https://www.shrc.org.pk/downloads/laws/Sindh/24-Sindh-Regularization-of-Adhoc-&-Contract-Employees Act, 2013.pdf",
+      "category": "shrc-sindh",
+      "expected_context": "Section 3 specifying coverage of posts in BS-1 to BS-18 or equivalent basic scales"
+    },
+    {
+      "id": "query_011_prof",
+      "query": "In the Supreme Court Flood Commission order (Constitution Petition No. 62 of 2010), what institutional accountability findings were made against irrigation officials, and what corrective legal actions were recommended?",
+      "query_type": "professional",
+      "document_title": "Flood Commission",
+      "source_url": "https://www.supremecourt.gov.pk/downloads_judgements/Const.P.NO.62OF2010_orderdt06062011.pdf",
+      "category": "supremecourt-judgments",
+      "expected_context": "TOR findings 11-13 and concluding remarks on negligence, investigations, audits, and due process against officials"
+    },
+    {
+      "id": "query_011_lay",
+      "query": "According to the Supreme Court flood order, were flood victims entitled to compensation, and on what basis was compensation discussed?",
+      "query_type": "layman",
+      "document_title": "Flood Commission",
+      "source_url": "https://www.supremecourt.gov.pk/downloads_judgements/Const.P.NO.62OF2010_orderdt06062011.pdf",
+      "category": "supremecourt-judgments",
+      "expected_context": "Finding under TOR 10 on compensation framework, Calamities Act limits, and NDMA/ECC compensation scale"
+    },
+    {
+      "id": "query_011_civ",
+      "query": "Did the Flood Commission hold anyone responsible for the Tori Bund collapse and losses in Sindh and Balochistan?",
+      "query_type": "civilian",
+      "document_title": "Flood Commission",
+      "source_url": "https://www.supremecourt.gov.pk/downloads_judgements/Const.P.NO.62OF2010_orderdt06062011.pdf",
+      "category": "supremecourt-judgments",
+      "expected_context": "TOR 3 and TOR 13 findings attributing primary responsibility to Chief Engineer Guddu and supervisory officials"
+    },
+    {
+      "id": "query_011_stu",
+      "query": "What were the Commission's terms of reference in the 2010 flood case, and how did the Court use those TORs to structure findings across governance, relief, and liability?",
+      "query_type": "student",
+      "document_title": "Flood Commission",
+      "source_url": "https://www.supremecourt.gov.pk/downloads_judgements/Const.P.NO.62OF2010_orderdt06062011.pdf",
+      "category": "supremecourt-judgments",
+      "expected_context": "Initial list of 13 TOR questions followed by structured findings and concluding remarks in the order"
+    },
+    {
+      "id": "query_011_content",
+      "query": "What quantifiable loss figures and rehabilitation estimates are recorded in the Flood Commission findings?",
+      "query_type": "content",
+      "document_title": "Flood Commission",
+      "source_url": "https://www.supremecourt.gov.pk/downloads_judgements/Const.P.NO.62OF2010_orderdt06062011.pdf",
+      "category": "supremecourt-judgments",
+      "expected_context": "Findings under TOR 6 and 9 noting Rs.855 billion losses, human loss/indirect impacts, and Rs.277 billion restoration portfolio"
+    },
+    {
+      "id": "query_012_prof",
+      "query": "What is the legal procedure for a Child Protection Officer to conduct an initial assessment when a report of child abuse is received, and what are the mandatory timeframes under the Balochistan Child Protection Act 2016?",
+      "query_type": "professional",
+      "document_title": "The Balochistan Child Protection, Act, 2016",
+      "source_url": "http://balochistancode.gob.pk/lawdir/8981ec56-a98c-4c4a-b74e-7e189fbef2f1.pdf",
+      "category": "balochistan-code",
+      "expected_context": "Sections 12-13, 24-hour acknowledgment requirement, 72-hour commencement of assessment, 10-day completion deadline, meeting with child, recording findings"
+    },
+    {
+      "id": "query_012_lay",
+      "query": "If I witness a child being abused or neglected in my neighborhood, what steps can I take to report this and get help under the Balochistan Child Protection Act?",
+      "query_type": "layman",
+      "document_title": "The Balochistan Child Protection, Act, 2016",
+      "source_url": "http://balochistancode.gob.pk/lawdir/8981ec56-a98c-4c4a-b74e-7e189fbef2f1.pdf",
+      "category": "balochistan-code",
+      "expected_context": "Section 11 District Child Protection Unit, reporting of alleged child abuse, Section 12 initial assessment process, notified officer contact procedures"
+    },
+    {
+      "id": "query_012_civ",
+      "query": "My child was removed from my home by child welfare authorities without any personal hearing - what are my rights and how can I challenge this decision in court?",
+      "query_type": "civilian",
+      "document_title": "The Balochistan Child Protection, Act, 2016",
+      "source_url": "http://balochistancode.gob.pk/lawdir/8981ec56-a98c-4c4a-b74e-7e189fbef2f1.pdf",
+      "category": "balochistan-code",
+      "expected_context": "Sections 17-19 Custody and Placement Order procedures, Section 18 Court procedures, right to make representations, Section 22 appeal to High Court"
+    },
+    {
+      "id": "query_012_stu",
+      "query": "How does the Balochistan Child Protection Act 2016 define 'best interests of a child,' and what specific factors must courts consider when making protection decisions?",
+      "query_type": "student",
+      "document_title": "The Balochistan Child Protection, Act, 2016",
+      "source_url": "http://balochistancode.gob.pk/lawdir/8981ec56-a98c-4c4a-b74e-7e189fbef2f1.pdf",
+      "category": "balochistan-code",
+      "expected_context": "Section 4 best interests definition, factors (a)-(j) including right to protection, welfare, physical and mental needs, parental responsibility, relationships, child's views"
+    },
+    {
+      "id": "query_012_content",
+      "query": "What sections of the Balochistan Child Protection Act 2016 establish the Supervision Order mechanism, and what are its specific conditions, duration, and implementation requirements?",
+      "query_type": "content",
+      "document_title": "The Balochistan Child Protection, Act, 2016",
+      "source_url": "http://balochistancode.gob.pk/lawdir/8981ec56-a98c-4c4a-b74e-7e189fbef2f1.pdf",
+      "category": "balochistan-code",
+      "expected_context": "Section 16 Supervision Order, conditions of order, specification of duration, implementation by Child Protection Officer, compliance requirements for parent/guardian"
+    },
+    {
+      "id": "query_013_prof",
+      "query": "What are the differences between informal/voluntary admission, assessment admission, treatment admission, and emergency admission under the Khyber Pakhtunkhwa Mental Health Act 2017?",
+      "query_type": "professional",
+      "document_title": "The Khyber Pakhtunkhwa Mental Health Act, 2017",
+      "source_url": "https://kpcode.kp.gov.pk/uploads/2017_17_THE_KHYBER_PAKHTUNKHWA_MENTAL_HEALTH_ACT_2017.pdf",
+      "category": "kp-code",
+      "expected_context": "Sections 5-11, definitions of care in community, voluntary basis, duration periods for detention, Section 8 assessment admission, Section 9 treatment admission, Section 10 urgent admission"
+    },
+    {
+      "id": "query_013_lay",
+      "query": "My family member is suffering from severe mental illness and refuses treatment - what legal options do I have to get them admitted to a psychiatric facility?",
+      "query_type": "layman",
+      "document_title": "The Khyber Pakhtunkhwa Mental Health Act, 2017",
+      "source_url": "https://kpcode.kp.gov.pk/uploads/2017_17_THE_KHYBER_PAKHTUNKHWA_MENTAL_HEALTH_ACT_2017.pdf",
+      "category": "kp-code",
+      "expected_context": "Sections 8-11 admission procedures, Section 13 application presentation, grounds for assessment and treatment admission, emergency procedures when person poses danger to self/others"
+    },
+    {
+      "id": "query_013_civ",
+      "query": "I'm concerned about a mentally ill person living alone without care - can I file an application to have them admitted to psychiatric facility and who has authority to make this decision?",
+      "query_type": "civilian",
+      "document_title": "The Khyber Pakhtunkhwa Mental Health Act, 2017",
+      "source_url": "https://kpcode.kp.gov.pk/uploads/2017_17_THE_KHYBER_PAKHTUNKHWA_MENTAL_HEALTH_ACT_2017.pdf",
+      "category": "kp-code",
+      "expected_context": "Section 13 application by whom to be presented, relative or designated officer, Section 8-9 admission criteria for assessment/treatment, medical recommendations, Magistrate/Court approval"
+    },
+    {
+      "id": "query_013_stu",
+      "query": "How is the Khyber Pakhtunkhwa Mental Health Authority structured, and what are its major functions and responsibilities in the province?",
+      "query_type": "student",
+      "document_title": "The Khyber Pakhtunkhwa Mental Health Act, 2017",
+      "source_url": "https://kpcode.kp.gov.pk/uploads/2017_17_THE_KHYBER_PAKHTUNKHWA_MENTAL_HEALTH_ACT_2017.pdf",
+      "category": "kp-code",
+      "expected_context": "Section 3 Authority establishment, Section 8 composition of members, Chapter II structure, functions including advising Government, establishing standards, monitoring implementation, coordination of services"
+    },
+    {
+      "id": "query_013_content",
+      "query": "Which sections of the Khyber Pakhtunkhwa Mental Health Act 2017 deal with guardianship appointments and property management for mentally disordered persons?",
+      "query_type": "content",
+      "document_title": "The Khyber Pakhtunkhwa Mental Health Act, 2017",
+      "source_url": "https://kpcode.kp.gov.pk/uploads/2017_17_THE_KHYBER_PAKHTUNKHWA_MENTAL_HEALTH_ACT_2017.pdf",
+      "category": "kp-code",
+      "expected_context": "Sections 25-39 Chapter V, judicial proceedings, Section 28 guardian appointment, Section 29 property management, Section 30 manager responsibilities, Section 31 inventory, Section 34 investment of assets"
+    },
+    {
+      "id": "query_014_prof",
+      "query": "What is the legal distinction between Initial Environmental Examination (IEE) and Environmental Impact Assessment (EIA) under the Pakistan Environmental Protection Act 1997, and when is each required?",
+      "query_type": "professional",
+      "document_title": "Pakistan Environmental Protection Act, 1997",
+      "source_url": "https://pakistancode.gov.pk/pdffiles/administrator17094efb999f9a865461eb1498175947.pdf",
+      "category": "pakistan-code",
+      "expected_context": "Section 12 IEE and EIA distinction, Section 2 definitions, preliminary environmental review, collection of data, prediction of impacts, comparison of alternatives, mitigation measures"
+    },
+    {
+      "id": "query_014_lay",
+      "query": "If a factory is polluting the air and water in my area causing health problems, what can I do to report it and get legal action taken against the polluters?",
+      "query_type": "layman",
+      "document_title": "Pakistan Environmental Protection Act, 1997",
+      "source_url": "https://pakistancode.gov.pk/pdffiles/administrator17094efb999f9a865461eb1498175947.pdf",
+      "category": "pakistan-code",
+      "expected_context": "Section 11 prohibition of certain discharges/emissions, Section 16 environmental protection orders, Section 17 penalties for violations, Provincial Agency enforcement, Section 20-22 Environmental Tribunals jurisdiction"
+    },
+    {
+      "id": "query_014_civ",
+      "query": "My community is affected by industrial waste being illegally dumped near our village causing environmental damage - what legal recourse do we have under Pakistani environmental law?",
+      "query_type": "civilian",
+      "document_title": "Pakistan Environmental Protection Act, 1997",
+      "source_url": "https://pakistancode.gov.pk/pdffiles/administrator17094efb999f9a865461eb1498175947.pdf",
+      "category": "pakistan-code",
+      "expected_context": "Section 11 discharge prohibition, Section 14 hazardous waste handling, Section 17-18 penalties and offences, Section 20-22 Environmental Tribunal jurisdiction and remedies"
+    },
+    {
+      "id": "query_014_stu",
+      "query": "What are the main objectives of the Pakistan Environmental Protection Act 1997, and how is the environmental regulatory framework organized at federal and provincial levels?",
+      "query_type": "student",
+      "document_title": "Pakistan Environmental Protection Act, 1997",
+      "source_url": "https://pakistancode.gov.pk/pdffiles/administrator17094efb999f9a865461eb1498175947.pdf",
+      "category": "pakistan-code",
+      "expected_context": "Section 1 preamble on protection and conservation, Section 3-4 Pakistan Environmental Protection Council, Section 5-7 Federal Agency, Section 8-10 Provincial Agencies, Chapter II establishment structure"
+    },
+    {
+      "id": "query_014_content",
+      "query": "What are the specific penal provisions and penalties in the Pakistan Environmental Protection Act 1997 for hazardous waste import, motor vehicle emissions violations, and pollution offences?",
+      "query_type": "content",
+      "document_title": "Pakistan Environmental Protection Act, 1997",
+      "source_url": "https://pakistancode.gov.pk/pdffiles/administrator17094efb999f9a865461eb1498175947.pdf",
+      "category": "pakistan-code",
+      "expected_context": "Section 13 prohibited import of hazardous waste, Section 15 motor vehicle regulation, Section 17 penalties with fine/imprisonment amounts, Section 18-19 offences by bodies corporate and government agencies"
+    },
+    {
+      "id": "query_015_prof",
+      "query": "What is the legal definition of a 'civilian victim' under the Punjab Civilian Victims of Terrorism Act 2016, and what categories of persons are excluded from coverage?",
+      "query_type": "professional",
+      "document_title": "PUNJAB CIVILIAN VICTIMS OF TERRORISM (RELIEF AND REHABILITATION) ACT 2016",
+      "source_url": "https://punjabcode.punjab.gov.pk/uploads/articles/PUNJAB_CIVILIAN_VICTIMS_OF_TERRORISM_%28RELIEF_AND_REHABILITATION%29_ACT_2016.pdf",
+      "category": "punjab-code",
+      "expected_context": "Section 2 definition of civilian victim excluding terrorists and law enforcement on duty, inclusion of heirs in case of death, spouse precedence, Section 3 rights and entitlements"
+    },
+    {
+      "id": "query_015_lay",
+      "query": "My family member was injured in a terrorist attack - am I eligible for financial assistance and healthcare under the Punjab law, and how do I apply?",
+      "query_type": "layman",
+      "document_title": "PUNJAB CIVILIAN VICTIMS OF TERRORISM (RELIEF AND REHABILITATION) ACT 2016",
+      "source_url": "https://punjabcode.punjab.gov.pk/uploads/articles/PUNJAB_CIVILIAN_VICTIMS_OF_TERRORISM_%28RELIEF_AND_REHABILITATION%29_ACT_2016.pdf",
+      "category": "punjab-code",
+      "expected_context": "Section 3 rights to grants, Section 6 healthcare of victims, Section 5 ascertainment procedure with notified officer, Schedule grant categories, 15-day government response requirement"
+    },
+    {
+      "id": "query_015_civ",
+      "query": "A family member died in a terrorist attack - what financial support and rehabilitation benefits are available to us, and how are family members prioritized in compensation?",
+      "query_type": "civilian",
+      "document_title": "PUNJAB CIVILIAN VICTIMS OF TERRORISM (RELIEF AND REHABILITATION) ACT 2016",
+      "source_url": "https://punjabcode.punjab.gov.pk/uploads/articles/PUNJAB_CIVILIAN_VICTIMS_OF_TERRORISM_%28RELIEF_AND_REHABILITATION%29_ACT_2016.pdf",
+      "category": "punjab-code",
+      "expected_context": "Section 2 definition of heirs in order of precedence (spouse, child, mother, father, sibling), Grant categories in Schedule, Section 7 rehabilitation provisions, Section 3 determination of entitlements"
+    },
+    {
+      "id": "query_015_stu",
+      "query": "How does the Punjab Civilian Victims of Terrorism Act 2016 define 'terrorism,' and what types of acts are covered under this relief and rehabilitation legislation?",
+      "query_type": "student",
+      "document_title": "PUNJAB CIVILIAN VICTIMS OF TERRORISM (RELIEF AND REHABILITATION) ACT 2016",
+      "source_url": "https://punjabcode.punjab.gov.pk/uploads/articles/PUNJAB_CIVILIAN_VICTIMS_OF_TERRORISM_%28RELIEF_AND_REHABILITATION%29_ACT_2016.pdf",
+      "category": "punjab-code",
+      "expected_context": "Section 2 definitions of 'terrorism' and 'act of terrorism,' weaponry and force usage, political/sectarian/religious objectives, Section 3 coverage scope, Section 5 ascertainment of incidents"
+    },
+    {
+      "id": "query_015_content",
+      "query": "What are the specific grant amounts and payment categories set out in the Schedule to the Punjab Civilian Victims of Terrorism Act, and how can these be updated by the Government?",
+      "query_type": "content",
+      "document_title": "PUNJAB CIVILIAN VICTIMS OF TERRORISM (RELIEF AND REHABILITATION) ACT 2016",
+      "source_url": "https://punjabcode.punjab.gov.pk/uploads/articles/PUNJAB_CIVILIAN_VICTIMS_OF_TERRORISM_%28RELIEF_AND_REHABILITATION%29_ACT_2016.pdf",
+      "category": "punjab-code",
+      "expected_context": "Schedule appendix with grant categories, Section 3(2) amendment procedure by Government notification in official Gazette, healthcare costs, rehabilitation services, financial grant amounts"
+    },
+    {
+      "id": "query_016_prof",
+      "query": "What is the scope of the absolute prohibition on corporal punishment under the Sindh Prohibition of Corporal Punishment Act 2016, and how does it interact with Section 89 of the Pakistan Penal Code?",
+      "query_type": "professional",
+      "document_title": "The Sindh Prohibition of Corporal Punishment Act 2016",
+      "source_url": "https://www.shrc.org.pk/downloads/laws/Sindh/The-Sindh-Prohibition-of-Corporal-Punishment-Act-2016.pdf",
+      "category": "shrc-sindh",
+      "expected_context": "Section 3 absolute prohibition notwithstanding Section 89 PPC, Section 4 penalties and offences, coverage in schools, care institutions, workplaces, juvenile justice system, disciplinary alternatives allowed"
+    },
+    {
+      "id": "query_016_lay",
+      "query": "Can a teacher or school staff legally punish my child physically, and what can I do if corporal punishment occurs at the school?",
+      "query_type": "layman",
+      "document_title": "The Sindh Prohibition of Corporal Punishment Act 2016",
+      "source_url": "https://www.shrc.org.pk/downloads/laws/Sindh/The-Sindh-Prohibition-of-Corporal-Punishment-Act-2016.pdf",
+      "category": "shrc-sindh",
+      "expected_context": "Section 3(2) prohibition in educational institutions (formal, non-formal, religious), Section 4 penalties for violations, available remedies under PPC assault/hurt provisions, disciplinary measures alternatives"
+    },
+    {
+      "id": "query_016_civ",
+      "query": "My child was physically caned by a teacher at school causing injury - what legal action can I take, and what penalties apply to the teacher?",
+      "query_type": "civilian",
+      "document_title": "The Sindh Prohibition of Corporal Punishment Act 2016",
+      "source_url": "https://www.shrc.org.pk/downloads/laws/Sindh/The-Sindh-Prohibition-of-Corporal-Punishment-Act-2016.pdf",
+      "category": "shrc-sindh",
+      "expected_context": "Section 4 penalties for violations, minor penalties (censure, withholding promotion), major penalties progression, assault/hurt under PPC sections 351-352, disciplinary action against educational staff"
+    },
+    {
+      "id": "query_016_stu",
+      "query": "How does the Sindh Prohibition of Corporal Punishment Act define corporal punishment, and in what settings (schools, homes, workplaces, care institutions) is it prohibited?",
+      "query_type": "student",
+      "document_title": "The Sindh Prohibition of Corporal Punishment Act 2016",
+      "source_url": "https://www.shrc.org.pk/downloads/laws/Sindh/The-Sindh-Prohibition-of-Corporal-Punishment-Act-2016.pdf",
+      "category": "shrc-sindh",
+      "expected_context": "Section 2 definition of corporal/physical punishment including hitting, kicking, burning, forced ingestion, any punishment causing pain or discomfort, Section 3 coverage in educational institutions, workplaces, care institutions, juvenile justice system"
+    },
+    {
+      "id": "query_016_content",
+      "query": "What are the specific minor and major penalties listed in Section 4 of the Sindh Prohibition of Corporal Punishment Act for violations in educational and care institutions?",
+      "query_type": "content",
+      "document_title": "The Sindh Prohibition of Corporal Punishment Act 2016",
+      "source_url": "https://www.shrc.org.pk/downloads/laws/Sindh/The-Sindh-Prohibition-of-Corporal-Punishment-Act-2016.pdf",
+      "category": "shrc-sindh",
+      "expected_context": "Section 4(2) minor penalties including censure, withholding promotion/increment for specific period, major penalties listing (details in subsection), PPC offence liability for assault/hurt/criminal force applications"
+    },
+    {
+      "id": "query_017_prof",
+      "query": "In the Supreme Court judgment Javed Ali v. Inspector General (C.P.L.A. 499-K/2023), what legal principles were established regarding age verification standards in police recruitment - appointment date vs. application date?",
+      "query_type": "professional",
+      "document_title": "Javed Ali v. Inspector General of Police Sindh Karachi & others",
+      "source_url": "https://www.supremecourt.gov.pk/downloads_judgements/c.p._499_k_2023.pdf",
+      "category": "supremecourt-judgments",
+      "expected_context": "Para 6 analysis of age standards, recruitment due diligence, application scrutiny timing, para 7 principle that age should be assessed at application submission date, departmental responsibility for recruitment screening"
+    },
+    {
+      "id": "query_017_lay",
+      "query": "I was dismissed from my government job for being slightly overage when appointed, but I know other employees in similar situations were later rehired - can I appeal for my job back?",
+      "query_type": "layman",
+      "document_title": "Javed Ali v. Inspector General of Police Sindh Karachi & others",
+      "source_url": "https://www.supremecourt.gov.pk/downloads_judgements/c.p._499_k_2023.pdf",
+      "category": "supremecourt-judgments",
+      "expected_context": "Para 1-4 facts of petitioners' dismissal, para 5 show cause notice without personal hearing, para 6 mention of other similarly placed colleagues being reinstated, para 8 discrimination argument and Court remedy"
+    },
+    {
+      "id": "query_017_civ",
+      "query": "I was hired as a police constable after passing all selection tests and working successfully for several years, then suddenly dismissed for being overage - what are my legal rights?",
+      "query_type": "civilian",
+      "document_title": "Javed Ali v. Inspector General of Police Sindh Karachi & others",
+      "source_url": "https://www.supremecourt.gov.pk/downloads_judgements/c.p._499_k_2023.pdf",
+      "category": "supremecourt-judgments",
+      "expected_context": "Para 1-4 case facts regarding appointment procedures, years of service (4-6 years), para 6 overage by 25-62 days issue, para 8 remand to Tribunal for determination on merits after proper hearing"
+    },
+    {
+      "id": "query_017_stu",
+      "query": "What legal principles does the Supreme Court judgment in Javed Ali case establish about the right to personal hearing and departmental inquiry in disciplinary proceedings?",
+      "query_type": "student",
+      "document_title": "Javed Ali v. Inspector General of Police Sindh Karachi & others",
+      "source_url": "https://www.supremecourt.gov.pk/downloads_judgements/c.p._499_k_2023.pdf",
+      "category": "supremecourt-judgments",
+      "expected_context": "Para 8 discussion that individual inquiry is essential and cannot be dispensed with, right to personal hearing required, para 5-6 show cause notice without opportunity for hearing is defective, proper adjudication principles"
+    },
+    {
+      "id": "query_017_content",
+      "query": "What specific procedural defects and timeline violations did the Supreme Court identify in the police department's dismissal of the petitioners in C.P.L.A. 499-K/2023?",
+      "query_type": "content",
+      "document_title": "Javed Ali v. Inspector General of Police Sindh Karachi & others",
+      "source_url": "https://www.supremecourt.gov.pk/downloads_judgements/c.p._499_k_2023.pdf",
+      "category": "supremecourt-judgments",
+      "expected_context": "Para 5-6 separate and joint show cause notices without explanation of recruitment process lapses, absence of individual inquiry, absence of personal hearing opportunity, dismissal after 4-6 years service, para 9 remand decision for Tribunal reconsideration"
+    },
+    {
+      "id": "query_018_prof",
+      "query": "Under the Balochistan Safe Blood Authority Act 2004, what statutory obligations govern blood transfusion safety and what enforcement powers are available against non-compliant operators?",
+      "query_type": "professional",
+      "document_title": "Safe Blood Authority Act 2004",
+      "source_url": "http://balochistancode.gob.pk/lawdir/ed7c3b25-6f03-464b-a0d5-e88616116ab8.pdf",
+      "category": "balochistan-code",
+      "expected_context": "Sections 3-4 on statutory objective and Authority establishment, Section 8 powers and functions, Sections 9-10 penalties and cognizance mechanism"
+    },
+    {
+      "id": "query_018_lay",
+      "query": "How can I confirm that a blood bank in Balochistan is legally allowed to operate, and who regulates whether blood is safe for transfusion?",
+      "query_type": "layman",
+      "document_title": "Safe Blood Authority Act 2004",
+      "source_url": "http://balochistancode.gob.pk/lawdir/ed7c3b25-6f03-464b-a0d5-e88616116ab8.pdf",
+      "category": "balochistan-code",
+      "expected_context": "Section 2 definitions of blood bank, registered blood bank and license, Section 3(2) safety obligation before transfusion, Section 4 establishment of regulatory Authority"
+    },
+    {
+      "id": "query_018_civ",
+      "query": "If someone is physically harmed due to unlawful blood transfusion practices, what punishment can apply and how is the case initiated under Balochistan law?",
+      "query_type": "civilian",
+      "document_title": "Safe Blood Authority Act 2004",
+      "source_url": "http://balochistancode.gob.pk/lawdir/ed7c3b25-6f03-464b-a0d5-e88616116ab8.pdf",
+      "category": "balochistan-code",
+      "expected_context": "Section 9(2) enhanced punishment where contravention causes physical injury, Section 10 complaint-based cognizance by Chairman/authorized person, Section 11 review remedy"
+    },
+    {
+      "id": "query_018_stu",
+      "query": "How is institutional accountability structured in the Balochistan Safe Blood Authority Act, particularly regarding composition, delegation, and rule-making?",
+      "query_type": "student",
+      "document_title": "Safe Blood Authority Act 2004",
+      "source_url": "http://balochistancode.gob.pk/lawdir/ed7c3b25-6f03-464b-a0d5-e88616116ab8.pdf",
+      "category": "balochistan-code",
+      "expected_context": "Section 4 composition and establishment of the Authority, Section 5 delegation, Sections 12-13 power to make rules and regulations, Section 14 relationship with other laws"
+    },
+    {
+      "id": "query_018_content",
+      "query": "What are the exact punishment ranges in Section 9 of the Safe Blood Authority Act for general contravention and for contravention causing physical injury?",
+      "query_type": "content",
+      "document_title": "Safe Blood Authority Act 2004",
+      "source_url": "http://balochistancode.gob.pk/lawdir/ed7c3b25-6f03-464b-a0d5-e88616116ab8.pdf",
+      "category": "balochistan-code",
+      "expected_context": "Section 9(1) imprisonment up to three years with fine range, Section 9(2) imprisonment up to five years with higher fine range, Section 9(3) offence for unauthorized interference and damage"
+    },
+    {
+      "id": "query_019_prof",
+      "query": "How does the Khyber Pakhtunkhwa Local Government Act 2013 allocate fiscal authority between local governments and the Provincial Finance Commission?",
+      "query_type": "professional",
+      "document_title": "The Khyber Pakhtunkhwa Local Government Act, 2013.",
+      "source_url": "https://kpcode.kp.gov.pk/uploads/THE_KHYBER_PAKHTUNKHWA_LOCAL_GOVERNMENT_ACT_2013.pdf",
+      "category": "kp-code",
+      "expected_context": "Chapter VIII Sections 30-37 on local funds, budget and audit, Chapter X Sections 42-50 on taxation powers and limits, Chapter XI Sections 51-53 on Provincial Finance Commission"
+    },
+    {
+      "id": "query_019_lay",
+      "query": "If I think my local property tax assessment is wrong in KP, where can I challenge it and what legal process applies?",
+      "query_type": "layman",
+      "document_title": "The Khyber Pakhtunkhwa Local Government Act, 2013.",
+      "source_url": "https://kpcode.kp.gov.pk/uploads/THE_KHYBER_PAKHTUNKHWA_LOCAL_GOVERNMENT_ACT_2013.pdf",
+      "category": "kp-code",
+      "expected_context": "Section 44 on rating areas and property tax, Section 45 on collection and recovery, Section 48 on petitions against valuation and assessment, Section 49 taxation rules"
+    },
+    {
+      "id": "query_019_civ",
+      "query": "Can a Village Council in KP legally make decisions affecting my neighborhood services, and who can suspend those decisions if they are unlawful?",
+      "query_type": "civilian",
+      "document_title": "The Khyber Pakhtunkhwa Local Government Act, 2013.",
+      "source_url": "https://kpcode.kp.gov.pk/uploads/THE_KHYBER_PAKHTUNKHWA_LOCAL_GOVERNMENT_ACT_2013.pdf",
+      "category": "kp-code",
+      "expected_context": "Chapter VII Sections 26-29 on village and neighbourhood councils, Section 63 setting aside village council decisions, Section 64 suspension of resolutions and proceedings"
+    },
+    {
+      "id": "query_019_stu",
+      "query": "What multi-tier governance model is created under the KP Local Government Act 2013 from District Government down to Village and Neighborhood Councils?",
+      "query_type": "student",
+      "document_title": "The Khyber Pakhtunkhwa Local Government Act, 2013.",
+      "source_url": "https://kpcode.kp.gov.pk/uploads/THE_KHYBER_PAKHTUNKHWA_LOCAL_GOVERNMENT_ACT_2013.pdf",
+      "category": "kp-code",
+      "expected_context": "Chapter III Sections 11-16 district government structure, Chapter IV Sections 17-20 district council, Chapter V-VII Sections 21-29 tehsil/town and village/neighbourhood tiers"
+    },
+    {
+      "id": "query_019_content",
+      "query": "Which sections in the KP Local Government Act 2013 specifically regulate suspension/removal of chairmen and setting aside local orders?",
+      "query_type": "content",
+      "document_title": "The Khyber Pakhtunkhwa Local Government Act, 2013.",
+      "source_url": "https://kpcode.kp.gov.pk/uploads/THE_KHYBER_PAKHTUNKHWA_LOCAL_GOVERNMENT_ACT_2013.pdf",
+      "category": "kp-code",
+      "expected_context": "Chapter XII Sections 59-64 covering suspension/removal of chairman, setting aside orders of district and tehsil authorities, and suspension of resolutions/proceedings"
+    },
+    {
+      "id": "query_020_prof",
+      "query": "Under the Merchant Shipping Ordinance 2001, what legal framework governs registration, mortgage priority, and transfer of ownership in Pakistani ships?",
+      "query_type": "professional",
+      "document_title": "Merchant Shipping Ordinance, 2001",
+      "source_url": "https://pakistancode.gov.pk/pdffiles/administrator0506da23281ece11e55cd37fe1f0c072.pdf",
+      "category": "pakistan-code",
+      "expected_context": "Part II Chapter IV Sections 11-20 registration fundamentals, Sections 31-37 transfer and transmission, Sections 38-50 mortgage creation, priority, transfer and related certificates"
+    },
+    {
+      "id": "query_020_lay",
+      "query": "If I buy a ship share, what documents and registration steps are needed so ownership is legally recognized under Pakistani shipping law?",
+      "query_type": "layman",
+      "document_title": "Merchant Shipping Ordinance, 2001",
+      "source_url": "https://pakistancode.gov.pk/pdffiles/administrator0506da23281ece11e55cd37fe1f0c072.pdf",
+      "category": "pakistan-code",
+      "expected_context": "Sections 20-23 entries and certificate of registry, Sections 31-33 transfer/declaration/registry of transfer, Section 58 registration of managing owner or manager"
+    },
+    {
+      "id": "query_020_civ",
+      "query": "Can a shipping company be punished for using false ship nationality papers or pretending a foreign vessel is Pakistani?",
+      "query_type": "civilian",
+      "document_title": "Merchant Shipping Ordinance, 2001",
+      "source_url": "https://pakistancode.gov.pk/pdffiles/administrator0506da23281ece11e55cd37fe1f0c072.pdf",
+      "category": "pakistan-code",
+      "expected_context": "Sections 59-63 on forgery, false declaration, and penalties for concealment or assumption of character, Sections 65-67 on national colours and penalties for misuse"
+    },
+    {
+      "id": "query_020_stu",
+      "query": "How does the Merchant Shipping Ordinance balance commercial regulation with labor and safety rights of seafarers?",
+      "query_type": "student",
+      "document_title": "Merchant Shipping Ordinance, 2001",
+      "source_url": "https://pakistancode.gov.pk/pdffiles/administrator0506da23281ece11e55cd37fe1f0c072.pdf",
+      "category": "pakistan-code",
+      "expected_context": "Part III Sections 75-89 control of shipping and tariffs, Part IV Chapters 6-10 on competency, engagement and discharge of seamen, Chapters 14-15 on provisions, health and discipline"
+    },
+    {
+      "id": "query_020_content",
+      "query": "Which provisions in the Merchant Shipping Ordinance 2001 regulate port charges, tariff notification, and conference agreements by shipping operators?",
+      "query_type": "content",
+      "document_title": "Merchant Shipping Ordinance, 2001",
+      "source_url": "https://pakistancode.gov.pk/pdffiles/administrator0506da23281ece11e55cd37fe1f0c072.pdf",
+      "category": "pakistan-code",
+      "expected_context": "Section 79A on regulation of port charges, Section 80 tariff notification duty, Sections 81-83 conference agreement disclosure/disapproval and prohibition on compliance with disapproved agreements"
+    },
+    {
+      "id": "query_021_prof",
+      "query": "What governance and financial control architecture is established by the Defence Housing Authority Rawalpindi Act 2013 between the Governing Body and Executive Board?",
+      "query_type": "professional",
+      "document_title": "DEFENCE HOUSING AUTHORITY RAWALPINDI ACT 2013",
+      "source_url": "https://punjabcode.punjab.gov.pk/uploads/articles/defence_housing_authority_rawalpindi_act-2013-pdf.pdf",
+      "category": "punjab-code",
+      "expected_context": "Sections 4-6 on composition and functions of Governing Body/Executive Board, Section 7 borrowing powers, Sections 15-16 on Authority Fund and budget/audit/accounts"
+    },
+    {
+      "id": "query_021_lay",
+      "query": "Can DHA Rawalpindi cancel my plot allotment, and do I have any appeal right under the Act?",
+      "query_type": "layman",
+      "document_title": "DEFENCE HOUSING AUTHORITY RAWALPINDI ACT 2013",
+      "source_url": "https://punjabcode.punjab.gov.pk/uploads/articles/defence_housing_authority_rawalpindi_act-2013-pdf.pdf",
+      "category": "punjab-code",
+      "expected_context": "Section 17 power to cancel allotment, Section 19 removal in contravention cases, Section 23 statutory appeal mechanism"
+    },
+    {
+      "id": "query_021_civ",
+      "query": "If a housing building is being used against approved scheme rules, what enforcement powers does DHA Rawalpindi have to remove or stop that use?",
+      "query_type": "civilian",
+      "document_title": "DEFENCE HOUSING AUTHORITY RAWALPINDI ACT 2013",
+      "source_url": "https://punjabcode.punjab.gov.pk/uploads/articles/defence_housing_authority_rawalpindi_act-2013-pdf.pdf",
+      "category": "punjab-code",
+      "expected_context": "Section 18 conversion of property to different use, Section 19 removal of building erected or used in contravention, Section 20 power to frame regulations for enforcement"
+    },
+    {
+      "id": "query_021_stu",
+      "query": "How does the DHA Rawalpindi Act define the Authority's public-purpose mandate, including welfare objectives and land development powers?",
+      "query_type": "student",
+      "document_title": "DEFENCE HOUSING AUTHORITY RAWALPINDI ACT 2013",
+      "source_url": "https://punjabcode.punjab.gov.pk/uploads/articles/defence_housing_authority_rawalpindi_act-2013-pdf.pdf",
+      "category": "punjab-code",
+      "expected_context": "Preamble welfare rationale, Section 3 establishment as body corporate and scheme obligations, Section 6 powers/functions of Executive Board for planning, contracts, utilities and property actions"
+    },
+    {
+      "id": "query_021_content",
+      "query": "Which sections of the DHA Rawalpindi Act deal with delegated powers, committees, and annual reporting/accountability obligations?",
+      "query_type": "content",
+      "document_title": "DEFENCE HOUSING AUTHORITY RAWALPINDI ACT 2013",
+      "source_url": "https://punjabcode.punjab.gov.pk/uploads/articles/defence_housing_authority_rawalpindi_act-2013-pdf.pdf",
+      "category": "punjab-code",
+      "expected_context": "Section 12 annual report and accounts, Section 13 delegation of powers, Section 14 committees, Section 16 budget, audit and accounts"
+    },
+    {
+      "id": "query_022_prof",
+      "query": "Under the Qalandar Shahbaz University of Modern Sciences Act 2013, how are academic governance and financial accountability distributed across statutory authorities?",
+      "query_type": "professional",
+      "document_title": "The Qalandar Shahbaz University of Modern Sciences Act 2013",
+      "source_url": "https://www.shrc.org.pk/downloads/laws/Sindh/16-The-Qalandar-Shahbaz-University-of-Modern-Sciences-Act-2013.pdf",
+      "category": "shrc-sindh",
+      "expected_context": "Sections 11-18 on authorities and governance powers, Chapter V Sections 19-22 on statutes/regulations/rules, Section 23 on fund, audit and accounts"
+    },
+    {
+      "id": "query_022_lay",
+      "query": "Who controls major decisions in this university law: the Chancellor, Vice-Chancellor, or Board of Governors?",
+      "query_type": "layman",
+      "document_title": "The Qalandar Shahbaz University of Modern Sciences Act 2013",
+      "source_url": "https://www.shrc.org.pk/downloads/laws/Sindh/16-The-Qalandar-Shahbaz-University-of-Modern-Sciences-Act-2013.pdf",
+      "category": "shrc-sindh",
+      "expected_context": "Chapter III Sections 6-10 roles of Patron/Chancellor/Vice-Chancellor, Section 12 constitution of Board of Governors, Section 13 powers and functions of the Board"
+    },
+    {
+      "id": "query_022_civ",
+      "query": "If a university employee believes they were removed unfairly, what procedural protections and appeal rights are available under this Act?",
+      "query_type": "civilian",
+      "document_title": "The Qalandar Shahbaz University of Modern Sciences Act 2013",
+      "source_url": "https://www.shrc.org.pk/downloads/laws/Sindh/16-The-Qalandar-Shahbaz-University-of-Modern-Sciences-Act-2013.pdf",
+      "category": "shrc-sindh",
+      "expected_context": "Section 24 retirement from service, Section 25 opportunity of show cause, Section 26 appeal to and review by the Board, Section 34 indemnity and administrative protection context"
+    },
+    {
+      "id": "query_022_stu",
+      "query": "What institutional organs are listed in the Schedule of the Qalandar Shahbaz University Act and how do they support academic administration?",
+      "query_type": "student",
+      "document_title": "The Qalandar Shahbaz University of Modern Sciences Act 2013",
+      "source_url": "https://www.shrc.org.pk/downloads/laws/Sindh/16-The-Qalandar-Shahbaz-University-of-Modern-Sciences-Act-2013.pdf",
+      "category": "shrc-sindh",
+      "expected_context": "Schedule items on faculties, teaching departments, board of studies, board of advanced studies and research, selection board, finance and planning committee, affiliation committee"
+    },
+    {
+      "id": "query_022_content",
+      "query": "Which provisions specifically regulate statutes, regulations, rules, and later amendment or repeal in the Qalandar Shahbaz University Act?",
+      "query_type": "content",
+      "document_title": "The Qalandar Shahbaz University of Modern Sciences Act 2013",
+      "source_url": "https://www.shrc.org.pk/downloads/laws/Sindh/16-The-Qalandar-Shahbaz-University-of-Modern-Sciences-Act-2013.pdf",
+      "category": "shrc-sindh",
+      "expected_context": "Chapter V Sections 19-21 on statutes, regulations and rules, Section 22 on amendment and repeal of statutes and regulations, Section 32 first statute"
+    },
+    {
+      "id": "query_023_prof",
+      "query": "In Gul Sadem Khan v. Mst. Halima, how did the Supreme Court reconcile parental guardianship claims with the welfare test under the Guardians and Wards Act, 1890?",
+      "query_type": "professional",
+      "document_title": "Gul Sadem Khan v. Mst. Halima and others",
+      "source_url": "https://www.supremecourt.gov.pk/downloads_judgements/c.p._421_p_2022.pdf",
+      "category": "supremecourt-judgments",
+      "expected_context": "Paras 3-4 discussing Sections 25 and 17 of the Guardians and Wards Act, paramount welfare principle, and treatment of father as natural guardian subject to welfare"
+    },
+    {
+      "id": "query_023_lay",
+      "query": "I am a father working abroad and want custody of my children in Pakistan. Does the Court automatically prefer me over the mother?",
+      "query_type": "layman",
+      "document_title": "Gul Sadem Khan v. Mst. Halima and others",
+      "source_url": "https://www.supremecourt.gov.pk/downloads_judgements/c.p._421_p_2022.pdf",
+      "category": "supremecourt-judgments",
+      "expected_context": "Paras 3-5 emphasizing welfare over automatic parental preference, discussion of petitioner's residence abroad and conduct in proceedings, and continuity of children's care with mother"
+    },
+    {
+      "id": "query_023_civ",
+      "query": "If children are already living safely with their mother and studying, what factors did the Supreme Court consider before refusing to transfer custody to the father?",
+      "query_type": "civilian",
+      "document_title": "Gul Sadem Khan v. Mst. Halima and others",
+      "source_url": "https://www.supremecourt.gov.pk/downloads_judgements/c.p._421_p_2022.pdf",
+      "category": "supremecourt-judgments",
+      "expected_context": "Paras 2-5 factual history and welfare analysis, Section 17(2) factors such as age, capacity and existing care, findings on father's non-participation and mother's ongoing care"
+    },
+    {
+      "id": "query_023_stu",
+      "query": "What precedents did the Supreme Court cite in Gul Sadem Khan for the doctrine that welfare of the minor overrides strict personal law custody claims?",
+      "query_type": "student",
+      "document_title": "Gul Sadem Khan v. Mst. Halima and others",
+      "source_url": "https://www.supremecourt.gov.pk/downloads_judgements/c.p._421_p_2022.pdf",
+      "category": "supremecourt-judgments",
+      "expected_context": "Paras 3-4 citing 2008 SCMR 480, 2004 SCMR 1839, 1985 SCMR 1367, 1991 SCMR 1834 and 2000 SCMR 838 to reaffirm welfare-first custody jurisprudence"
+    },
+    {
+      "id": "query_023_content",
+      "query": "Which specific statutory provisions were reproduced in the judgment, and what core custody test did the Court derive from them?",
+      "query_type": "content",
+      "document_title": "Gul Sadem Khan v. Mst. Halima and others",
+      "source_url": "https://www.supremecourt.gov.pk/downloads_judgements/c.p._421_p_2022.pdf",
+      "category": "supremecourt-judgments",
+      "expected_context": "Paragraph 3 reproduction of Section 25 and Section 17 of the Guardians and Wards Act, with the Court's articulation that welfare and betterment of minors is the paramount test"
+    }
+  ],
+  "metadata": {
+    "generated_date": "2026-03-20",
+    "total_queries": 115,
+    "files_covered": 23,
+    "query_types": 5,
+    "categories_covered": [
+      "balochistan-code",
+      "kp-code",
+      "pakistan-code",
+      "punjab-code",
+      "shrc-sindh",
+      "supremecourt-judgments"
+    ],
+    "query_type_breakdown": {
+      "professional": 23,
+      "layman": 23,
+      "civilian": 23,
+      "student": 23,
+      "content": 23
+    },
+    "notes": "Queries generated from detailed analysis of actual document content. Each query targets specific sections and provisions demonstrating substantive understanding of the legal documents."
+  }
+}
