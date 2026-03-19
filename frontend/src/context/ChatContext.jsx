@@ -69,10 +69,7 @@ export const ChatProvider = ({ children }) => {
             chatMessages = chatMessages.map(msg => ({
                 ...msg,
                 content: msg.content || '',
-                sources: msg.sources ? msg.sources.map(s => {
-                    if (typeof s === 'string') return s;
-                    return s.title || s.document?.title || "Legal Document";
-                }) : []
+                sources: msg.sources ? msg.sources.map(s => typeof s === 'string' ? { document: { title: s } } : s) : []
             }));
 
             setMessages(chatMessages);
@@ -168,7 +165,7 @@ export const ChatProvider = ({ children }) => {
             setMessages(prev => [...prev, {
                 role: 'assistant',
                 content: data.answer,
-                sources: data.sources ? data.sources.map(s => s.title || s.document?.title || "Legal Document") : []
+                sources: data.sources ? data.sources.map(s => typeof s === 'string' ? { document: { title: s } } : s) : []
             }]);
 
             audioNotification.play('notification');
@@ -181,10 +178,7 @@ export const ChatProvider = ({ children }) => {
                     updatedMessages = updatedMessages.map(msg => ({
                         ...msg,
                         content: msg.content || '',
-                        sources: msg.sources ? msg.sources.map(s => {
-                            if (typeof s === 'string') return s;
-                            return s.title || s.document?.title || "Legal Document";
-                        }) : []
+                        sources: msg.sources ? msg.sources.map(s => typeof s === 'string' ? { document: { title: s } } : s) : []
                     }));
                     setMessages(updatedMessages);
                 } catch (reloadError) {

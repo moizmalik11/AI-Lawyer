@@ -1,13 +1,15 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { IconRobot, IconLoader, IconScale } from '@tabler/icons-react';
 import { marked } from 'marked';
 import { useAuth } from '../../context/AuthContext';
 import { useChat } from '../../context/ChatContext';
 import FeedbackButton from './FeedbackButton';
+import SourcesModal from './SourcesModal';
 
 const ChatMessages = () => {
     const { user } = useAuth();
     const { messages, loading, messagesEndRef, setInput } = useChat();
+    const [modalSources, setModalSources] = useState(null);
 
     if (messages.length === 0) {
         return (
@@ -54,15 +56,14 @@ const ChatMessages = () => {
 
                                 {/* Reference sources if AI generated them */}
                                 {msg.role === 'assistant' && msg.sources && msg.sources.length > 0 && (
-                                    <div className="mt-5 pt-5 border-t border-[var(--card-border)]">
-                                        <p className="text-[11px] font-bold text-[var(--text-muted)] mb-3 uppercase tracking-widest">References & Citations</p>
-                                        <div className="flex flex-wrap gap-2">
-                                            {msg.sources.map((src, sIdx) => (
-                                                <span key={sIdx} className="inline-flex items-center gap-1.5 text-xs px-3 py-1.5 bg-black/5 dark:bg-white/5 border border-[var(--card-border)] rounded-lg text-[var(--text-soft)] font-medium shadow-sm hover:bg-[var(--card-border)] transition-colors cursor-default">
-                                                    <IconScale size={14} stroke={1.5} className="text-[#d4af37]" /> {src}
-                                                </span>
-                                            ))}
-                                        </div>
+                                    <div className="mt-5 border-t border-[var(--card-border)] pt-4">
+                                        <button 
+                                            onClick={() => setModalSources(msg.sources)}
+                                            className="inline-flex items-center gap-2 text-xs px-4 py-2 bg-black/5 dark:bg-white/5 border border-[var(--card-border)] rounded-xl text-[var(--text-soft)] font-medium shadow-sm hover:bg-[#d4af37]/10 hover:text-[#d4af37] hover:border-[#d4af37]/30 transition-all cursor-pointer group"
+                                        >
+                                            <IconScale size={16} stroke={1.5} className="text-[#d4af37] group-hover:scale-110 transition-transform" /> 
+                                            View References and Sources ({msg.sources.length})
+                                        </button>
                                     </div>
                                 )}
                             </div>
@@ -89,6 +90,12 @@ const ChatMessages = () => {
                 )}
                 <div ref={messagesEndRef} className="h-4 w-full"></div>
             </div>
+
+            <SourcesModal 
+                isOpen={!!modalSources} 
+                onClose={() => setModalSources(null)} 
+                sources={modalSources} 
+            />
         </div>
     );
 };
