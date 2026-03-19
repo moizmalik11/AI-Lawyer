@@ -16,7 +16,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 from qdrant_client import QdrantClient
 from qdrant_client.http import models as qmodels
-from pymongo import MongoClient, ASCENDING
+from pymongo import MongoClient, ASCENDING, UpdateOne
 
 # ==========================
 # CONFIGURATION
@@ -38,6 +38,7 @@ MONGO_DB = os.getenv("MONGO_DB", "smartlawyer")
 MONGO_COLLECTION = os.getenv("MONGO_COLLECTION", "Embeddings")
 
 VECTOR_SIZE = 768  # For sentence-transformers MiniLM/MPNet
+BATCH_SIZE = 500   # Optimized batch size for database uploads
 
 # ==========================
 # INIT CLIENTS
@@ -71,83 +72,133 @@ except Exception:
 # ==========================
 # HELPER FUNCTIONS
 # ==========================
-def read_jsonl(path):
-    with open(path, "r", encoding="utf-8") as f:
-        for line in f:
-            try:
-                yield json.loads(line)
-            except Exception:
-                continue
+def _process_batch(qdrant_points, mongo_operations, batch_records, fout):
+    """Uploads a single batch to both DBs and writes to the updated JSONL."""
+    if not qdrant_points:
+        return
 
-def rewrite_jsonl_with_flag(path, records):
-    with open(path, "w", encoding="utf-8") as f:
-        for rec in records:
-            f.write(json.dumps(rec, ensure_ascii=False) + "\n")
+    # ---- 1️⃣ Upload to Qdrant ----
+    try:
+        qdrant.upsert(
+            collection_name=QDRANT_COLLECTION,
+            points=qdrant_points
+        )
+    except Exception as e:
+        print(f"❌ Qdrant batch upload failed: {e}")
+
+    # ---- 2️⃣ Upload to MongoDB ----
+    try:
+        if mongo_operations:
+            metadata_col.bulk_write(mongo_operations, ordered=False)
+    except Exception as e:
+        print(f"⚠️ MongoDB batch upload failed: {e}")
+
+    # ---- 3️⃣ Write updated records to temp file ----
+    for rec in batch_records:
+        rec["upload"] = True
+        fout.write(json.dumps(rec, ensure_ascii=False) + "\n")
+
 
 # ==========================
 # MAIN UPLOAD FUNCTION
 # ==========================
 def upload_embeddings():
-    print("📦 Starting embedding upload process...")
-    records = list(read_jsonl(EMBEDDINGS_FILE))
-    total = len(records)
-    uploaded = 0
+    print("📦 Starting optimized batch embedding upload process...")
+    temp_file = EMBEDDINGS_FILE.with_suffix('.jsonl.tmp')
+    
+    total_processed = 0
+    total_uploaded = 0
+    
+    qdrant_points = []
+    mongo_operations = []
+    batch_records = []
 
-    for rec in records:
-        if rec.get("upload", False):
-            continue
+    try:
+        # Stream read and write to avoid keeping 2GB+ in memory
+        with open(EMBEDDINGS_FILE, "r", encoding="utf-8") as fin, \
+             open(temp_file, "w", encoding="utf-8") as fout:
+            
+            for line in fin:
+                total_processed += 1
+                try:
+                    rec = json.loads(line)
+                except json.JSONDecodeError:
+                    fout.write(line)
+                    continue
 
-        vec = rec.get("embedding")
-        meta = rec.get("metadata", {})
-        chunk = rec.get("chunk", "")
+                if rec.get("upload", False):
+                    # Already uploaded, just copy over
+                    fout.write(line)
+                    continue
 
-        if not vec or not meta:
-            continue
+                vec = rec.get("embedding")
+                meta = rec.get("metadata", {})
+                chunk = rec.get("chunk", "")
 
-        # ---- 1️⃣ Upload to Qdrant ----
-        try:
-            payload = {
-                "id": meta.get("id"),
-                "chunk": chunk,
-                "title": meta.get("title"),
-                "year": meta.get("year"),
-                "court": meta.get("court"),
-                "document_type": meta.get("document_type"),
-                "download_date": meta.get("download_date"),
-            }
+                if not vec or not meta:
+                    # Missing essential data, copy over
+                    fout.write(line)
+                    continue
 
-            qdrant.upsert(
-                collection_name=QDRANT_COLLECTION,
-                points=[
+                # Add to Qdrant batch
+                payload = {
+                    "id": meta.get("id"),
+                    "chunk": chunk,
+                    "title": meta.get("title"),
+                    "year": meta.get("year"),
+                    "court": meta.get("court"),
+                    "document_type": meta.get("document_type"),
+                    "download_date": meta.get("download_date"),
+                }
+                
+                qdrant_points.append(
                     qmodels.PointStruct(
                         id=meta.get("id"),
                         vector=vec,
                         payload=payload,
                     )
-                ],
-            )
-        except Exception as e:
-            print(f"❌ Qdrant upload failed for ID {meta.get('id')}: {e}")
-            continue
+                )
 
-        # ---- 2️⃣ Upload metadata to MongoDB ----
-        try:
-            clean_meta = {k: v for k, v in meta.items() if k != "embedding"}
-            metadata_col.update_one({"id": meta.get("id")}, {"$set": clean_meta}, upsert=True)
-        except Exception as e:
-            print(f"⚠️ MongoDB upload failed for ID {meta.get('id')}: {e}")
+                # Add to MongoDB batch
+                clean_meta = {k: v for k, v in meta.items() if k != "embedding"}
+                mongo_operations.append(
+                    UpdateOne({"id": meta.get("id")}, {"$set": clean_meta}, upsert=True)
+                )
 
-        # ---- 3️⃣ Update local flag ----
-        rec["upload"] = True
-        uploaded += 1
+                # Keep record ref for writing later
+                batch_records.append(rec)
 
-        if uploaded % 10 == 0:
-            print(f"🧩 Uploaded {uploaded}/{total} embeddings...")
+                # Process batch when threshold is reached
+                if len(qdrant_points) >= BATCH_SIZE:
+                    _process_batch(qdrant_points, mongo_operations, batch_records, fout)
+                    total_uploaded += len(batch_records)
+                    
+                    if total_uploaded % 5000 == 0:
+                        print(f"🧩 Processed {total_processed} items. Total uploaded so far: {total_uploaded}...")
 
-    # ---- Rewrite file with updated flags ----
-    rewrite_jsonl_with_flag(EMBEDDINGS_FILE, records)
-    print(f"\n🎯 Upload completed! Total uploaded: {uploaded}/{total}")
-    print(f"📁 Updated local file: {EMBEDDINGS_FILE}")
+                    # Clear batch
+                    qdrant_points = []
+                    mongo_operations = []
+                    batch_records = []
+
+            # Flush any remaining items in the buffer
+            if qdrant_points:
+                _process_batch(qdrant_points, mongo_operations, batch_records, fout)
+                total_uploaded += len(batch_records)
+
+        # Atomic replace of the original file with the new one
+        if temp_file.exists():
+            temp_file.replace(EMBEDDINGS_FILE)
+            print(f"\n🎯 Upload completed! Total newly uploaded: {total_uploaded}")
+            print(f"📁 Updated local file: {EMBEDDINGS_FILE}")
+
+    except FileNotFoundError:
+        print(f"❌ Embeddings file not found: {EMBEDDINGS_FILE}")
+    except Exception as e:
+        print(f"❌ An error occurred: {e}")
+        if temp_file.exists():
+            print("⚠️ Cleaning up partial temporary file...")
+            temp_file.unlink()
 
 # ==========================
 # CREATE INDEXES IN MONGODB

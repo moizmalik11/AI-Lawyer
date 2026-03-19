@@ -95,4 +95,11 @@ class EmbeddingService {
   }
 }
 
-export default new EmbeddingService();
+const embeddingService = new EmbeddingService();
+
+// Pre-load the model on server startup
+embeddingService.initialize().catch(err => {
+  console.error('Failed to pre-load embedding model on startup:', err);
+});
+
+export default embeddingService;
