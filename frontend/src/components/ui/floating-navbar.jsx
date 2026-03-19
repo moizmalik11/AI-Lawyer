@@ -12,6 +12,7 @@ import { cn } from "../../lib/utils";
 import ThemeToggle from "../ThemeToggle";
 import { Button } from "./button";
 import { useAuth } from "../../context/AuthContext";
+import { IconScale } from "@tabler/icons-react";
 
 export const FloatingNav = ({
   navItems,
@@ -79,9 +80,9 @@ export const FloatingNav = ({
           )}>
 
           {/* Logo / Brand Name */}
-          <div className={cn("flex flex-1 items-center gap-2 overflow-hidden shrink-0", isTop ? "pl-4 md:pl-8" : "hidden")}>
-            <div className="w-8 h-8 rounded-full bg-[#d4af37] text-white flex items-center justify-center font-bold text-sm">
-              AL
+          <div className={cn("flex flex-1 items-center gap-2 overflow-hidden shrink-0", isTop ? "pl-4 md:pl-8" : "pl-2")}>
+            <div className="h-8 w-8 bg-[var(--brand-500)] rounded-lg flex-shrink-0 flex items-center justify-center shadow-lg shadow-black/20">
+              <IconScale className="h-4 w-4 text-[var(--navbar-bg)]" stroke={2} />
             </div>
             <span className={cn("font-bold text-lg whitespace-nowrap hidden md:block", isTop ? "text-white" : "text-[var(--foreground)]")}>AI-Lawyer</span>
           </div>

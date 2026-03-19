@@ -862,33 +862,65 @@ End every response with a brief disclaimer in the same language as your response
     let prompt;
     if (type === 'judgment') {
       prompt = `Please provide a complete, detailed, and self-explanatory summary of the following legal judgment. 
-      Structure the summary with the following sections:
-      1. Case Title & Citation (if available)
-      2. Facts of the Case
-      3. Issues Raised
-      4. Arguments by Petitioner
-      5. Arguments by Respondent
-      6. Court's Reasoning
-      7. Final Decision/Order
-      8. Key Legal Principles Established
+      IMPORTANT RULES:
+      - Output ONLY the summary. Do NOT include phrases like "Here is the summary" or "Here is a complete summary".
+      - Use STRICT Markdown formatting.
+      - Use '## ' (Header 2) for each section title.
+      - Put a seperator like horizontal rule '---' between each section.
+      - Make key items bold (using '**').
+      - Use proper line breaks and spacing to make it highly readable.
+      - You MUST complete the entire summary. Do NOT stop mid-section. Cover ALL sections fully.
+
+      Structure the summary with the exact following sections:
+      ## 1. Case Title & Citation (if available)
+      ---
+      ## 2. Facts of the Case
+      ---
+      ## 3. Issues Raised
+      ---
+      ## 4. Arguments by Petitioner
+      ---
+      ## 5. Arguments by Respondent
+      ---
+      ## 6. Court's Reasoning
+      ---
+      ## 7. Final Decision/Order
+      ---
+      ## 8. Key Legal Principles Established
 
       Judgment Text:
-      ${text.substring(0, 15000)}... (truncated if too long)`;
+      ${text.substring(0, 50000)}`;
     } else {
       prompt = `Please provide a complete, detailed, and self-explanatory summary of the following legal contract.
-      Also provide useful insights including potential loopholes and risks.
-      Structure the summary with the following sections:
-      1. Contract Overview (Parties, Purpose)
-      2. Key Terms & Conditions
-      3. Obligations of Each Party
-      4. Payment/Consideration Details
-      5. Termination Clauses
-      6. Dispute Resolution Mechanism
-      7. ⚠️ Potential Loopholes & Risks (Critical Analysis)
-      8. Recommendations
+      IMPORTANT RULES:
+      - Output ONLY the summary. Do NOT include conversational opening or closing statements.
+      - Use STRICT Markdown formatting.
+      - Use '## ' (Header 2) for each section title.
+      - Put a seperator like horizontal rule '---' between each section.
+      - Make key items bold (using '**').
+      - Use proper line breaks and spacing.
+      - Provide useful insights including potential loopholes and risks.
+      - You MUST complete the entire summary. Do NOT stop mid-section. Cover ALL sections fully.
+
+      Structure the summary with the exact following sections:
+      ## 1. Contract Overview (Parties, Purpose)
+      ---
+      ## 2. Key Terms & Conditions
+      ---
+      ## 3. Obligations of Each Party
+      ---
+      ## 4. Payment/Consideration Details
+      ---
+      ## 5. Termination Clauses
+      ---
+      ## 6. Dispute Resolution Mechanism
+      ---
+      ## 7. ⚠️ Potential Loopholes & Risks (Critical Analysis)
+      ---
+      ## 8. Recommendations
 
       Contract Text:
-      ${text.substring(0, 15000)}... (truncated if too long)`;
+      ${text.substring(0, 50000)}`;
     }
 
     const systemMessage = 'You are an expert legal assistant specializing in summarizing complex legal documents.';
@@ -902,7 +934,7 @@ End every response with a brief disclaimer in the same language as your response
     if (this.useGemini) {
       try {
         console.log('🔮 Trying Gemini for summary generation...');
-        const summary = await this.callGeminiAPI(messages, 0.7, 4096);
+        const summary = await this.callGeminiAPI(messages, 0.7, 8192);
 
         console.log('✅ Successfully generated summary with Gemini');
         return summary;
@@ -914,7 +946,7 @@ End every response with a brief disclaimer in the same language as your response
 
     // Fallback to OpenRouter (or use directly if toggle not set)
     try {
-      const summary = await this.callOpenRouterAPI(messages, 0.7, 4096);
+      const summary = await this.callOpenRouterAPI(messages, 0.7, 8192);
 
       console.log('✅ Successfully generated summary with OpenRouter');
       return summary;

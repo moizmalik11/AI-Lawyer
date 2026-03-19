@@ -1,6 +1,7 @@
 import React from 'react';
 import { IconScale, IconX } from '@tabler/icons-react';
 import { Button } from '../ui/button';
+import { marked } from 'marked';
 
 import { useJudgmentContext } from '../../context/JudgmentContext';
 
@@ -61,9 +62,9 @@ export const JudgmentSummaryModal = () => {
                             </div>
                         </div>
                     ) : (
-                        <div className="mt-2 bg-black/5 dark:bg-white/5 border border-[var(--card-border)] rounded-2xl p-6 md:p-8 prose prose-slate prose-headings:text-[var(--foreground)] prose-p:text-[var(--text-soft)] prose-strong:text-[var(--foreground)] max-w-none prose-p:leading-relaxed text-[15.5px]">
+                        <div className="mt-2 bg-black/5 dark:bg-white/5 border border-[var(--card-border)] rounded-2xl p-6 md:p-8 prose prose-slate prose-headings:text-[var(--foreground)] prose-p:text-[var(--foreground)] prose-strong:text-[var(--foreground)] prose-li:text-[var(--foreground)] prose-a:text-[#d4af37] max-w-none prose-p:leading-relaxed text-[15.5px] dark:prose-invert">
                             {summary ? (
-                                <div dangerouslySetInnerHTML={{ __html: summary.replace(/\n/g, '<br />') }} />
+                                <div dangerouslySetInnerHTML={{ __html: marked.parse(summary) }} />
                             ) : (
                                 <p className="italic text-[var(--text-muted)] text-center py-10">Summary generated successfully but contains no measurable text.</p>
                             )}

@@ -7,7 +7,7 @@ import { useDashboardData } from '../hooks/useDashboardData';
 // Sub-components
 import { DashboardHeader } from '../components/dashboard/DashboardHeader';
 import { DashboardStats } from '../components/dashboard/DashboardStats';
-import { ActivityTimeline } from '../components/dashboard/ActivityTimeline';
+import { OverallExperience } from '../components/dashboard/OverallExperience';
 import FeatureGrid from '../components/dashboard/FeatureGrid';
 import ErrorBoundary from '../components/ErrorBoundary';
 
@@ -15,7 +15,7 @@ const Dashboard = () => {
     const {
         userName,
         stats,
-        activities,
+        experience,
         systemStatus,
         isLoading,
         getGreeting,
@@ -62,7 +62,7 @@ const Dashboard = () => {
                         itemVariants={itemVariants} 
                     />
 
-                    {/* Lower Layout Area: Workspace & Activity Area */}
+                    {/* Lower Layout Area: Workspace & Experience Area */}
                     <div className="flex flex-col lg:flex-row gap-8 pt-2">
                         {/* Left Column: Feature Grid Module Container (60%) */}
                         <motion.div variants={itemVariants} className="flex flex-col w-full lg:w-[60%]">
@@ -81,11 +81,11 @@ const Dashboard = () => {
                             </div>
                         </motion.div>
 
-                        {/* Right Column: Activity Timeline (40%) */}
+                        {/* Right Column: Overall Experience (40%) */}
                         <motion.div variants={itemVariants} className="flex flex-col w-full lg:w-[40%] h-full min-h-[400px]">
                             <ErrorBoundary variant="local">
-                                <ActivityTimeline 
-                                    activities={activities}
+                                <OverallExperience 
+                                    experience={experience}
                                     isLoading={isLoading}
                                 />
                             </ErrorBoundary>

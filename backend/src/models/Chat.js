@@ -30,6 +30,12 @@ const messageSchema = new mongoose.Schema({
             source_page: String
         }
     }],
+    rating: {
+        type: Number,
+        min: 1,
+        max: 5,
+        default: null
+    },
     timestamp: {
         type: Date,
         default: Date.now

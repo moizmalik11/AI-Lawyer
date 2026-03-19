@@ -2,6 +2,7 @@ import fs from 'fs/promises';
 import { existsSync } from 'fs';
 import { PDFParse } from 'pdf-parse';
 import llmService from '../services/llmService.js';
+import UserActivity from '../models/UserActivity.js';
 
 /**
  * Helper function to safely delete a file with retry logic
@@ -72,6 +73,15 @@ export const analyzeContract = async (req, res) => {
 
         // Generate summary and analysis
         const analysis = await llmService.generateSummary(text, 'contract');
+
+        // Track contract analysis for dashboard stats
+        if (req.user?.userId) {
+            try {
+                await UserActivity.increment(req.user.userId, 'contractsAnalyzed');
+            } catch (e) {
+                console.warn('Failed to track contract activity:', e.message);
+            }
+        }
 
         res.json({
             success: true,

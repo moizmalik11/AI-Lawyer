@@ -25,6 +25,11 @@ class ChatService {
         const response = await api.delete(`/chat/${chatId}`);
         return response.data;
     }
+
+    async submitFeedback(chatId, messageId, rating) {
+        const response = await api.put(`/chat/${chatId}/feedback`, { messageId, rating });
+        return response.data;
+    }
 }
 
 export const chatService = new ChatService();

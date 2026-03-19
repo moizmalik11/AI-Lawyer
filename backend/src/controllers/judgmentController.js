@@ -1,5 +1,6 @@
 import Judgment from '../models/Judgment.js';
 import llmService from '../services/llmService.js';
+import UserActivity from '../models/UserActivity.js';
 
 /**
  * List all judgments with pagination
@@ -67,6 +68,15 @@ export const summarizeJudgment = async (req, res) => {
 
         // Generate summary using the full text from DB
         const summary = await llmService.generateSummary(judgment.full_text, 'judgment');
+
+        // Track judgment summarization for dashboard stats
+        if (req.user?.userId) {
+            try {
+                await UserActivity.increment(req.user.userId, 'judgmentsSummarized');
+            } catch (e) {
+                console.warn('Failed to track judgment activity:', e.message);
+            }
+        }
 
         res.json({
             success: true,

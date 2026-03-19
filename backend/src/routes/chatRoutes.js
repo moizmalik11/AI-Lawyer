@@ -11,7 +11,8 @@ import {
     createChat,
     getUserChats,
     getChat,
-    deleteChat
+    deleteChat,
+    submitFeedback
 } from '../controllers/chatController.js';
 import authMiddleware from '../middleware/authMiddleware.js';
 
@@ -38,6 +39,7 @@ router.post('/new', authMiddleware, createChat);
 router.get('/history', authMiddleware, getUserChats);
 router.get('/:id', authMiddleware, getChat);
 router.delete('/:id', authMiddleware, deleteChat);
+router.put('/:chatId/feedback', authMiddleware, submitFeedback);
 
 /**
  * GET /api/chat/health

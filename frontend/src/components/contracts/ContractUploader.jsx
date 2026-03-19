@@ -22,13 +22,13 @@ export const ContractUploader = ({
                 ref={fileInputRef}
                 onChange={handleChange}
                 className="hidden"
-                accept=".txt"
+                accept=".pdf,.txt,application/pdf,text/plain"
             />
             <div className="h-16 w-16 bg-[#051326] dark:bg-white/10 text-white rounded-2xl flex items-center justify-center mb-6 pointer-events-none shadow-md">
                 <IconUpload size={32} stroke={1.5} className="text-[#d4af37]" />
             </div>
             <h3 className="text-[17px] font-semibold text-[var(--foreground)] mb-2 pointer-events-none tracking-tight">Drag and drop your contract here</h3>
-            <p className="text-[var(--text-soft)] text-[13px] mb-8 pointer-events-none font-medium">Supports TXT files up to 10MB.</p>
+            <p className="text-[var(--text-soft)] text-[13px] mb-8 pointer-events-none font-medium">Supports PDF and TXT files up to 10MB.</p>
             <Button
                 onClick={() => fileInputRef.current?.click()}
                 className="px-8 z-10 relative shadow-md bg-[#051326] text-[#d4af37] hover:bg-[#051326]/90 border border-[#d4af37]/30"

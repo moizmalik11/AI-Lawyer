@@ -173,6 +173,25 @@ export const ChatProvider = ({ children }) => {
 
             audioNotification.play('notification');
 
+            // Reload chat from backend to get message _ids for feedback functionality
+            if (targetChatId && targetChatId !== 'new') {
+                try {
+                    const chatData = await chatService.getChatDetails(targetChatId);
+                    let updatedMessages = chatData.chat?.messages || chatData.messages || [];
+                    updatedMessages = updatedMessages.map(msg => ({
+                        ...msg,
+                        content: msg.content || '',
+                        sources: msg.sources ? msg.sources.map(s => {
+                            if (typeof s === 'string') return s;
+                            return s.title || s.document?.title || "Legal Document";
+                        }) : []
+                    }));
+                    setMessages(updatedMessages);
+                } catch (reloadError) {
+                    console.error("Failed to reload chat for message IDs:", reloadError);
+                }
+            }
+
         } catch (error) {
             if (error.name === 'CanceledError' || error.message?.includes('canceled') || error.code === 'ERR_CANCELED') {
                 console.log("Request canceled by user");
@@ -193,6 +212,22 @@ export const ChatProvider = ({ children }) => {
         }
     };
 
+    const submitFeedback = async (chatId, messageId, rating) => {
+        try {
+            const result = await chatService.submitFeedback(chatId, messageId, rating);
+            if (result.success) {
+                // Update the local message state with the new rating
+                setMessages(prev => prev.map(msg =>
+                    msg._id === messageId ? { ...msg, rating } : msg
+                ));
+            }
+            return result;
+        } catch (error) {
+            console.error('Failed to submit feedback:', error);
+            throw error;
+        }
+    };
+
     const value = {
         chats,
         currentChatId,
@@ -207,7 +242,8 @@ export const ChatProvider = ({ children }) => {
         createNewChat,
         deleteChat,
         handleSend,
-        stopGeneration
+        stopGeneration,
+        submitFeedback
     };
 
     return (

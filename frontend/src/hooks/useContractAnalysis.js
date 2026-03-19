@@ -11,10 +11,15 @@ export const useContractAnalysis = () => {
     const [progress, setProgress] = useState(0);
 
     const handleFile = (selectedFile) => {
-        const validTypes = ['text/plain'];
-        if (!validTypes.includes(selectedFile.type)) {
-            setError('Please upload a valid TXT file.');
-            toast.error('Please upload a valid TXT file.');
+        const validMimeTypes = ['application/pdf', 'text/plain'];
+        const fileName = selectedFile.name?.toLowerCase() || '';
+        const hasValidExtension = fileName.endsWith('.pdf') || fileName.endsWith('.txt');
+        const hasValidMimeType = validMimeTypes.includes(selectedFile.type);
+
+        // Some browsers/drags can provide empty or inconsistent MIME types, so allow known extensions too.
+        if (!hasValidMimeType && !hasValidExtension) {
+            setError('Please upload a valid PDF or TXT file.');
+            toast.error('Please upload a valid PDF or TXT file.');
             audioNotification.play('error');
             return false;
         }

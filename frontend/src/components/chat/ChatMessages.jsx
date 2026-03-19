@@ -3,6 +3,7 @@ import { IconRobot, IconLoader, IconScale } from '@tabler/icons-react';
 import { marked } from 'marked';
 import { useAuth } from '../../context/AuthContext';
 import { useChat } from '../../context/ChatContext';
+import FeedbackButton from './FeedbackButton';
 
 const ChatMessages = () => {
     const { user } = useAuth();
@@ -43,24 +44,33 @@ const ChatMessages = () => {
                         <div className={`h-11 w-11 shrink-0 rounded-2xl flex items-center justify-center font-bold text-lg shadow-sm transition-transform hover:scale-105 ${msg.role === 'user' ? 'bg-[var(--navbar-bg)] text-[#d4af37] border border-[#d4af37]/30' : 'bg-[var(--card-bg)] border-2 border-[var(--card-border)] text-[var(--foreground)]'}`}>
                             {msg.role === 'user' ? (user?.name?.charAt(0).toUpperCase() || 'U') : <IconScale size={24} stroke={1.5} className="text-[#d4af37]" />}
                         </div>
-                        <div className={`max-w-[85%] px-7 py-5 text-[15.5px] leading-relaxed shadow-sm ${msg.role === 'user' ? 'bg-[var(--navbar-bg)] text-white font-medium rounded-[1.75rem] rounded-tr-md border border-[#d4af37]/20' : 'bg-[var(--card-bg)] border border-[var(--card-border)] rounded-[1.75rem] rounded-tl-md'}`}>
-                            {msg.role === 'user' ? (
-                                <div className="whitespace-pre-wrap">{msg.content}</div>
-                            ) : (
-                                <div className="prose max-w-none prose-p:leading-relaxed prose-sm md:prose-base prose-headings:text-[var(--foreground)] prose-a:text-[#d4af37] font-medium text-[var(--foreground)] dark:prose-invert" dangerouslySetInnerHTML={{ __html: marked.parse(msg.content || '') }} />
-                            )}
+                        <div className="flex flex-col max-w-[85%]">
+                            <div className={`px-7 py-5 text-[15.5px] leading-relaxed shadow-sm ${msg.role === 'user' ? 'bg-[var(--navbar-bg)] text-white font-medium rounded-[1.75rem] rounded-tr-md border border-[#d4af37]/20' : 'bg-[var(--card-bg)] border border-[var(--card-border)] rounded-[1.75rem] rounded-tl-md'}`}>
+                                {msg.role === 'user' ? (
+                                    <div className="whitespace-pre-wrap">{msg.content}</div>
+                                ) : (
+                                    <div className="prose max-w-none prose-p:leading-relaxed prose-sm md:prose-base prose-headings:text-[var(--foreground)] prose-a:text-[#d4af37] font-medium text-[var(--foreground)] dark:prose-invert" dangerouslySetInnerHTML={{ __html: marked.parse(msg.content || '') }} />
+                                )}
 
-                            {/* Reference sources if AI generated them */}
-                            {msg.role === 'assistant' && msg.sources && msg.sources.length > 0 && (
-                                <div className="mt-5 pt-5 border-t border-[var(--card-border)]">
-                                    <p className="text-[11px] font-bold text-[var(--text-muted)] mb-3 uppercase tracking-widest">References & Citations</p>
-                                    <div className="flex flex-wrap gap-2">
-                                        {msg.sources.map((src, sIdx) => (
-                                            <span key={sIdx} className="inline-flex items-center gap-1.5 text-xs px-3 py-1.5 bg-black/5 dark:bg-white/5 border border-[var(--card-border)] rounded-lg text-[var(--text-soft)] font-medium shadow-sm hover:bg-[var(--card-border)] transition-colors cursor-default">
-                                                <IconScale size={14} stroke={1.5} className="text-[#d4af37]" /> {src}
-                                            </span>
-                                        ))}
+                                {/* Reference sources if AI generated them */}
+                                {msg.role === 'assistant' && msg.sources && msg.sources.length > 0 && (
+                                    <div className="mt-5 pt-5 border-t border-[var(--card-border)]">
+                                        <p className="text-[11px] font-bold text-[var(--text-muted)] mb-3 uppercase tracking-widest">References & Citations</p>
+                                        <div className="flex flex-wrap gap-2">
+                                            {msg.sources.map((src, sIdx) => (
+                                                <span key={sIdx} className="inline-flex items-center gap-1.5 text-xs px-3 py-1.5 bg-black/5 dark:bg-white/5 border border-[var(--card-border)] rounded-lg text-[var(--text-soft)] font-medium shadow-sm hover:bg-[var(--card-border)] transition-colors cursor-default">
+                                                    <IconScale size={14} stroke={1.5} className="text-[#d4af37]" /> {src}
+                                                </span>
+                                            ))}
+                                        </div>
                                     </div>
+                                )}
+                            </div>
+
+                            {/* Feedback button for assistant messages */}
+                            {msg.role === 'assistant' && (
+                                <div className="mt-2">
+                                    <FeedbackButton messageId={msg._id} existingRating={msg.rating} />
                                 </div>
                             )}
                         </div>

@@ -1,7 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { dashboardService } from '../services/dashboard.service';
-import { chatService } from '../services/chat.service';
 import { useAuth } from '../context/AuthContext';
 
 export const useDashboardData = () => {
@@ -27,9 +26,13 @@ export const useDashboardData = () => {
             aiConsultations: 0,
             contractsAnalyzed: 0,
             judgmentsViewed: 0,
-            hoursSaved: "0h"
+            hoursSaved: "0m"
         };
-        let activitiesData = [];
+        let experienceData = {
+            averageRating: 0,
+            totalRatings: 0,
+            ratingDistribution: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 }
+        };
         let systemData = {
             databaseIndexing: 100,
             usageQuotaPercentage: 10,
@@ -37,40 +40,36 @@ export const useDashboardData = () => {
         };
 
         try {
-            // 1. Fetch real chat history
-            let realChatCount = 0;
-            try {
-                const chatHistory = await chatService.getChatHistory();
-                realChatCount = chatHistory?.length || 0;
-            } catch (e) {
-                console.warn("Failed to fetch real chat history", e);
-            }
-
-            // 2. Fetch stats
+            // 1. Fetch real stats from backend
             try {
                 const fetchedStats = await dashboardService.getStats();
                 if (fetchedStats) {
                     statsData = {
-                        aiConsultations: fetchedStats.aiConsultations || realChatCount,
+                        aiConsultations: fetchedStats.aiConsultations || 0,
                         contractsAnalyzed: fetchedStats.contractsAnalyzed || 0,
                         judgmentsViewed: fetchedStats.judgmentsViewed || 0,
-                        hoursSaved: fetchedStats.hoursSaved || "0h"
+                        hoursSaved: fetchedStats.hoursSaved || "0m"
                     };
                 }
             } catch (err) {
-                // fallback
-                statsData.aiConsultations = realChatCount;
+                console.warn("Failed to fetch dashboard stats:", err);
             }
 
-            // 3. Fetch Recent Activity
+            // 2. Fetch experience / rating data
             try {
-                const recentActs = await dashboardService.getRecentActivity();
-                activitiesData = recentActs || [];
+                const expData = await dashboardService.getExperience();
+                if (expData) {
+                    experienceData = {
+                        averageRating: expData.averageRating || 0,
+                        totalRatings: expData.totalRatings || 0,
+                        ratingDistribution: expData.ratingDistribution || { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 }
+                    };
+                }
             } catch (err) {
-                console.warn("Backend /dashboard/activity not ready yet.");
+                console.warn("Failed to fetch experience data:", err);
             }
 
-            // 4. Fetch System Status
+            // 3. Fetch System Status
             try {
                 const sysStat = await dashboardService.getSystemStatus();
                 if (sysStat) systemData = sysStat;
@@ -78,7 +77,7 @@ export const useDashboardData = () => {
                 console.warn("System status fallback.");
             }
 
-            return { stats: statsData, activities: activitiesData, systemStatus: systemData };
+            return { stats: statsData, experience: experienceData, systemStatus: systemData };
 
         } catch (error) {
             console.error("Dashboard DB fetch error:", error);
@@ -97,8 +96,8 @@ export const useDashboardData = () => {
         userName,
         getGreeting,
         currentDate,
-        stats: data?.stats || { aiConsultations: 0, contractsAnalyzed: 0, judgmentsViewed: 0, hoursSaved: "0h" },
-        activities: data?.activities || [],
+        stats: data?.stats || { aiConsultations: 0, contractsAnalyzed: 0, judgmentsViewed: 0, hoursSaved: "0m" },
+        experience: data?.experience || { averageRating: 0, totalRatings: 0, ratingDistribution: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 } },
         systemStatus: data?.systemStatus || { databaseIndexing: 100, usageQuotaPercentage: 0, statusMessage: "Establishing secure connection..." },
         isLoading
     };

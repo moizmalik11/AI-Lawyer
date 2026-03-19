@@ -245,3 +245,73 @@ export const getDocuments = async (req, res) => {
   }
 };
 
+/**
+ * Submit feedback rating for a specific message
+ * PUT /api/chat/:chatId/feedback
+ */
+export const submitFeedback = async (req, res) => {
+  try {
+    const userId = req.user.userId;
+    const { chatId } = req.params;
+    const { messageId, rating } = req.body;
+
+    // Validate rating
+    if (!rating || rating < 1 || rating > 5) {
+      return res.status(400).json({
+        success: false,
+        error: 'Rating must be between 1 and 5'
+      });
+    }
+
+    if (!messageId) {
+      return res.status(400).json({
+        success: false,
+        error: 'Message ID is required'
+      });
+    }
+
+    // Find the chat belonging to this user
+    const chat = await Chat.findOne({ _id: chatId, user: userId });
+
+    if (!chat) {
+      return res.status(404).json({
+        success: false,
+        error: 'Chat not found'
+      });
+    }
+
+    // Find the specific message
+    const message = chat.messages.id(messageId);
+
+    if (!message) {
+      return res.status(404).json({
+        success: false,
+        error: 'Message not found'
+      });
+    }
+
+    // Only allow rating assistant messages
+    if (message.role !== 'assistant') {
+      return res.status(400).json({
+        success: false,
+        error: 'Only assistant responses can be rated'
+      });
+    }
+
+    // Update the rating
+    message.rating = rating;
+    await chat.save();
+
+    res.json({
+      success: true,
+      message: 'Feedback submitted successfully',
+      rating: rating
+    });
+  } catch (error) {
+    console.error('Error submitting feedback:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to submit feedback'
+    });
+  }
+};

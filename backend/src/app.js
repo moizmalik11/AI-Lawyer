@@ -13,6 +13,7 @@ import authRoutes from './routes/authRoutes.js';
 import judgmentRoutes from './routes/judgmentRoutes.js';
 import contractRoutes from './routes/contractRoutes.js';
 import searchRoutes from './routes/searchRoutes.js';
+import dashboardRoutes from './routes/dashboardRoutes.js';
 import { connectDB } from './config/database.js';
 
 // Load environment variables
@@ -67,6 +68,7 @@ app.use('/api/chat', chatRoutes);
 app.use('/api/judgments', judgmentRoutes);
 app.use('/api/contracts', contractRoutes);
 app.use('/api/search', searchRoutes);
+app.use('/api/dashboard', dashboardRoutes);
 
 // Root endpoint
 app.get('/', (req, res) => {
