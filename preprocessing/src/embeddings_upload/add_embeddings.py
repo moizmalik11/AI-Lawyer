@@ -16,6 +16,11 @@ EMBEDDINGS_DIR = DATA_DIR / "embeddings"
 METADATA_FILE = DATA_DIR / "metadata" / "documents_metadata.json"
 EMBEDDINGS_FILE = EMBEDDINGS_DIR / "embeddings.jsonl"
 
+# Batch size for SentenceTransformer encoding — tune based on your RAM/VRAM
+ENCODE_BATCH_SIZE = 64
+# Save metadata every N documents instead of every single one
+METADATA_SAVE_INTERVAL = 10
+
 # ==========================
 # HELPER FUNCTIONS
 # ==========================
@@ -27,37 +32,52 @@ def save_json(path, data):
     with open(path, "w", encoding="utf-8") as f:
         json.dump(data, f, indent=2, ensure_ascii=False)
 
-def append_jsonl(path, data):
-    with open(path, "a", encoding="utf-8") as f:
-        f.write(json.dumps(data, ensure_ascii=False) + "\n")
-
 def get_last_id(path):
-    """Read last ID from jsonl so numbering continues across runs"""
-    if not path.exists():
+    """Read last ID from jsonl efficiently by seeking from the end."""
+    if not path.exists() or path.stat().st_size == 0:
         return 0
-    with open(path, "r", encoding="utf-8") as f:
-        lines = f.readlines()
-        if not lines:
-            return 0
-        try:
-            last_record = json.loads(lines[-1])
+    try:
+        with open(path, "rb") as f:
+            # Seek backwards to find the last complete line
+            f.seek(0, 2)  # end of file
+            pos = f.tell()
+            if pos == 0:
+                return 0
+            # Skip trailing newline(s)
+            pos -= 1
+            f.seek(pos)
+            while pos > 0 and f.read(1) in (b"\n", b"\r"):
+                pos -= 1
+                f.seek(pos)
+            # Find start of last line
+            while pos > 0:
+                f.seek(pos)
+                if f.read(1) == b"\n":
+                    break
+                pos -= 1
+            last_line = f.readline().decode("utf-8").strip()
+            if not last_line:
+                return 0
+            last_record = json.loads(last_line)
             return last_record["metadata"]["id"]
-        except Exception:
-            return 0
+    except Exception:
+        return 0
 
-def embeddings_exist_for(doc_title, embeddings_file):
-    """Check if any embedding record exists for a given document title."""
+def load_embedded_titles(embeddings_file):
+    """Pre-load ALL embedded document titles into a set (one-time scan)."""
+    titles = set()
     if not embeddings_file.exists():
-        return False
+        return titles
     with open(embeddings_file, "r", encoding="utf-8") as f:
         for line in f:
             try:
                 rec = json.loads(line)
-                if rec["metadata"].get("title") == doc_title:
-                    return True
+                title = rec["metadata"].get("title")
+                if title:
+                    titles.add(title)
             except Exception:
                 continue
-    return False
+    return titles
 
 # ==========================
 # MAIN LOGIC
@@ -71,10 +91,17 @@ def main():
     id_counter = get_last_id(EMBEDDINGS_FILE) + 1
     total_added = 0
 
+    # --- FIX 1: Pre-load all embedded titles ONCE instead of scanning per document ---
+    print("📂 Loading existing embedding titles...")
+    embedded_titles = load_embedded_titles(EMBEDDINGS_FILE)
+    print(f"   Found {len(embedded_titles)} already-embedded titles.")
+
+    docs_since_last_save = 0
+
     for doc in metadata["documents"]:
         proc_status = doc.get("processing_status", {})
         already_embedded = proc_status.get("embedded", False)
-        has_embeddings = embeddings_exist_for(doc.get("title"), EMBEDDINGS_FILE)
+        has_embeddings = doc.get("title") in embedded_titles
 
         # Skip logic: only skip if already embedded AND embeddings actually exist
         if not proc_status.get("chunked") or (already_embedded and has_embeddings):
@@ -97,34 +124,45 @@ def main():
 
         document_type = chunk_data.get("document_type", "unknown")
         chunks = chunk_data.get("chunks", [])
+        if not chunks:
+            continue
 
         print(f"🧠 Creating embeddings for: {chunk_path.name} ({len(chunks)} chunks)")
 
+        # --- FIX 2: Pre-compute metadata that is constant per document ---
+        title = doc.get("title", "")
+        year = str(doc.get("year", "")) if doc.get("year") else ""
+        doc_type = doc.get("document_type", document_type)
+
+        # --- FIX 3: Prepare ALL embedding texts in bulk, then batch-encode ---
+        embedding_texts = []
         for chunk in chunks:
-            # === Construct semantically rich embedding text ===
-            title = doc.get("title", "")
             chunk_title = chunk.get("chunk_title", "")
             chunk_type = chunk.get("chunk_type", "")
-            year = str(doc.get("year", "")) if doc.get("year") else ""
-            document_type = doc.get("document_type", document_type)
-
-            embedding_text_parts = [
-                f"{document_type}" if document_type else "",
-                f"{title}" if title else "",
-                f"{chunk_type}" if chunk_type else "",
-                f"{chunk_title}" if chunk_title else "",
+            parts = [
+                doc_type if doc_type else "",
+                title if title else "",
+                chunk_type if chunk_type else "",
+                chunk_title if chunk_title else "",
                 f"Year {year}" if year else "",
                 chunk["text"],
             ]
-            embedding_text = " | ".join(filter(None, embedding_text_parts))
+            embedding_texts.append(" | ".join(filter(None, parts)))
 
-            # === Create embedding ===
-            embedding = model.encode(embedding_text, convert_to_numpy=True).tolist()
+        # Batch encode — uses GPU parallelism or multi-threaded CPU
+        embeddings = model.encode(
+            embedding_texts,
+            batch_size=ENCODE_BATCH_SIZE,
+            convert_to_numpy=True,
+            show_progress_bar=len(chunks) > 100,
+        )
 
-            # === Record to save ===
+        # --- FIX 4: Buffer all records, write to disk ONCE per document ---
+        lines_buffer = []
+        for chunk, embedding in zip(chunks, embeddings):
             record = {
                 "chunk": chunk["text"],
-                "embedding": embedding,
+                "embedding": embedding.tolist(),
                 "upload": False,
                 "metadata": {
                     "id": id_counter,
@@ -134,24 +172,39 @@ def main():
                     "source_website": doc.get("source_website"),
                     "cleaned_path": doc.get("cleaned_path"),
                     "download_date": doc.get("download_date"),
-                    "document_type": document_type,
+                    "document_type": doc_type,
                     "year": doc.get("year"),
                     "court": doc.get("court"),
                     "chunk_index": chunk.get("chunk_index"),
-                    "chunk_type": chunk_type,
-                    "chunk_title": chunk_title,
+                    "chunk_type": chunk.get("chunk_type", ""),
+                    "chunk_title": chunk.get("chunk_title", ""),
                 },
             }
-
-            append_jsonl(EMBEDDINGS_FILE, record)
+            lines_buffer.append(json.dumps(record, ensure_ascii=False))
             id_counter += 1
             total_added += 1
 
-        # ✅ Mark as embedded and save metadata immediately
+        # Single file open + write for the whole document
+        with open(EMBEDDINGS_FILE, "a", encoding="utf-8") as f:
+            f.write("\n".join(lines_buffer) + "\n")
+
+        # ✅ Mark as embedded
         doc["processing_status"]["embedded"] = True
         doc["status"] = "embedded"
+        embedded_titles.add(title)  # update in-memory set
+        docs_since_last_save += 1
+
+        # --- FIX 5: Save metadata periodically, not every single document ---
+        if docs_since_last_save >= METADATA_SAVE_INTERVAL:
+            save_json(METADATA_FILE, metadata)
+            print(f"💾 Metadata saved (batch of {docs_since_last_save} docs)")
+            docs_since_last_save = 0
+
+        print(f"✅ Done: {chunk_path.name}")
+
+    # Final metadata save to catch any remaining unsaved documents
+    if docs_since_last_save > 0:
         save_json(METADATA_FILE, metadata)
-        print(f"✅ Updated metadata after {chunk_path.name}")
 
     print(f"\n🎯 All done! Added {total_added} embeddings.")
     print(f"📁 Saved to: {EMBEDDINGS_FILE}")
@@ -161,3 +214,4 @@ def main():
 # ==========================
 if __name__ == "__main__":
     main()
+
