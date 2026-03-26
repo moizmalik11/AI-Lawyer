@@ -1,12 +1,11 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { IconCheck } from '@tabler/icons-react';
-import { marked } from 'marked';
+import { parseMarkdownToHtml } from '../../utils/markdown';
 
 export const ContractAnalysisResult = ({ analysis }) => {
     if (!analysis) return null;
 
-    // Parse the markdown
-    const html = marked.parse(analysis || '');
+    const html = useMemo(() => parseMarkdownToHtml(analysis), [analysis]);
 
     return (
         <div className="bg-[var(--card-bg)] border border-[var(--card-border)] rounded-[24px] p-8 mt-6 shadow-sm">
@@ -18,14 +17,7 @@ export const ContractAnalysisResult = ({ analysis }) => {
             </h3>
 
             <div
-                className="prose prose-sm sm:prose-base max-w-none 
-                    prose-headings:text-[var(--foreground)] prose-headings:font-bold tracking-tight
-                    prose-p:text-[var(--text-soft)] prose-p:leading-relaxed
-                    prose-li:text-[var(--text-soft)]
-                    prose-strong:text-[var(--foreground)]
-                    prose-a:text-[#d4af37] hover:prose-a:text-[#b48512]
-                    prose-blockquote:border-l-[#d4af37] prose-blockquote:bg-[var(--card-border)] prose-blockquote:py-1 prose-blockquote:px-4 prose-blockquote:rounded-r-lg prose-blockquote:not-italic
-                    dark:prose-invert"
+                className="markdown-body text-[var(--foreground)]"
                 dangerouslySetInnerHTML={{ __html: html }}
             />
         </div>

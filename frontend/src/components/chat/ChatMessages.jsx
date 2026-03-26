@@ -1,10 +1,25 @@
-import React, { useState } from 'react';
-import { IconRobot, IconLoader, IconScale } from '@tabler/icons-react';
-import { marked } from 'marked';
+import React, { memo, useMemo, useState } from 'react';
+import { IconLoader, IconScale } from '@tabler/icons-react';
 import { useAuth } from '../../context/AuthContext';
 import { useChat } from '../../context/ChatContext';
+import { parseMarkdownToHtml } from '../../utils/markdown';
 import FeedbackButton from './FeedbackButton';
 import SourcesModal from './SourcesModal';
+
+const MarkdownMessage = memo(({ content }) => {
+    const renderedHtml = useMemo(() => {
+        return parseMarkdownToHtml(content || '');
+    }, [content]);
+
+    return (
+        <div
+            className="markdown-body text-[var(--foreground)]"
+            dangerouslySetInnerHTML={{ __html: renderedHtml }}
+        />
+    );
+});
+
+MarkdownMessage.displayName = 'MarkdownMessage';
 
 const ChatMessages = () => {
     const { user } = useAuth();
@@ -51,7 +66,7 @@ const ChatMessages = () => {
                                 {msg.role === 'user' ? (
                                     <div className="whitespace-pre-wrap">{msg.content}</div>
                                 ) : (
-                                    <div className="prose max-w-none prose-p:leading-relaxed prose-sm md:prose-base prose-headings:text-[var(--foreground)] prose-a:text-[#d4af37] font-medium text-[var(--foreground)] dark:prose-invert" dangerouslySetInnerHTML={{ __html: marked.parse(msg.content || '') }} />
+                                    <MarkdownMessage content={msg.content} />
                                 )}
 
                                 {/* Reference sources if AI generated them */}

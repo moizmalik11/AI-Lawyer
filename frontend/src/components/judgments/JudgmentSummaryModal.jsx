@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { IconScale, IconX } from '@tabler/icons-react';
 import { Button } from '../ui/button';
-import { marked } from 'marked';
+import { parseMarkdownToHtml } from '../../utils/markdown';
 
 import { useJudgmentContext } from '../../context/JudgmentContext';
 
@@ -13,6 +13,8 @@ export const JudgmentSummaryModal = () => {
         summary,
         setIsSummaryModalOpen
     } = useJudgmentContext();
+
+    const summaryHtml = useMemo(() => parseMarkdownToHtml(summary || ''), [summary]);
 
     const closeModal = () => setIsSummaryModalOpen(false);
     return (
@@ -62,9 +64,9 @@ export const JudgmentSummaryModal = () => {
                             </div>
                         </div>
                     ) : (
-                        <div className="mt-2 bg-black/5 dark:bg-white/5 border border-[var(--card-border)] rounded-2xl p-6 md:p-8 prose prose-slate prose-headings:text-[var(--foreground)] prose-p:text-[var(--foreground)] prose-strong:text-[var(--foreground)] prose-li:text-[var(--foreground)] prose-a:text-[#d4af37] max-w-none prose-p:leading-relaxed text-[15.5px] dark:prose-invert">
+                        <div className="mt-2 bg-black/5 dark:bg-white/5 border border-[var(--card-border)] rounded-2xl p-6 md:p-8">
                             {summary ? (
-                                <div dangerouslySetInnerHTML={{ __html: marked.parse(summary) }} />
+                                <div className="markdown-body text-[var(--foreground)]" dangerouslySetInnerHTML={{ __html: summaryHtml }} />
                             ) : (
                                 <p className="italic text-[var(--text-muted)] text-center py-10">Summary generated successfully but contains no measurable text.</p>
                             )}
