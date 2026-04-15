@@ -40,7 +40,7 @@ const ChatInput = () => {
                 </button>
             </div>
             <div className="text-center mt-4">
-                <span className="text-xs text-[var(--text-muted)] font-medium tracking-wide">AI-Lawyer can make mistakes. Consider verifying important information.</span>
+                <span className="text-xs text-[var(--text-muted)] font-medium tracking-wide">Smart Lawyer can make mistakes. Consider verifying important information.</span>
             </div>
         </div>
     );

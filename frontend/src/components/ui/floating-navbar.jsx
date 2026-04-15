@@ -84,7 +84,7 @@ export const FloatingNav = ({
             <div className="h-8 w-8 bg-[var(--brand-500)] rounded-lg flex-shrink-0 flex items-center justify-center shadow-lg shadow-black/20">
               <IconScale className="h-4 w-4 text-[var(--navbar-bg)]" stroke={2} />
             </div>
-            <span className={cn("font-bold text-lg whitespace-nowrap hidden md:block", isTop ? "text-white" : "text-[var(--foreground)]")}>AI-Lawyer</span>
+            <span className={cn("font-bold text-lg whitespace-nowrap hidden md:block", isTop ? "text-white" : "text-[var(--foreground)]")}>Smart Lawyer</span>
           </div>
 
           {/* Nav items container */}

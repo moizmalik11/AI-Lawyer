@@ -21,7 +21,7 @@ const Logo = () => (
             <IconScale className="h-4 w-4 text-[var(--navbar-bg)]" stroke={2} />
         </div>
         <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="font-bold text-white text-[16px] whitespace-pre tracking-wide">
-            AI-Lawyer
+            Smart Lawyer
         </motion.span>
     </div>
 );

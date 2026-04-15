@@ -99,7 +99,7 @@ export const MobileSidebar = ({
           className="text-white hover:text-[#d4af37] transition-colors cursor-pointer"
           size={28}
           onClick={() => setOpen(!open)} />
-        <span className="text-white font-bold text-lg tracking-wide">AI-Lawyer</span>
+        <span className="text-white font-bold text-lg tracking-wide">Smart Lawyer</span>
         <AnimatePresence>
           {open && (
             <>

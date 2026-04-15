@@ -76,7 +76,7 @@ export const AuthOverlay = ({ isLogin }) => {
                     initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}
                     className="text-[32px] font-bold text-white tracking-wide mb-2"
                 >
-                    AI-Lawyer
+                    Smart Lawyer
                 </motion.h1>
 
                 <p className="text-[#d4af37] text-xs uppercase tracking-[0.3em] mb-4 font-semibold">Legal Intelligence Platform</p>

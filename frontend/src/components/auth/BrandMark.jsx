@@ -14,7 +14,7 @@ export const BrandMark = ({ size = 72, stroke = '#0b1b34', accent = '#d4af37', s
       height={size}
       viewBox="0 0 64 64"
       fill="none"
-      aria-label="AI Lawyer brand mark"
+      aria-label="Smart Lawyer brand mark"
     >
       {/* top finial */}
       <circle cx="32" cy="8" r="2" fill={markAccent} />
