@@ -8,11 +8,13 @@ import {
 } from "framer-motion";
 
 const MotionDiv = motion.div;
+import { Link } from "react-router-dom";
 import { cn } from "../../lib/utils";
 import ThemeToggle from "../ThemeToggle";
 import { Button } from "./button";
 import { useAuth } from "../../context/AuthContext";
 import { IconScale } from "@tabler/icons-react";
+import { ROUTES } from "../../constants/routes.constants";
 
 export const FloatingNav = ({
   navItems,
@@ -110,9 +112,9 @@ export const FloatingNav = ({
             <ThemeToggle />
             <Button asChild size="sm" className={cn("rounded-full font-semibold px-6 transition-colors", isTop ? "bg-[#d4af37] text-[#051326] hover:bg-[#c29e2f]" : "bg-[var(--foreground)] text-[var(--background)] hover:bg-[var(--foreground)]/90")}>
               {user ? (
-                <a href="/dashboard">Dashboard</a>
+                <Link to={ROUTES.DASHBOARD}>Dashboard</Link>
               ) : (
-                <a href="/auth?mode=login">Login</a>
+                <Link to={`${ROUTES.AUTH}?mode=login`}>Login</Link>
               )}
             </Button>
           </div>

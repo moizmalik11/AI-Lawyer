@@ -1,5 +1,7 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { Scale } from 'lucide-react';
+import { ROUTES } from '../../constants/routes.constants';
 
 export default function Footer() {
   return (
@@ -26,7 +28,7 @@ export default function Footer() {
               <li><a href="#home" className="hover:text-brand-400 transition-colors">Home</a></li>
               <li><a href="#about" className="hover:text-brand-400 transition-colors">About</a></li>
               <li><a href="#features" className="hover:text-brand-400 transition-colors">Features</a></li>
-              <li><a href="/auth?mode=login" className="hover:text-brand-400 transition-colors">Login</a></li>
+              <li><Link to={`${ROUTES.AUTH}?mode=login`} className="hover:text-brand-400 transition-colors">Login</Link></li>
             </ul>
           </div>
 
